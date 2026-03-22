@@ -2,9 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Velocity Pro Sims — Standard Operating Procedures</title>
   <link rel="icon" type="image/png" href="logo.png">
+  <!-- PWA Meta Tags -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#5CBF2A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="VPS SOPs">
+  <link rel="apple-touch-icon" href="logo.png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
   <style>
@@ -596,33 +603,127 @@
     }
     .checklist-add button:hover { background: var(--green); color: #000; }
 
+    /* ── Hamburger Button ── */
+    .hamburger-btn {
+      display: none;
+      width: 36px; height: 36px;
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      background: var(--bg-input); color: var(--text-secondary);
+      cursor: pointer; align-items: center; justify-content: center;
+      font-size: 1rem; transition: all var(--transition);
+    }
+    .hamburger-btn:hover { border-color: var(--green); color: var(--green); }
+
+    /* ── Sidebar Overlay (mobile) ── */
+    .sidebar-overlay {
+      display: none; position: fixed; inset: 0; z-index: 149;
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+      opacity: 0; transition: opacity 0.3s ease;
+    }
+    .sidebar-overlay.open { display: block; opacity: 1; }
+
     /* ── Responsive ── */
     @media (max-width: 1024px) {
       .stats-row { grid-template-columns: repeat(2, 1fr); }
       .sidebar { width: 220px; }
     }
+
     @media (max-width: 768px) {
-      .header { padding: 0 16px; }
-      .layout { flex-direction: column; padding: 0 16px; }
-      .sidebar {
-        width: 100%; position: relative; top: 0;
-        height: auto; border-right: none;
-        border-bottom: 1px solid var(--border);
-        padding: 16px 0; padding-right: 0;
-        display: flex; flex-wrap: wrap; gap: 4px;
-      }
-      .sidebar-label { width: 100%; }
-      .sidebar-spacer { display: none; }
-      .main { padding: 24px 0 48px; }
-      .stats-row { grid-template-columns: 1fr 1fr; }
-      .search-bar { width: 200px; }
+      .hamburger-btn { display: flex; }
+
+      .header { padding: 0 16px; padding-top: env(safe-area-inset-top); }
+      .header-inner { height: 56px; }
       .header-title { display: none; }
       .header-divider { display: none; }
+      .header-logo { height: 30px; }
+
+      .layout { padding: 0; }
+
+      /* Sidebar becomes a slide-in drawer */
+      .sidebar {
+        position: fixed; top: 0; left: 0; z-index: 150;
+        width: 280px; height: 100vh; height: 100dvh;
+        background: var(--bg-secondary);
+        border-right: 1px solid var(--border);
+        padding: 24px 16px;
+        padding-top: calc(env(safe-area-inset-top) + 24px);
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow-y: auto;
+        display: flex; flex-direction: column; gap: 2px;
+        flex-wrap: nowrap;
+      }
+      .sidebar.mobile-open { transform: translateX(0); }
+      .sidebar-label { width: 100%; }
+      .sidebar-spacer { display: none; }
+
+      .main { padding: 20px 16px 80px; }
+
+      .stats-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .stat-card { padding: 14px; }
+      .stat-value { font-size: 1.6rem; }
+      .stat-label { font-size: 0.72rem; }
+
+      .search-bar { width: 180px; }
+      .search-bar input { padding: 8px 12px 8px 32px; font-size: 0.82rem; }
+
+      .category-header { flex-direction: column; align-items: flex-start; gap: 14px; }
+      .category-header h2 { font-size: 1.3rem; }
+      .btn-add-sop { width: 100%; justify-content: center; }
+
+      .sop-card { padding: 14px; gap: 12px; }
+      .sop-card-meta { flex-direction: column; align-items: flex-end; gap: 4px; }
+      .sop-card-desc { font-size: 0.78rem; }
+
+      .modal { max-height: 90vh; max-height: 90dvh; margin: 12px; border-radius: var(--radius); }
+      .modal-overlay { padding: 0; align-items: flex-end; }
+      .modal-overlay .modal { border-radius: var(--radius-lg) var(--radius-lg) 0 0; margin: 0; max-height: 92vh; max-height: 92dvh; }
+      .modal-header { padding: 18px 20px; }
+      .modal-header h3 { font-size: 1.1rem; }
+      .modal-body { padding: 20px; }
+
+      .web-grid { grid-template-columns: 1fr; }
+      .web-tile { padding: 12px 14px; }
+
+      .assets-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+      .asset-card-img { height: 110px; padding: 12px; }
+      .asset-card-body { padding: 10px 12px; }
+
+      .form-actions { flex-wrap: wrap; }
+      .form-actions .btn-save, .form-actions .btn-cancel, .form-actions a.btn-save {
+        flex: 1; min-width: 100px; text-align: center; justify-content: center;
+      }
+
+      .checklist-add { flex-direction: column; }
+      .checklist-add button { width: 100%; }
+
+      .dashboard-header h1 { font-size: 1.5rem; }
+      .dashboard-header p { font-size: 0.85rem; }
+
+      /* Dashboard category cards grid */
+      .cat-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
     }
+
     @media (max-width: 480px) {
       .stats-row { grid-template-columns: 1fr; }
-      .search-bar { width: 140px; }
-      .login-card { padding: 32px 24px; }
+      .search-bar { width: 120px; }
+      .search-bar input { font-size: 0.78rem; padding: 7px 10px 7px 28px; }
+      .login-card { padding: 32px 20px; margin: 16px; }
+      .login-logo { height: 48px; }
+      .login-title { font-size: 0.95rem; letter-spacing: 2px; margin-bottom: 24px; }
+
+      .header-logo { height: 26px; }
+
+      .assets-grid { grid-template-columns: 1fr 1fr; }
+      .asset-card-img { height: 90px; padding: 8px; }
+
+      .category-icon-lg { width: 40px; height: 40px; font-size: 1rem; }
+
+      .sop-card-icon { width: 34px; height: 34px; font-size: 0.85rem; }
+
+      .cat-grid { grid-template-columns: 1fr !important; }
+
+      .modal-overlay .modal { max-height: 95vh; max-height: 95dvh; }
     }
   </style>
   <!-- Firebase SDK -->
@@ -665,6 +766,9 @@
   <header class="header">
     <div class="header-inner">
       <div class="header-left">
+        <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Toggle navigation">
+          <i class="fas fa-bars" id="hamburgerIcon"></i>
+        </button>
         <img src="logo.png" alt="Velocity Pro Sims" class="header-logo" onclick="showDashboard()">
         <div class="header-divider"></div>
         <span class="header-title">SOP Portal</span>
@@ -680,6 +784,7 @@
     </div>
   </header>
 
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileNav()"></div>
   <div class="layout">
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
@@ -2246,14 +2351,70 @@ function formatFileSize(bytes) {
   return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
 }
 
+// ── Mobile Navigation ──
+function toggleMobileNav() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const icon = document.getElementById('hamburgerIcon');
+  const isOpen = sidebar.classList.contains('mobile-open');
+  if (isOpen) {
+    closeMobileNav();
+  } else {
+    sidebar.classList.add('mobile-open');
+    overlay.classList.add('open');
+    icon.className = 'fas fa-xmark';
+    document.body.style.overflow = 'hidden';
+  }
+}
+function closeMobileNav() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const icon = document.getElementById('hamburgerIcon');
+  sidebar.classList.remove('mobile-open');
+  overlay.classList.remove('open');
+  icon.className = 'fas fa-bars';
+  document.body.style.overflow = '';
+}
+
+// Auto-close mobile nav when a category is selected
+const origShowCategory = typeof showCategory === 'function' ? showCategory : null;
+const origShowDashboard = typeof showDashboard === 'function' ? showDashboard : null;
+
+// Patch nav items to close mobile menu on tap
+function patchNavForMobile() {
+  document.querySelectorAll('.nav-item').forEach(el => {
+    el.addEventListener('click', () => {
+      if (window.innerWidth <= 768) closeMobileNav();
+    });
+  });
+}
+// Run after sidebar is built
+const origBuildSidebar = buildSidebar;
+buildSidebar = function() {
+  origBuildSidebar();
+  patchNavForMobile();
+};
+
 // ── Keyboard shortcuts ──
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeModal(); closeAddModal(); closeUploadModal(); closeAssetViewModal(); }
+  if (e.key === 'Escape') {
+    closeModal(); closeAddModal(); closeUploadModal(); closeAssetViewModal();
+    closeMobileNav();
+  }
   if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
     e.preventDefault();
     document.getElementById('searchInput').focus();
   }
 });
+
+// ── Service Worker Registration ──
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('SW registered:', reg.scope))
+      .catch(err => console.log('SW registration failed:', err));
+  });
+}
 
 // ── Boot ──
 init();
