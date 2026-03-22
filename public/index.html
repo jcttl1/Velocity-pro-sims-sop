@@ -1052,6 +1052,32 @@ const defaultSOPs = [
 <li>Equipment maintenance costs trending up or down</li>
 <li>Customer acquisition cost vs. lifetime value</li>
 </ul>`
+  },
+  {
+    id: 24, category: 'accounting', title: 'Fanatec Purchase Order Processing',
+    description: 'Step-by-step procedure for placing purchase orders through Shopify to fulfill Fanatec/Corsair customer orders.',
+    priority: 'critical', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    content: `<h4>Order Processing</h4><p>Follow these steps precisely to place a Purchase Order (PO) for Fanatec products to fulfill customer orders.</p>
+<h4>Steps to Place PO for Fanatec to Fulfill Orders</h4><ol>
+<li>Wait for email from Shopify with order details</li>
+<li>Go to Shopify and click <strong>Apps</strong> (left bottom corner)</li>
+<li>Click <strong>Ultimate Purchase Order</strong></li>
+<li>Click <strong>Orders</strong></li>
+<li>Look for the order (check shipping address) and click <strong>Create PO</strong></li>
+<li>Ignore the message to resolve conflict</li>
+<li>Click on <strong>Supplier</strong> (bottom right corner) — for Fanatec orders it will be <strong>Corsair</strong></li>
+<li>Click <strong>Proceed</strong></li>
+<li>Go to the Velocity Pro Sims website to make sure we are getting the discount from the vendor — copy the SKU from the email and paste it into the search bar. The purchase price must be higher than the price in the PO.</li>
+<li>Go back to the PO and in the <strong>Custom Purchase PO Number</strong> field, write in the order number from the customer (VPS....)</li>
+<li>Click <strong>Create and Send</strong> (top right corner) — the PO will be sent to the vendor</li>
+<li>Once the vendor sends the invoice and it is paid, go back to <strong>Apps → Purchase Orders</strong> and mark the PO as paid. To mark as paid: select the PO, click <strong>Bulk Actions → Mark as Paid</strong>. In the window that opens, enter the vendor invoice number, change the payment type to <strong>PayPal</strong>, and click <strong>Create</strong>.</li>
+</ol>
+<h4>Important Notes</h4><ul>
+<li>Always verify the discount pricing before submitting the PO</li>
+<li>Double-check the shipping address matches the customer's order</li>
+<li>Keep the customer order number (VPS...) consistent between Shopify and the PO</li>
+<li>Do not submit the PO until all details have been verified</li>
+</ul>`
   }
 ];
 
