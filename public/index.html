@@ -654,9 +654,9 @@
     .cal-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
     @media (max-width: 768px) {
-      .cal-cell { min-height: 70px; padding: 4px; }
+      .cal-cell { min-height: 80px; padding: 4px; }
       .cal-day-num { font-size: 0.75rem; }
-      .cal-event { font-size: 0.6rem; padding: 2px 4px; }
+      .cal-event { font-size: 0.7rem; padding: 6px 6px; min-height: 28px; display: flex; align-items: center; }
       .cal-month-label { font-size: 1.1rem; min-width: 160px; }
       .cal-controls { gap: 8px; }
       .cal-form-row { grid-template-columns: 1fr; }
@@ -664,16 +664,9 @@
       .cal-detail { margin: 12px; }
     }
     @media (max-width: 480px) {
-      .cal-cell { min-height: 55px; }
-      .cal-event { display: none; }
-      .cal-cell.has-srp::after, .cal-cell.has-vps::after, .cal-cell.has-both::after {
-        content: ''; position: absolute; bottom: 4px; left: 50%;
-        transform: translateX(-50%); width: 6px; height: 6px;
-        border-radius: 50%;
-      }
-      .cal-cell.has-srp::after { background: #F97316; }
-      .cal-cell.has-vps::after { background: var(--green); }
-      .cal-cell.has-both::after { width: 14px; border-radius: 3px; background: linear-gradient(90deg, var(--green) 50%, #F97316 50%); }
+      .cal-cell { min-height: 65px; }
+      .cal-event { font-size: 0.62rem; padding: 5px 4px; min-height: 24px; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+      .cal-event-more { font-size: 0.6rem; }
     }
 
     /* ── Checklist ── */
@@ -2788,13 +2781,13 @@ function renderCalendarCategory() {
     allEvts.slice(0, maxShow).forEach(evt => {
       const cls = evt._source === 'srp' ? 'srp' : 'vps';
       const label = evt.name || evt.title || 'Event';
-      evtsHTML += `<div class="cal-event ${cls}" onclick="event.stopPropagation();showCalEventDetail('${evt._source}','${evt._id}')" title="${label}">${label}</div>`;
+      evtsHTML += `<div class="cal-event ${cls}" data-evt-source="${evt._source}" data-evt-id="${evt._id}" title="${label}">${label}</div>`;
     });
     if (allEvts.length > maxShow) {
-      evtsHTML += `<div class="cal-event-more" onclick="event.stopPropagation();showDayEventsModal('${dateStr}')">+${allEvts.length - maxShow} more</div>`;
+      evtsHTML += `<div class="cal-event-more" data-day-events="${dateStr}">+${allEvts.length - maxShow} more</div>`;
     }
 
-    cellsHTML += `<div class="${cellClass}" onclick="openNewCalEventOnDate('${dateStr}')">
+    cellsHTML += `<div class="${cellClass}" data-cal-date="${dateStr}">
       <div class="cal-day-num">${d}</div>
       ${evtsHTML}
     </div>`;
@@ -2836,8 +2829,38 @@ function renderCalendarCategory() {
       </div>
       <button class="cal-today-btn" onclick="calToday()">Today</button>
     </div>
-    <div class="cal-grid">${cellsHTML}</div>
+    <div class="cal-grid" id="calGrid">${cellsHTML}</div>
   `;
+
+  // Delegated click handler for the calendar grid
+  document.getElementById('calGrid').addEventListener('click', function(e) {
+    // Check if an event chip was clicked
+    const evtEl = e.target.closest('.cal-event[data-evt-source]');
+    if (evtEl) {
+      e.stopPropagation();
+      showCalEventDetail(evtEl.dataset.evtSource, evtEl.dataset.evtId);
+      return;
+    }
+    // Check if "+X more" was clicked
+    const moreEl = e.target.closest('.cal-event-more[data-day-events]');
+    if (moreEl) {
+      e.stopPropagation();
+      showDayEventsModal(moreEl.dataset.dayEvents);
+      return;
+    }
+    // Otherwise, clicking the cell itself
+    const cellEl = e.target.closest('.cal-cell[data-cal-date]');
+    if (cellEl && !cellEl.classList.contains('outside')) {
+      const dateStr = cellEl.dataset.calDate;
+      const dayEvents = [...getEventsForDate(dateStr, vpsEvents), ...getEventsForDate(dateStr, srpEvents)];
+      // If the cell has events, show the day's event list (easier on mobile)
+      if (dayEvents.length > 0) {
+        showDayEventsModal(dateStr);
+      } else {
+        openNewCalEventOnDate(dateStr);
+      }
+    }
+  });
 }
 
 function getEventsForDate(dateStr, events) {
@@ -2936,6 +2959,9 @@ function showDayEventsModal(dateStr) {
       <span class="cal-detail-source-tag ${cls}">${tag}</span>
     </div>`;
   });
+  bodyHTML += `<button class="btn-add-sop" style="border-color:var(--green);color:var(--green);width:100%;justify-content:center;margin-top:12px;" onclick="closeCalDetail();openNewCalEventOnDate('${dateStr}')">
+    <i class="fas fa-plus"></i> Add Event on This Day
+  </button>`;
   document.getElementById('calDetailTitle').textContent = 'Events on ' + d;
   document.getElementById('calDetailBody').innerHTML = bodyHTML;
   document.getElementById('calDeleteBtn').style.display = 'none';
