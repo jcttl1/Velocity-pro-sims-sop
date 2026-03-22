@@ -1424,6 +1424,11 @@ const defaultSOPs = [
     isWebsite: true, url: 'https://www.simrentalpros.com', webGroup: 'our-sites', webIcon: 'fa-hand-holding-dollar', content: ''
   },
   {
+    id: 50, category: 'websites', title: 'SRP Event Calendar', description: 'Sim Rental Pros event scheduling calendar',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isWebsite: true, url: 'https://sim-rental-pros-event-calendar.web.app', webGroup: 'our-sites', webIcon: 'fa-calendar-days', content: ''
+  },
+  {
     id: 34, category: 'websites', title: 'Shopify', description: 'E-commerce and order management',
     priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
     isWebsite: true, url: 'https://www.shopify.com', webGroup: 'business-tools', webIcon: 'fa-cart-shopping', content: ''
@@ -1545,6 +1550,9 @@ function init() {
   buildCategorySelect();
   renderDashboard();
 
+  // Start Firestore listener for assets (updates sidebar badge in real time)
+  loadAssets();
+
   // Migrate localStorage assets to Firestore (one-time)
   migrateAssetsToFirestore();
 }
@@ -1611,7 +1619,7 @@ function buildSidebar() {
   existingItems.forEach(el => el.remove());
 
   categories.forEach(cat => {
-    const count = sopData.filter(s => s.category === cat.id).length;
+    const count = cat.id === 'assets' ? assetsData.length : sopData.filter(s => s.category === cat.id).length;
     const div = document.createElement('div');
     div.className = 'nav-item' + (currentCategory === cat.id ? ' active' : '');
     div.dataset.cat = cat.id;
@@ -2026,6 +2034,7 @@ function loadAssets(callback) {
   assetsUnsubscribe = db.collection('assets').orderBy('uploadedAt', 'desc').onSnapshot(snapshot => {
     assetsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     assetsLoaded = true;
+    buildSidebar(); // Update badge count
     // Re-render if we're on the assets category
     if (currentCategory === 'assets') renderAssetsCategory();
   }, err => {
