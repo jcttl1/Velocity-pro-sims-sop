@@ -625,6 +625,21 @@
       .login-card { padding: 32px 24px; }
     }
   </style>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDHKg7eVImJnhuV1r2SM3BhmH1zToDoXkg",
+      authDomain: "velocity-pro-sims-sop.firebaseapp.com",
+      projectId: "velocity-pro-sims-sop",
+      storageBucket: "velocity-pro-sims-sop.firebasestorage.app",
+      messagingSenderId: "473323330307",
+      appId: "1:473323330307:web:0017e858ea4b923ed96736"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
 </head>
 <body>
 
@@ -1529,6 +1544,29 @@ function init() {
   buildSidebar();
   buildCategorySelect();
   renderDashboard();
+
+  // Migrate localStorage assets to Firestore (one-time)
+  migrateAssetsToFirestore();
+}
+
+async function migrateAssetsToFirestore() {
+  const localAssets = localStorage.getItem('vps_assets');
+  if (!localAssets) return;
+  const assets = JSON.parse(localAssets);
+  if (!assets.length) return;
+  try {
+    const batch = db.batch();
+    assets.forEach(asset => {
+      const docRef = db.collection('assets').doc(asset.id);
+      const { id, ...assetData } = asset;
+      batch.set(docRef, assetData);
+    });
+    await batch.commit();
+    localStorage.removeItem('vps_assets'); // Remove after successful migration
+    console.log('Migrated ' + assets.length + ' assets from localStorage to Firestore');
+  } catch (err) {
+    console.error('Asset migration failed (will retry next load):', err);
+  }
 }
 
 function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(sopData)); }
@@ -1973,21 +2011,36 @@ function formatDate(dateStr) {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
-// ── Marketing Assets ──
-const ASSETS_KEY = 'vps_assets';
+// ── Marketing Assets (Firestore-backed) ──
 let assetsData = [];
 let assetFilter = 'all';
 let pendingAssetData = null;
 let viewingAssetId = null;
+let assetsLoaded = false;
+let assetsUnsubscribe = null;
 
-function loadAssets() {
-  const stored = localStorage.getItem(ASSETS_KEY);
-  assetsData = stored ? JSON.parse(stored) : [];
+function loadAssets(callback) {
+  // If we already have a real-time listener, just call callback
+  if (assetsUnsubscribe) { if (callback) callback(); return; }
+  // Set up real-time listener
+  assetsUnsubscribe = db.collection('assets').orderBy('uploadedAt', 'desc').onSnapshot(snapshot => {
+    assetsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    assetsLoaded = true;
+    // Re-render if we're on the assets category
+    if (currentCategory === 'assets') renderAssetsCategory();
+  }, err => {
+    console.error('Firestore assets error:', err);
+    // Fallback: try localStorage
+    const stored = localStorage.getItem('vps_assets');
+    assetsData = stored ? JSON.parse(stored) : [];
+    assetsLoaded = true;
+    if (callback) callback();
+  });
 }
-function saveAssets() { localStorage.setItem(ASSETS_KEY, JSON.stringify(assetsData)); }
+function saveAssets() { /* no-op: Firestore handles persistence */ }
 
 function renderAssetsCategory() {
-  loadAssets();
+  loadAssets(); // Sets up real-time listener if not already active
   const cat = categories.find(c => c.id === 'assets');
   const main = document.getElementById('mainContent');
   const tags = ['all', 'logo', 'icon', 'banner', 'social', 'print', 'other'];
@@ -2079,27 +2132,33 @@ function clearAssetPreview() {
   document.getElementById('assetFileInput').value = '';
 }
 
-function saveAsset() {
+async function saveAsset() {
   const name = document.getElementById('assetName').value.trim();
   const tag = document.getElementById('assetTag').value;
   if (!name) { alert('Please enter an asset name.'); return; }
   if (!pendingAssetData) { alert('Please select a file to upload.'); return; }
 
-  loadAssets();
-  assetsData.push({
-    id: 'asset_' + Date.now(),
-    name, tag,
-    data: pendingAssetData.data,
-    fileName: pendingAssetData.fileName,
-    size: pendingAssetData.fileSize,
-    fileType: pendingAssetData.fileType,
-    uploadedBy: 'Team',
-    uploadedAt: new Date().toISOString().split('T')[0]
-  });
-  saveAssets();
-  closeUploadModal();
-  buildSidebar();
-  renderAssetsCategory();
+  // Show saving state
+  const btn = document.querySelector('#uploadModal .btn-add-sop, #uploadModal .btn-cancel');
+  const origText = btn ? btn.innerHTML : '';
+
+  try {
+    await db.collection('assets').add({
+      name, tag,
+      data: pendingAssetData.data,
+      fileName: pendingAssetData.fileName,
+      size: pendingAssetData.fileSize,
+      fileType: pendingAssetData.fileType,
+      uploadedBy: 'Team',
+      uploadedAt: new Date().toISOString().split('T')[0]
+    });
+    closeUploadModal();
+    buildSidebar();
+    // renderAssetsCategory will be triggered by the Firestore listener
+  } catch (err) {
+    console.error('Error saving asset to Firestore:', err);
+    alert('Failed to upload asset. Please try again.');
+  }
 }
 
 // Drag & drop
@@ -2122,7 +2181,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // View Asset
 function viewAsset(id) {
-  loadAssets();
   const asset = assetsData.find(a => a.id === id);
   if (!asset) return;
   viewingAssetId = id;
@@ -2160,13 +2218,17 @@ async function copyAssetToClipboard() {
   }
 }
 
-function deleteAssetConfirm() {
+async function deleteAssetConfirm() {
   if (!confirm('Delete this asset? This cannot be undone.')) return;
-  assetsData = assetsData.filter(a => a.id !== viewingAssetId);
-  saveAssets();
-  closeAssetViewModal();
-  buildSidebar();
-  renderAssetsCategory();
+  try {
+    await db.collection('assets').doc(viewingAssetId).delete();
+    closeAssetViewModal();
+    buildSidebar();
+    // renderAssetsCategory will be triggered by the Firestore listener
+  } catch (err) {
+    console.error('Error deleting asset:', err);
+    alert('Failed to delete asset. Please try again.');
+  }
 }
 
 function formatFileSize(bytes) {
