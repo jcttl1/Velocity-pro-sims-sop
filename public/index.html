@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Velocity Pro Sims — Standard Operating Procedures</title>
-  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
   <!-- PWA Meta Tags -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#5CBF2A">
@@ -521,6 +521,161 @@
 
     @media (max-width: 768px) { .web-grid { grid-template-columns: 1fr; } }
 
+    /* ── Calendar ── */
+    .cal-controls {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px; gap: 12px; flex-wrap: wrap;
+    }
+    .cal-nav { display: flex; align-items: center; gap: 12px; }
+    .cal-nav-btn {
+      width: 36px; height: 36px; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); background: var(--bg-input);
+      color: var(--text-secondary); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; transition: all var(--transition);
+    }
+    .cal-nav-btn:hover { border-color: var(--green); color: var(--green); }
+    .cal-month-label {
+      font-family: 'Rajdhani', sans-serif; font-size: 1.4rem;
+      font-weight: 700; min-width: 200px; text-align: center;
+    }
+    .cal-today-btn {
+      padding: 7px 16px; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); background: none;
+      color: var(--text-secondary); font-size: 0.8rem; font-weight: 600;
+      font-family: 'Inter', sans-serif; cursor: pointer;
+      transition: all var(--transition);
+    }
+    .cal-today-btn:hover { border-color: var(--green); color: var(--green); }
+
+    .cal-legend {
+      display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px;
+    }
+    .cal-legend-item {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.78rem; color: var(--text-secondary);
+    }
+    .cal-legend-dot {
+      width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0;
+    }
+
+    .cal-grid {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .cal-dow {
+      padding: 10px 4px; text-align: center;
+      font-size: 0.72rem; font-weight: 700; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 1px;
+      background: var(--bg-card); border-bottom: 1px solid var(--border);
+    }
+    .cal-cell {
+      min-height: 100px; padding: 6px;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer; transition: background var(--transition);
+      position: relative;
+    }
+    .cal-cell:nth-child(7n) { border-right: none; }
+    .cal-cell:hover { background: var(--bg-card-hover); }
+    .cal-cell.outside { opacity: 0.3; }
+    .cal-cell.today { background: var(--green-dim); }
+    .cal-cell.today .cal-day-num { color: var(--green); font-weight: 800; }
+    .cal-cell.has-srp { border-bottom: 2px solid #F97316; }
+    .cal-cell.has-vps { border-bottom: 2px solid var(--green); }
+    .cal-cell.has-both { border-bottom: 2px solid; border-image: linear-gradient(90deg, var(--green) 50%, #F97316 50%) 1; }
+
+    .cal-day-num {
+      font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);
+      margin-bottom: 4px; padding: 2px 4px;
+    }
+
+    .cal-event {
+      padding: 3px 6px; border-radius: 4px;
+      font-size: 0.68rem; font-weight: 600;
+      margin-bottom: 2px; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+      cursor: pointer; transition: opacity var(--transition);
+      line-height: 1.3;
+    }
+    .cal-event:hover { opacity: 0.8; }
+    .cal-event.srp {
+      background: rgba(249,115,22,0.18); color: #F97316;
+      border-left: 2px solid #F97316;
+    }
+    .cal-event.vps {
+      background: var(--green-dim); color: var(--green);
+      border-left: 2px solid var(--green);
+    }
+    .cal-event-more {
+      font-size: 0.65rem; color: var(--text-muted); padding: 2px 6px;
+      cursor: pointer;
+    }
+
+    /* Calendar event detail popup */
+    .cal-detail-overlay {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden; transition: all 0.3s ease;
+      padding: 24px;
+    }
+    .cal-detail-overlay.open { opacity: 1; visibility: visible; }
+    .cal-detail {
+      background: var(--bg-secondary); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); width: 100%; max-width: 500px;
+      box-shadow: var(--shadow-lg);
+    }
+    .cal-detail-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px; border-bottom: 1px solid var(--border);
+    }
+    .cal-detail-header h3 { font-family: 'Rajdhani', sans-serif; font-size: 1.2rem; font-weight: 700; }
+    .cal-detail-body { padding: 24px; }
+    .cal-detail-row {
+      display: flex; gap: 12px; margin-bottom: 12px;
+    }
+    .cal-detail-label {
+      font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;
+      letter-spacing: 1px; font-weight: 600; min-width: 80px;
+    }
+    .cal-detail-value { font-size: 0.88rem; color: var(--text-primary); }
+    .cal-detail-source-tag {
+      display: inline-block; padding: 3px 10px; border-radius: 12px;
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .cal-detail-source-tag.srp { background: rgba(249,115,22,0.15); color: #F97316; }
+    .cal-detail-source-tag.vps { background: var(--green-dim); color: var(--green); }
+
+    /* Add VPS Event Form */
+    .cal-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    @media (max-width: 768px) {
+      .cal-cell { min-height: 70px; padding: 4px; }
+      .cal-day-num { font-size: 0.75rem; }
+      .cal-event { font-size: 0.6rem; padding: 2px 4px; }
+      .cal-month-label { font-size: 1.1rem; min-width: 160px; }
+      .cal-controls { gap: 8px; }
+      .cal-form-row { grid-template-columns: 1fr; }
+      .cal-legend { gap: 10px; }
+      .cal-detail { margin: 12px; }
+    }
+    @media (max-width: 480px) {
+      .cal-cell { min-height: 55px; }
+      .cal-event { display: none; }
+      .cal-cell.has-srp::after, .cal-cell.has-vps::after, .cal-cell.has-both::after {
+        content: ''; position: absolute; bottom: 4px; left: 50%;
+        transform: translateX(-50%); width: 6px; height: 6px;
+        border-radius: 50%;
+      }
+      .cal-cell.has-srp::after { background: #F97316; }
+      .cal-cell.has-vps::after { background: var(--green); }
+      .cal-cell.has-both::after { width: 14px; border-radius: 3px; background: linear-gradient(90deg, var(--green) 50%, #F97316 50%); }
+    }
+
     /* ── Checklist ── */
     .checklist-progress {
       display: flex; align-items: center; gap: 12px;
@@ -602,6 +757,64 @@
       white-space: nowrap; transition: all var(--transition);
     }
     .checklist-add button:hover { background: var(--green); color: #000; }
+
+    /* ── Shortcuts Panel ── */
+    .shortcuts-overlay {
+      position: fixed; inset: 0; z-index: 600;
+      background: rgba(0,0,0,0.65); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden; transition: all 0.25s ease;
+      padding: 24px;
+    }
+    .shortcuts-overlay.open { opacity: 1; visibility: visible; }
+    .shortcuts-panel {
+      background: var(--bg-secondary); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); width: 100%; max-width: 520px;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(12px) scale(0.97);
+      transition: transform 0.25s ease;
+    }
+    .shortcuts-overlay.open .shortcuts-panel { transform: translateY(0) scale(1); }
+    .shortcuts-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px; border-bottom: 1px solid var(--border);
+    }
+    .shortcuts-header h3 { font-family: 'Rajdhani', sans-serif; font-size: 1.2rem; font-weight: 700; }
+    .shortcuts-body { padding: 16px 24px; max-height: 60vh; overflow-y: auto; }
+    .shortcuts-section { margin-bottom: 18px; }
+    .shortcuts-section:last-child { margin-bottom: 0; }
+    .shortcuts-section-title {
+      font-size: 0.7rem; font-weight: 700; color: var(--green);
+      text-transform: uppercase; letter-spacing: 1.5px;
+      margin-bottom: 8px; padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .shortcut-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 7px 0; font-size: 0.85rem;
+    }
+    .shortcut-desc { color: var(--text-secondary); }
+    .shortcut-keys { display: flex; align-items: center; gap: 4px; }
+    .shortcut-keys span { color: var(--text-muted); font-size: 0.75rem; }
+    kbd {
+      display: inline-block; padding: 3px 8px;
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: 5px; font-family: 'Inter', monospace;
+      font-size: 0.72rem; font-weight: 600; color: var(--text-primary);
+      line-height: 1; min-width: 24px; text-align: center;
+      box-shadow: 0 2px 0 var(--border);
+    }
+    .shortcuts-footer {
+      padding: 12px 24px; border-top: 1px solid var(--border);
+      font-size: 0.75rem; color: var(--text-muted); text-align: center;
+    }
+    .shortcuts-footer kbd { font-size: 0.68rem; padding: 2px 6px; }
+
+    @media (max-width: 768px) {
+      .shortcuts-panel { max-width: 100%; margin: 12px; }
+      .shortcuts-body { max-height: 55vh; }
+      #shortcutsBtn { display: none; }
+    }
 
     /* ── Hamburger Button ── */
     .hamburger-btn {
@@ -729,7 +942,9 @@
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
   <script>
+    // VPS SOP Portal — Firestore (for assets)
     const firebaseConfig = {
       apiKey: "AIzaSyDHKg7eVImJnhuV1r2SM3BhmH1zToDoXkg",
       authDomain: "velocity-pro-sims-sop.firebaseapp.com",
@@ -740,6 +955,19 @@
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+
+    // SRP Event Calendar — Realtime Database (for shared calendar)
+    const srpFirebaseConfig = {
+      apiKey: "AIzaSyAAhAiblkbgsNxoMljZN2n3n9Whyz-Bmvk",
+      authDomain: "sim-rental-pros-event-calendar.firebaseapp.com",
+      databaseURL: "https://sim-rental-pros-event-calendar-default-rtdb.firebaseio.com",
+      projectId: "sim-rental-pros-event-calendar",
+      storageBucket: "sim-rental-pros-event-calendar.firebasestorage.app",
+      messagingSenderId: "995550792211",
+      appId: "1:995550792211:web:4e3a299575e7023eb94de6"
+    };
+    const srpApp = firebase.initializeApp(srpFirebaseConfig, 'srp-calendar');
+    const rtdb = firebase.database(srpApp);
   </script>
 </head>
 <body>
@@ -779,6 +1007,7 @@
           <input type="text" id="searchInput" placeholder="Search SOPs..." oninput="handleSearch(this.value)">
           <div class="search-results-dropdown" id="searchDropdown"></div>
         </div>
+        <button class="btn-icon" onclick="toggleShortcutsPanel()" title="Keyboard Shortcuts (?)" id="shortcutsBtn"><i class="fas fa-keyboard"></i></button>
         <button class="btn-icon" onclick="logout()" title="Sign Out"><i class="fas fa-right-from-bracket"></i></button>
       </div>
     </div>
@@ -816,6 +1045,84 @@
 </div>
 
 <!-- ═══ Upload Asset Modal ═══ -->
+<!-- ═══ Calendar Event Detail Modal ═══ -->
+<div class="cal-detail-overlay" id="calDetailModal" onclick="if(event.target===this)closeCalDetail()">
+  <div class="cal-detail">
+    <div class="cal-detail-header">
+      <h3 id="calDetailTitle">Event</h3>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="btn-cancel" id="calDeleteBtn" onclick="deleteVPSEvent()" style="border-color:var(--danger);color:var(--danger);padding:6px 12px;font-size:0.78rem;display:none;">
+          <i class="fas fa-trash"></i>
+        </button>
+        <button class="modal-close" onclick="closeCalDetail()"><i class="fas fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="cal-detail-body" id="calDetailBody"></div>
+  </div>
+</div>
+
+<!-- ═══ Add VPS Calendar Event Modal ═══ -->
+<div class="modal-overlay" id="calEventModal" onclick="if(event.target===this)closeCalEventModal()">
+  <div class="modal" style="max-width:540px;">
+    <div class="modal-header">
+      <h3 id="calEventModalTitle">Add Build / Delivery</h3>
+      <button class="modal-close" onclick="closeCalEventModal()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Event Name</label>
+        <input type="text" id="calEvtName" placeholder="e.g. Custom Triple Screen Build — Johnson">
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <select id="calEvtType">
+          <option value="build">Simulator Build</option>
+          <option value="delivery">Delivery</option>
+          <option value="pickup">Customer Pickup</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="cal-form-row">
+        <div class="form-group">
+          <label>Start Date</label>
+          <input type="date" id="calEvtDate">
+        </div>
+        <div class="form-group">
+          <label>End Date (optional)</label>
+          <input type="date" id="calEvtEndDate">
+        </div>
+      </div>
+      <div class="cal-form-row">
+        <div class="form-group">
+          <label>Start Time</label>
+          <input type="time" id="calEvtStartTime">
+        </div>
+        <div class="form-group">
+          <label>End Time</label>
+          <input type="time" id="calEvtEndTime">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description (optional)</label>
+        <textarea id="calEvtDesc" style="min-height:80px;" placeholder="Build details, parts list, customer notes..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select id="calEvtStatus">
+          <option value="scheduled">Scheduled</option>
+          <option value="in-progress">In Progress</option>
+          <option value="completed">Completed</option>
+          <option value="on-hold">On Hold</option>
+        </select>
+      </div>
+      <div class="form-actions">
+        <button class="btn-cancel" onclick="closeCalEventModal()">Cancel</button>
+        <button class="btn-save" onclick="saveCalEvent()"><i class="fas fa-plus"></i> Save Event</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="uploadModal" onclick="if(event.target===this)closeUploadModal()">
   <div class="modal" style="max-width:520px;">
     <div class="modal-header">
@@ -925,6 +1232,49 @@
   </div>
 </div>
 
+<!-- ═══ Shortcuts Panel ═══ -->
+<div class="shortcuts-overlay" id="shortcutsOverlay" onclick="if(event.target===this)closeShortcutsPanel()">
+  <div class="shortcuts-panel">
+    <div class="shortcuts-header">
+      <h3>Keyboard Shortcuts</h3>
+      <button class="modal-close" onclick="closeShortcutsPanel()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="shortcuts-body">
+      <div class="shortcuts-section">
+        <div class="shortcuts-section-title">Navigation</div>
+        <div class="shortcut-row"><span class="shortcut-desc">Go to Dashboard</span><span class="shortcut-keys"><kbd>G</kbd> then <kbd>D</kbd></span></div>
+        <div class="shortcut-row"><span class="shortcut-desc">Go to Calendar</span><span class="shortcut-keys"><kbd>G</kbd> then <kbd>C</kbd></span></div>
+        <div class="shortcut-row"><span class="shortcut-desc">Go to Key Websites</span><span class="shortcut-keys"><kbd>G</kbd> then <kbd>W</kbd></span></div>
+        <div class="shortcut-row"><span class="shortcut-desc">Go to Marketing Assets</span><span class="shortcut-keys"><kbd>G</kbd> then <kbd>A</kbd></span></div>
+        <div class="shortcut-row"><span class="shortcut-desc">Next category</span><span class="shortcut-keys"><kbd>J</kbd></span></div>
+        <div class="shortcut-row"><span class="shortcut-desc">Previous category</span><span class="shortcut-keys"><kbd>K</kbd></span></div>
+      </div>
+      <div class="shortcuts-section">
+        <div class="shortcuts-section-title">Actions</div>
+        <div class="shortcut-row"><span class="shortcut-desc">Search SOPs</span><span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>K</kbd></span></div>
+        <div class="shortcut-row"><span class="shortcut-desc">Add new SOP</span><span class="shortcut-keys"><kbd>N</kbd></span></div>
+        <div class="shortcut-row"><span class="shortcut-desc">Upload asset</span><span class="shortcut-keys"><kbd>U</kbd></span></div>
+        <div class="shortcut-row"><span class="shortcut-desc">Add calendar event</span><span class="shortcut-keys"><kbd>E</kbd></span></div>
+      </div>
+      <div class="shortcuts-section">
+        <div class="shortcuts-section-title">Calendar</div>
+        <div class="shortcut-row"><span class="shortcut-desc">Previous month</span><span class="shortcut-keys"><kbd>&larr;</kbd></span></div>
+        <div class="shortcut-row"><span class="shortcut-desc">Next month</span><span class="shortcut-keys"><kbd>&rarr;</kbd></span></div>
+        <div class="shortcut-row"><span class="shortcut-desc">Go to today</span><span class="shortcut-keys"><kbd>T</kbd></span></div>
+      </div>
+      <div class="shortcuts-section">
+        <div class="shortcuts-section-title">General</div>
+        <div class="shortcut-row"><span class="shortcut-desc">Show shortcuts</span><span class="shortcut-keys"><kbd>?</kbd></span></div>
+        <div class="shortcut-row"><span class="shortcut-desc">Close modal / panel</span><span class="shortcut-keys"><kbd>Esc</kbd></span></div>
+        <div class="shortcut-row"><span class="shortcut-desc">Sign out</span><span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>Q</kbd></span></div>
+      </div>
+    </div>
+    <div class="shortcuts-footer">
+      Press <kbd>?</kbd> anytime to toggle this panel
+    </div>
+  </div>
+</div>
+
 <script>
 // ── Configuration ──
 const TEAM_PASSWORD = 'VelocityPro2026';
@@ -934,6 +1284,7 @@ const AUTH_KEY = 'vps_auth';
 // ── Categories ──
 const categories = [
   { id: 'accounting', name: 'Accounting', icon: 'fa-calculator', color: '#10B981' },
+  { id: 'calendar', name: 'Calendar', icon: 'fa-calendar-days', color: '#5CBF2A' },
   { id: 'customer', name: 'Customer Service', icon: 'fa-headset', color: '#8B5CF6' },
   { id: 'equipment', name: 'Equipment & Simulators', icon: 'fa-desktop', color: '#5CBF2A' },
   { id: 'events', name: 'Events', icon: 'fa-trophy', color: '#EC4899' },
@@ -1658,6 +2009,9 @@ function init() {
   // Start Firestore listener for assets (updates sidebar badge in real time)
   loadAssets();
 
+  // Start calendar listeners (SRP + VPS events from shared RTDB)
+  startCalendarListeners();
+
   // Migrate localStorage assets to Firestore (one-time)
   migrateAssetsToFirestore();
 }
@@ -1724,7 +2078,7 @@ function buildSidebar() {
   existingItems.forEach(el => el.remove());
 
   categories.forEach(cat => {
-    const count = cat.id === 'assets' ? assetsData.length : sopData.filter(s => s.category === cat.id).length;
+    const count = cat.id === 'assets' ? assetsData.length : cat.id === 'calendar' ? (srpEvents.length + vpsEvents.length) : sopData.filter(s => s.category === cat.id).length;
     const div = document.createElement('div');
     div.className = 'nav-item' + (currentCategory === cat.id ? ' active' : '');
     div.dataset.cat = cat.id;
@@ -1875,6 +2229,7 @@ function renderWebsitesCategory() {
 function renderCategory(catId) {
   if (catId === 'websites') return renderWebsitesCategory();
   if (catId === 'assets') return renderAssetsCategory();
+  if (catId === 'calendar') return renderCalendarCategory();
 
   const cat = categories.find(c => c.id === catId);
   const sops = sopData.filter(s => s.category === catId);
@@ -2351,6 +2706,308 @@ function formatFileSize(bytes) {
   return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
 }
 
+// ── Calendar ──
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth();
+let srpEvents = [];
+let vpsEvents = [];
+let calListenersStarted = false;
+let viewingCalEvent = null;
+let editingCalEventId = null;
+
+function startCalendarListeners() {
+  if (calListenersStarted) return;
+  calListenersStarted = true;
+  // Listen to SRP events
+  rtdb.ref('events').on('value', snap => {
+    const data = snap.val();
+    if (Array.isArray(data)) {
+      srpEvents = data.map((e, i) => ({ ...e, _id: String(i), _source: 'srp' })).filter(e => e && e.date);
+    } else if (data && typeof data === 'object') {
+      srpEvents = Object.entries(data).map(([k, e]) => ({ ...e, _id: k, _source: 'srp' })).filter(e => e && e.date);
+    } else {
+      srpEvents = [];
+    }
+    buildSidebar();
+    if (currentCategory === 'calendar') renderCalendarCategory();
+  }, err => console.error('SRP events listener error:', err));
+  // Listen to VPS events
+  rtdb.ref('vps_events').on('value', snap => {
+    const data = snap.val();
+    if (data && typeof data === 'object') {
+      vpsEvents = Object.entries(data).map(([k, e]) => ({ ...e, _id: k, _source: 'vps' })).filter(e => e && e.date);
+    } else {
+      vpsEvents = [];
+    }
+    buildSidebar();
+    if (currentCategory === 'calendar') renderCalendarCategory();
+  }, err => console.error('VPS events listener error:', err));
+}
+
+function renderCalendarCategory() {
+  startCalendarListeners();
+  const cat = categories.find(c => c.id === 'calendar');
+  const main = document.getElementById('mainContent');
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const dowNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+  // Build calendar grid
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const daysInPrev = new Date(calYear, calMonth, 0).getDate();
+  const today = new Date();
+  const todayStr = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+
+  let cellsHTML = dowNames.map(d => `<div class="cal-dow">${d}</div>`).join('');
+
+  // Previous month's trailing days
+  for (let i = firstDay - 1; i >= 0; i--) {
+    const day = daysInPrev - i;
+    cellsHTML += `<div class="cal-cell outside"><div class="cal-day-num">${day}</div></div>`;
+  }
+
+  // Current month's days
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = calYear + '-' + String(calMonth+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+    const isToday = dateStr === todayStr;
+    const dayEvtsSRP = getEventsForDate(dateStr, srpEvents);
+    const dayEvtsVPS = getEventsForDate(dateStr, vpsEvents);
+    const hasSRP = dayEvtsSRP.length > 0;
+    const hasVPS = dayEvtsVPS.length > 0;
+
+    let cellClass = 'cal-cell';
+    if (isToday) cellClass += ' today';
+    if (hasSRP && hasVPS) cellClass += ' has-both';
+    else if (hasSRP) cellClass += ' has-srp';
+    else if (hasVPS) cellClass += ' has-vps';
+
+    // Show up to 3 events, then "+X more"
+    const allEvts = [...dayEvtsVPS, ...dayEvtsSRP];
+    let evtsHTML = '';
+    const maxShow = 2;
+    allEvts.slice(0, maxShow).forEach(evt => {
+      const cls = evt._source === 'srp' ? 'srp' : 'vps';
+      const label = evt.name || evt.title || 'Event';
+      evtsHTML += `<div class="cal-event ${cls}" onclick="event.stopPropagation();showCalEventDetail('${evt._source}','${evt._id}')" title="${label}">${label}</div>`;
+    });
+    if (allEvts.length > maxShow) {
+      evtsHTML += `<div class="cal-event-more" onclick="event.stopPropagation();showDayEventsModal('${dateStr}')">+${allEvts.length - maxShow} more</div>`;
+    }
+
+    cellsHTML += `<div class="${cellClass}" onclick="openNewCalEventOnDate('${dateStr}')">
+      <div class="cal-day-num">${d}</div>
+      ${evtsHTML}
+    </div>`;
+  }
+
+  // Fill remaining cells to complete last row
+  const totalCells = firstDay + daysInMonth;
+  const remaining = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+  for (let i = 1; i <= remaining; i++) {
+    cellsHTML += `<div class="cal-cell outside"><div class="cal-day-num">${i}</div></div>`;
+  }
+
+  const totalEvents = srpEvents.length + vpsEvents.length;
+
+  main.innerHTML = `
+    <div class="category-header">
+      <div class="category-header-left">
+        <div class="category-icon-lg" style="background:${cat.color}15; color:${cat.color}">
+          <i class="fas ${cat.icon}"></i>
+        </div>
+        <div>
+          <h2>Calendar</h2>
+          <span class="subtitle">${totalEvents} event${totalEvents !== 1 ? 's' : ''} — SRP rentals & VPS builds</span>
+        </div>
+      </div>
+      <button class="btn-add-sop" style="border-color:var(--green);color:var(--green);" onclick="openNewCalEvent()">
+        <i class="fas fa-plus"></i> Add Build / Delivery
+      </button>
+    </div>
+    <div class="cal-legend">
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--green)"></div> VPS Builds & Deliveries</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#F97316"></div> Sim Rental Pros Events</div>
+    </div>
+    <div class="cal-controls">
+      <div class="cal-nav">
+        <button class="cal-nav-btn" onclick="calPrev()"><i class="fas fa-chevron-left"></i></button>
+        <div class="cal-month-label">${monthNames[calMonth]} ${calYear}</div>
+        <button class="cal-nav-btn" onclick="calNext()"><i class="fas fa-chevron-right"></i></button>
+      </div>
+      <button class="cal-today-btn" onclick="calToday()">Today</button>
+    </div>
+    <div class="cal-grid">${cellsHTML}</div>
+  `;
+}
+
+function getEventsForDate(dateStr, events) {
+  return events.filter(e => {
+    if (!e.date) return false;
+    const start = e.date;
+    const end = e.endDate || e.date;
+    return dateStr >= start && dateStr <= end;
+  });
+}
+
+function calPrev() { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendarCategory(); }
+function calNext() { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendarCategory(); }
+function calToday() { const t = new Date(); calYear = t.getFullYear(); calMonth = t.getMonth(); renderCalendarCategory(); }
+
+// Show event detail
+function showCalEventDetail(source, id) {
+  const pool = source === 'srp' ? srpEvents : vpsEvents;
+  const evt = pool.find(e => e._id === id);
+  if (!evt) return;
+  viewingCalEvent = evt;
+
+  document.getElementById('calDetailTitle').textContent = evt.name || evt.title || 'Event';
+  const sourceTag = source === 'srp'
+    ? '<span class="cal-detail-source-tag srp">Sim Rental Pros</span>'
+    : '<span class="cal-detail-source-tag vps">VPS Build / Delivery</span>';
+
+  let bodyHTML = `<div class="cal-detail-row"><div class="cal-detail-label">Source</div><div class="cal-detail-value">${sourceTag}</div></div>`;
+
+  if (evt.date) {
+    let dateDisplay = formatDate(evt.date);
+    if (evt.endDate && evt.endDate !== evt.date) dateDisplay += ' — ' + formatDate(evt.endDate);
+    bodyHTML += `<div class="cal-detail-row"><div class="cal-detail-label">Date</div><div class="cal-detail-value">${dateDisplay}</div></div>`;
+  }
+  if (evt.startTime || evt.endTime) {
+    const timeStr = [evt.startTime, evt.endTime].filter(Boolean).join(' — ');
+    bodyHTML += `<div class="cal-detail-row"><div class="cal-detail-label">Time</div><div class="cal-detail-value">${timeStr}</div></div>`;
+  }
+  if (evt.status) {
+    bodyHTML += `<div class="cal-detail-row"><div class="cal-detail-label">Status</div><div class="cal-detail-value" style="text-transform:capitalize">${evt.status.replace('-',' ')}</div></div>`;
+  }
+  if (evt.type) {
+    bodyHTML += `<div class="cal-detail-row"><div class="cal-detail-label">Type</div><div class="cal-detail-value" style="text-transform:capitalize">${evt.type}</div></div>`;
+  }
+  if (evt.simulators) {
+    bodyHTML += `<div class="cal-detail-row"><div class="cal-detail-label">Simulators</div><div class="cal-detail-value">${evt.simulators}</div></div>`;
+  }
+  if (evt.chassisType) {
+    bodyHTML += `<div class="cal-detail-row"><div class="cal-detail-label">Chassis</div><div class="cal-detail-value">${evt.chassisType}</div></div>`;
+  }
+  if (evt.loadInDate) {
+    const loadIn = formatDate(evt.loadInDate) + (evt.loadInTime ? ' at ' + evt.loadInTime : '');
+    bodyHTML += `<div class="cal-detail-row"><div class="cal-detail-label">Load In</div><div class="cal-detail-value">${loadIn}</div></div>`;
+  }
+  if (evt.loadOutDate) {
+    const loadOut = formatDate(evt.loadOutDate) + (evt.loadOutTime ? ' at ' + evt.loadOutTime : '');
+    bodyHTML += `<div class="cal-detail-row"><div class="cal-detail-label">Load Out</div><div class="cal-detail-value">${loadOut}</div></div>`;
+  }
+  if (evt.description) {
+    bodyHTML += `<div class="cal-detail-row"><div class="cal-detail-label">Details</div><div class="cal-detail-value">${evt.description}</div></div>`;
+  }
+
+  document.getElementById('calDetailBody').innerHTML = bodyHTML;
+
+  // Only show delete button for VPS events
+  const deleteBtn = document.getElementById('calDeleteBtn');
+  deleteBtn.style.display = source === 'vps' ? 'inline-flex' : 'none';
+
+  document.getElementById('calDetailModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCalDetail() {
+  document.getElementById('calDetailModal').classList.remove('open');
+  document.body.style.overflow = '';
+  viewingCalEvent = null;
+}
+
+function showDayEventsModal(dateStr) {
+  const allEvts = [...getEventsForDate(dateStr, vpsEvents), ...getEventsForDate(dateStr, srpEvents)];
+  if (!allEvts.length) return;
+  // Show first event, or we could list all — for now show a summary
+  const d = formatDate(dateStr);
+  let bodyHTML = `<p style="color:var(--text-secondary);margin-bottom:16px;font-size:0.85rem">${d} — ${allEvts.length} event${allEvts.length !== 1 ? 's' : ''}</p>`;
+  allEvts.forEach(evt => {
+    const cls = evt._source === 'srp' ? 'srp' : 'vps';
+    const tag = evt._source === 'srp' ? 'SRP' : 'VPS';
+    bodyHTML += `<div class="sop-card" onclick="closeCalDetail();showCalEventDetail('${evt._source}','${evt._id}')" style="margin-bottom:6px;">
+      <div class="sop-card-icon" style="background:${cls==='vps'?'var(--green-dim)':'rgba(249,115,22,0.12)'};color:${cls==='vps'?'var(--green)':'#F97316'}">
+        <i class="fas ${cls==='vps'?'fa-wrench':'fa-gamepad'}"></i>
+      </div>
+      <div class="sop-card-body">
+        <div class="sop-card-title">${evt.name || 'Event'}</div>
+        <div class="sop-card-desc">${evt.startTime||''} ${evt.description||''}</div>
+      </div>
+      <span class="cal-detail-source-tag ${cls}">${tag}</span>
+    </div>`;
+  });
+  document.getElementById('calDetailTitle').textContent = 'Events on ' + d;
+  document.getElementById('calDetailBody').innerHTML = bodyHTML;
+  document.getElementById('calDeleteBtn').style.display = 'none';
+  document.getElementById('calDetailModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+// Add / Edit VPS events
+function openNewCalEvent() {
+  editingCalEventId = null;
+  document.getElementById('calEventModalTitle').textContent = 'Add Build / Delivery';
+  document.getElementById('calEvtName').value = '';
+  document.getElementById('calEvtType').value = 'build';
+  document.getElementById('calEvtDate').value = '';
+  document.getElementById('calEvtEndDate').value = '';
+  document.getElementById('calEvtStartTime').value = '';
+  document.getElementById('calEvtEndTime').value = '';
+  document.getElementById('calEvtDesc').value = '';
+  document.getElementById('calEvtStatus').value = 'scheduled';
+  document.getElementById('calEventModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function openNewCalEventOnDate(dateStr) {
+  openNewCalEvent();
+  document.getElementById('calEvtDate').value = dateStr;
+}
+
+function closeCalEventModal() {
+  document.getElementById('calEventModal').classList.remove('open');
+  document.body.style.overflow = '';
+  editingCalEventId = null;
+}
+
+function saveCalEvent() {
+  const name = document.getElementById('calEvtName').value.trim();
+  const date = document.getElementById('calEvtDate').value;
+  if (!name) { alert('Please enter an event name.'); return; }
+  if (!date) { alert('Please select a date.'); return; }
+
+  const eventData = {
+    name,
+    type: document.getElementById('calEvtType').value,
+    date,
+    endDate: document.getElementById('calEvtEndDate').value || date,
+    startTime: document.getElementById('calEvtStartTime').value,
+    endTime: document.getElementById('calEvtEndTime').value,
+    description: document.getElementById('calEvtDesc').value.trim(),
+    status: document.getElementById('calEvtStatus').value,
+    createdAt: new Date().toISOString(),
+    source: 'vps'
+  };
+
+  if (editingCalEventId) {
+    rtdb.ref('vps_events/' + editingCalEventId).set(eventData)
+      .then(() => { closeCalEventModal(); })
+      .catch(err => { console.error(err); alert('Failed to save event.'); });
+  } else {
+    rtdb.ref('vps_events').push(eventData)
+      .then(() => { closeCalEventModal(); })
+      .catch(err => { console.error(err); alert('Failed to save event.'); });
+  }
+}
+
+function deleteVPSEvent() {
+  if (!viewingCalEvent || viewingCalEvent._source !== 'vps') return;
+  if (!confirm('Delete this event? This cannot be undone.')) return;
+  rtdb.ref('vps_events/' + viewingCalEvent._id).remove()
+    .then(() => { closeCalDetail(); })
+    .catch(err => { console.error(err); alert('Failed to delete event.'); });
+}
+
 // ── Mobile Navigation ──
 function toggleMobileNav() {
   const sidebar = document.getElementById('sidebar');
@@ -2395,15 +3052,105 @@ buildSidebar = function() {
   patchNavForMobile();
 };
 
+// ── Shortcuts Panel ──
+function toggleShortcutsPanel() {
+  const panel = document.getElementById('shortcutsOverlay');
+  if (panel.classList.contains('open')) closeShortcutsPanel();
+  else { panel.classList.add('open'); document.body.style.overflow = 'hidden'; }
+}
+function closeShortcutsPanel() {
+  document.getElementById('shortcutsOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
 // ── Keyboard shortcuts ──
+let gKeyPending = false;
+let gKeyTimer = null;
+
+function isInputFocused() {
+  const tag = document.activeElement.tagName;
+  return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+}
+
+function isAnyModalOpen() {
+  return document.querySelector('.modal-overlay.open, .cal-detail-overlay.open, .shortcuts-overlay.open') !== null;
+}
+
+function getCategoryIds() {
+  return ['dashboard', ...categories.map(c => c.id)];
+}
+
+function navigateCategory(direction) {
+  const ids = getCategoryIds();
+  const idx = ids.indexOf(currentCategory);
+  const next = idx + direction;
+  if (next < 0 || next >= ids.length) return;
+  const nextId = ids[next];
+  if (nextId === 'dashboard') showDashboard();
+  else showCategory(nextId);
+}
+
 document.addEventListener('keydown', e => {
+  // Escape always works
   if (e.key === 'Escape') {
+    closeShortcutsPanel();
     closeModal(); closeAddModal(); closeUploadModal(); closeAssetViewModal();
-    closeMobileNav();
+    closeCalDetail(); closeCalEventModal(); closeMobileNav();
+    gKeyPending = false;
+    return;
   }
-  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+
+  // Ctrl/Cmd combos work everywhere
+  if (e.ctrlKey || e.metaKey) {
+    if (e.key === 'k') {
+      e.preventDefault();
+      document.getElementById('searchInput').focus();
+      return;
+    }
+    if (e.key === 'q') {
+      e.preventDefault();
+      logout();
+      return;
+    }
+    return;
+  }
+
+  // All other shortcuts only when not typing and no modal open
+  if (isInputFocused() || isAnyModalOpen()) return;
+
+  // "G then X" navigation combo
+  if (gKeyPending) {
+    gKeyPending = false;
+    clearTimeout(gKeyTimer);
     e.preventDefault();
-    document.getElementById('searchInput').focus();
+    const key = e.key.toLowerCase();
+    if (key === 'd') showDashboard();
+    else if (key === 'c') showCategory('calendar');
+    else if (key === 'w') showCategory('websites');
+    else if (key === 'a') showCategory('assets');
+    return;
+  }
+
+  const key = e.key.toLowerCase();
+
+  if (key === 'g') {
+    gKeyPending = true;
+    gKeyTimer = setTimeout(() => { gKeyPending = false; }, 800);
+    return;
+  }
+
+  if (key === '?') { toggleShortcutsPanel(); return; }
+  if (key === 'j') { navigateCategory(1); return; }
+  if (key === 'k') { navigateCategory(-1); return; }
+  if (key === 'n') { openAddModal(); return; }
+  if (key === 'u' && currentCategory === 'assets') { openUploadModal(); return; }
+  if (key === 'e') { if (currentCategory === 'calendar') openNewCalEvent(); else showCategory('calendar'); return; }
+
+  // Calendar-specific
+  if (currentCategory === 'calendar') {
+    if (e.key === 'ArrowLeft') { calPrev(); return; }
+    if (e.key === 'ArrowRight') { calNext(); return; }
+    if (key === 't') { calToday(); return; }
   }
 });
 
