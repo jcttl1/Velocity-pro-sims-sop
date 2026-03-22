@@ -390,6 +390,212 @@
     }
     .btn-save:hover { background: var(--green-light); }
 
+    /* ── Marketing Assets ── */
+    .assets-filter-row {
+      display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .assets-filter-btn {
+      padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px;
+      background: none; color: var(--text-secondary); font-size: 0.8rem;
+      font-family: 'Inter', sans-serif; cursor: pointer; font-weight: 500;
+      transition: all var(--transition);
+    }
+    .assets-filter-btn:hover { border-color: var(--border-light); color: var(--text-primary); }
+    .assets-filter-btn.active { border-color: #E879F9; color: #E879F9; background: rgba(232,121,249,0.1); }
+
+    .assets-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .asset-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      cursor: pointer; transition: all var(--transition);
+    }
+    .asset-card:hover { border-color: var(--border-light); transform: translateY(-3px); box-shadow: var(--shadow); }
+    .asset-card-img {
+      width: 100%; height: 140px; object-fit: contain;
+      background: repeating-conic-gradient(#1a1a20 0% 25%, #222230 0% 50%) 50% / 16px 16px;
+      padding: 16px;
+    }
+    .asset-card-body { padding: 12px 14px; }
+    .asset-card-name { font-weight: 600; font-size: 0.85rem; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .asset-card-meta { display: flex; align-items: center; justify-content: space-between; }
+    .asset-card-tag {
+      font-size: 0.68rem; font-weight: 600; padding: 2px 8px;
+      border-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px;
+      background: rgba(232,121,249,0.12); color: #E879F9;
+    }
+    .asset-card-size { font-size: 0.72rem; color: var(--text-muted); }
+
+    .asset-dropzone {
+      border: 2px dashed var(--border); border-radius: var(--radius);
+      padding: 32px; text-align: center; cursor: pointer;
+      transition: all var(--transition); display: flex;
+      flex-direction: column; align-items: center; gap: 8px;
+      color: var(--text-muted);
+    }
+    .asset-dropzone:hover { border-color: #E879F9; color: #E879F9; }
+    .asset-dropzone i { font-size: 2rem; }
+    .asset-dropzone span { font-size: 0.9rem; }
+    .dropzone-sub { font-size: 0.75rem !important; color: var(--text-muted) !important; }
+    .asset-dropzone.drag-over { border-color: #E879F9; background: rgba(232,121,249,0.05); }
+
+    .asset-preview-wrap {
+      position: relative; margin-top: 12px; display: inline-block;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .asset-preview-img { max-width: 100%; max-height: 180px; display: block; }
+    .asset-preview-remove {
+      position: absolute; top: 6px; right: 6px;
+      width: 24px; height: 24px; border-radius: 50%;
+      background: rgba(0,0,0,0.7); border: none; color: #fff;
+      cursor: pointer; display: flex; align-items: center;
+      justify-content: center; font-size: 0.7rem;
+    }
+
+    .assets-empty {
+      text-align: center; padding: 60px 20px;
+      color: var(--text-muted);
+    }
+    .assets-empty i { font-size: 3rem; margin-bottom: 16px; display: block; color: var(--border-light); }
+    .assets-empty p { font-size: 0.95rem; margin-bottom: 8px; }
+    .assets-empty span { font-size: 0.82rem; }
+
+    /* ── Website Hub ── */
+    .web-group { margin-bottom: 28px; }
+    .web-group-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 12px; padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .web-group-icon {
+      width: 28px; height: 28px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem;
+    }
+    .web-group-title {
+      font-family: 'Rajdhani', sans-serif; font-size: 1rem;
+      font-weight: 700; color: var(--text-primary);
+    }
+    .web-group-count {
+      font-size: 0.7rem; color: var(--text-muted); font-weight: 500;
+      margin-left: auto;
+    }
+    .web-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 10px;
+    }
+    .web-tile {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px; background: var(--bg-card);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      text-decoration: none; color: inherit;
+      transition: all var(--transition); cursor: pointer;
+    }
+    .web-tile:hover {
+      border-color: var(--border-light); background: var(--bg-card-hover);
+      transform: translateY(-2px); box-shadow: var(--shadow);
+    }
+    .web-tile-icon {
+      width: 40px; height: 40px; border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .web-tile-body { flex: 1; min-width: 0; }
+    .web-tile-name { font-weight: 600; font-size: 0.9rem; color: var(--text-primary); margin-bottom: 1px; }
+    .web-tile-desc { font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .web-tile-arrow {
+      color: var(--text-muted); font-size: 0.8rem; flex-shrink: 0;
+      transition: all var(--transition); opacity: 0;
+    }
+    .web-tile:hover .web-tile-arrow { opacity: 1; color: var(--green); transform: translateX(3px); }
+
+    @media (max-width: 768px) { .web-grid { grid-template-columns: 1fr; } }
+
+    /* ── Checklist ── */
+    .checklist-progress {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 16px; padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .checklist-progress-bar {
+      flex: 1; height: 8px; background: var(--bg-input);
+      border-radius: 4px; overflow: hidden;
+    }
+    .checklist-progress-fill {
+      height: 100%; background: var(--green);
+      border-radius: 4px; transition: width 0.4s ease;
+    }
+    .checklist-progress-text {
+      font-size: 0.8rem; color: var(--text-secondary); white-space: nowrap; font-weight: 500;
+    }
+    .checklist-reset-btn {
+      background: none; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      color: var(--text-muted); font-size: 0.75rem; padding: 4px 10px;
+      cursor: pointer; font-family: 'Inter', sans-serif; white-space: nowrap;
+      transition: all var(--transition);
+    }
+    .checklist-reset-btn:hover { border-color: var(--warning); color: var(--warning); }
+
+    .checklist-items { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+
+    .checklist-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 14px; background: var(--bg-input);
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      cursor: pointer; transition: all var(--transition);
+    }
+    .checklist-item:hover { border-color: var(--border-light); background: var(--bg-card-hover); }
+    .checklist-item.checked { opacity: 0.6; }
+    .checklist-item.checked .checklist-text { text-decoration: line-through; color: var(--text-muted); }
+
+    .checklist-item input[type="checkbox"] { display: none; }
+
+    .checklist-check {
+      width: 24px; height: 24px; border-radius: 6px;
+      border: 2px solid var(--border-light);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: all var(--transition);
+      color: transparent; font-size: 0.7rem;
+    }
+    .checklist-item.checked .checklist-check {
+      background: var(--green); border-color: var(--green); color: #000;
+    }
+
+    .checklist-text { flex: 1; font-size: 0.9rem; color: var(--text-primary); transition: all var(--transition); }
+
+    .checklist-delete-btn {
+      width: 28px; height: 28px; border: none; border-radius: var(--radius-sm);
+      background: transparent; color: var(--text-muted); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; opacity: 0; transition: all var(--transition); flex-shrink: 0;
+    }
+    .checklist-item:hover .checklist-delete-btn { opacity: 1; }
+    .checklist-delete-btn:hover { background: rgba(239,68,68,0.15); color: var(--danger); }
+
+    .checklist-add {
+      display: flex; gap: 8px;
+    }
+    .checklist-add input {
+      flex: 1; padding: 10px 14px;
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text-primary);
+      font-size: 0.85rem; font-family: 'Inter', sans-serif;
+      outline: none; transition: border-color var(--transition);
+    }
+    .checklist-add input:focus { border-color: var(--green); }
+    .checklist-add input::placeholder { color: var(--text-muted); }
+    .checklist-add button {
+      padding: 10px 16px; border: 1px solid var(--green);
+      border-radius: var(--radius-sm); background: transparent;
+      color: var(--green); font-size: 0.82rem; font-weight: 600;
+      font-family: 'Inter', sans-serif; cursor: pointer;
+      white-space: nowrap; transition: all var(--transition);
+    }
+    .checklist-add button:hover { background: var(--green); color: #000; }
+
     /* ── Responsive ── */
     @media (max-width: 1024px) {
       .stats-row { grid-template-columns: repeat(2, 1fr); }
@@ -489,6 +695,75 @@
   </div>
 </div>
 
+<!-- ═══ Upload Asset Modal ═══ -->
+<div class="modal-overlay" id="uploadModal" onclick="if(event.target===this)closeUploadModal()">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-header">
+      <h3>Upload Asset</h3>
+      <button class="modal-close" onclick="closeUploadModal()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Asset Name</label>
+        <input type="text" id="assetName" placeholder="e.g. Velocity Pro Sims — Primary Logo">
+      </div>
+      <div class="form-group">
+        <label>Category Tag</label>
+        <select id="assetTag">
+          <option value="logo">Logo</option>
+          <option value="icon">Icon</option>
+          <option value="banner">Banner</option>
+          <option value="social">Social Media</option>
+          <option value="print">Print</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>File</label>
+        <div class="asset-dropzone" id="assetDropzone" onclick="document.getElementById('assetFileInput').click()">
+          <i class="fas fa-cloud-arrow-up"></i>
+          <span>Click or drag & drop an image</span>
+          <span class="dropzone-sub">PNG, JPG, SVG, or WEBP — max 2 MB</span>
+        </div>
+        <input type="file" id="assetFileInput" accept="image/*,.svg" style="display:none" onchange="handleAssetFile(this)">
+        <div class="asset-preview-wrap" id="assetPreviewWrap" style="display:none">
+          <img id="assetPreviewImg" class="asset-preview-img">
+          <button class="asset-preview-remove" onclick="clearAssetPreview()"><i class="fas fa-xmark"></i></button>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-cancel" onclick="closeUploadModal()">Cancel</button>
+        <button class="btn-save" onclick="saveAsset()"><i class="fas fa-upload"></i> Upload</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Asset Viewer Modal ═══ -->
+<div class="modal-overlay" id="assetViewModal" onclick="if(event.target===this)closeAssetViewModal()">
+  <div class="modal" style="max-width:700px;">
+    <div class="modal-header">
+      <h3 id="assetViewTitle">Asset</h3>
+      <button class="modal-close" onclick="closeAssetViewModal()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" style="text-align:center;">
+      <img id="assetViewImg" style="max-width:100%;max-height:50vh;border-radius:8px;margin-bottom:20px;">
+      <div class="meta-row" id="assetViewMeta"></div>
+      <div class="form-actions" style="justify-content:center;margin-top:16px;">
+        <a id="assetDownloadBtn" class="btn-save" download style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <button class="btn-cancel" onclick="copyAssetToClipboard()" id="assetCopyBtn">
+          <i class="fas fa-copy"></i> Copy Image
+        </button>
+        <button class="btn-cancel" style="border-color:var(--danger);color:var(--danger);" onclick="deleteAssetConfirm()">
+          <i class="fas fa-trash"></i> Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ Add SOP Modal ═══ -->
 <div class="modal-overlay" id="addModal" onclick="if(event.target===this)closeAddModal()">
   <div class="modal" style="max-width:600px;">
@@ -541,8 +816,10 @@ const categories = [
   { id: 'accounting', name: 'Accounting', icon: 'fa-calculator', color: '#10B981' },
   { id: 'customer', name: 'Customer Service', icon: 'fa-headset', color: '#8B5CF6' },
   { id: 'equipment', name: 'Equipment & Simulators', icon: 'fa-desktop', color: '#5CBF2A' },
-  { id: 'events', name: 'Events & Leagues', icon: 'fa-trophy', color: '#EC4899' },
+  { id: 'events', name: 'Events', icon: 'fa-trophy', color: '#EC4899' },
   { id: 'facility', name: 'Facility Management', icon: 'fa-building', color: '#F59E0B' },
+  { id: 'websites', name: 'Key Websites', icon: 'fa-link', color: '#6366F1' },
+  { id: 'assets', name: 'Marketing Assets', icon: 'fa-palette', color: '#E879F9' },
   { id: 'operations', name: 'Race Operations', icon: 'fa-flag-checkered', color: '#3B82F6' },
   { id: 'safety', name: 'Safety & Emergency', icon: 'fa-shield-halved', color: '#EF4444' },
   { id: 'staff', name: 'Staff & Training', icon: 'fa-users', color: '#F97316' },
@@ -1078,6 +1355,143 @@ const defaultSOPs = [
 <li>Keep the customer order number (VPS...) consistent between Shopify and the PO</li>
 <li>Do not submit the PO until all details have been verified</li>
 </ul>`
+  },
+  {
+    id: 25, category: 'accounting', title: 'Updating Tracking Information on Shopify',
+    description: 'Steps to provide tracking numbers to customers and mark orders as fulfilled in Shopify.',
+    priority: 'critical', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    content: `<h4>Order Processing</h4><p>Follow these steps to add tracking information and notify the customer once their order has shipped.</p>
+<h4>Steps to Provide Tracking Number to the Customer</h4><ol>
+<li>Go to <strong>Orders</strong> and find the order</li>
+<li>Scroll all the way down to <strong>Mark as Fulfilled</strong> and click it</li>
+<li>Add the tracking number — this will populate the shipping carrier automatically</li>
+<li>Make sure that <strong>"Send notification to customer"</strong> is checked off</li>
+<li>If there are multiple tracking numbers, click <strong>Add Another Tracking Number</strong></li>
+<li>If there are multiple items and shipments, you must click the specific item that shipped</li>
+<li>Once the tracking number is entered, click <strong>Mark as Fulfilled</strong> again to confirm</li>
+</ol>
+<h4>Important Notes</h4><ul>
+<li>Always double-check that the tracking number is correct before marking as fulfilled</li>
+<li>Verify the shipping carrier auto-populated correctly (UPS, FedEx, USPS, etc.)</li>
+<li>For split shipments, repeat this process for each shipment as it goes out</li>
+<li>The customer will receive an email notification with tracking details automatically</li>
+</ul>`
+  },
+  {
+    id: 26, category: 'events', title: 'Pre-Event Checklist',
+    description: 'Interactive checklist to complete before every event to ensure everything is set up and ready.',
+    priority: 'critical', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isChecklist: true,
+    checklistItems: [
+      { text: 'Confirm event date, time, and guest count with organizer', checked: false },
+      { text: 'Verify all assigned rigs are operational (run Pre-Session check)', checked: false },
+      { text: 'Load correct track and car combo on all PCs', checked: false },
+      { text: 'Set up server with correct event settings', checked: false },
+      { text: 'Test all peripherals (wheels, pedals, headsets)', checked: false },
+      { text: 'Prepare welcome signage and event schedule display', checked: false },
+      { text: 'Stock front desk with waivers, name tags, and event materials', checked: false },
+      { text: 'Coordinate catering or beverage orders if applicable', checked: false },
+      { text: 'Assign dedicated event host from staff', checked: false },
+      { text: 'Test A/V equipment (PA system, lobby screens, leaderboard)', checked: false },
+      { text: 'Confirm backup rig is available in case of technical issues', checked: false },
+      { text: 'Brief all on-duty staff on event schedule and responsibilities', checked: false },
+    ],
+    content: `<h4>Pre-Event Checklist</h4><p>Use the interactive checklist below to track your preparation before every event. Check off each item as you complete it. Progress is saved automatically.</p>`
+  },
+  {
+    id: 27, category: 'websites', title: 'Velocity Pro Sims', description: 'Main business website and storefront',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isWebsite: true, url: 'https://www.velocityprosims.com', webGroup: 'our-sites', webIcon: 'fa-store', content: ''
+  },
+  {
+    id: 28, category: 'websites', title: 'Sim Rental Pros', description: 'Simulator rental service platform',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isWebsite: true, url: 'https://www.simrentalpros.com', webGroup: 'our-sites', webIcon: 'fa-hand-holding-dollar', content: ''
+  },
+  {
+    id: 34, category: 'websites', title: 'Shopify', description: 'E-commerce and order management',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isWebsite: true, url: 'https://www.shopify.com', webGroup: 'business-tools', webIcon: 'fa-cart-shopping', content: ''
+  },
+  {
+    id: 31, category: 'websites', title: 'Quotient App', description: 'Invoicing and quoting tool',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isWebsite: true, url: 'https://www.quotientapp.com', webGroup: 'business-tools', webIcon: 'fa-file-invoice-dollar', content: ''
+  },
+  {
+    id: 35, category: 'websites', title: 'Squarespace', description: 'Website building and hosting',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isWebsite: true, url: 'https://www.squarespace.com', webGroup: 'business-tools', webIcon: 'fa-globe', content: ''
+  },
+  {
+    id: 32, category: 'websites', title: 'UPS', description: 'Shipping, tracking, and logistics',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isWebsite: true, url: 'https://www.ups.com', webGroup: 'business-tools', webIcon: 'fa-truck-fast', content: ''
+  },
+  {
+    id: 36, category: 'websites', title: 'Fanatec', description: 'Wheels, pedals, and accessories (Corsair)',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isWebsite: true, url: 'https://www.fanatec.com', webGroup: 'hardware-vendors', webIcon: 'fa-steering-wheel', content: ''
+  },
+  {
+    id: 37, category: 'websites', title: 'Simagic', description: 'Direct-drive wheel bases and hardware',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isWebsite: true, url: 'https://www.simagic.com', webGroup: 'hardware-vendors', webIcon: 'fa-circle-dot', content: ''
+  },
+  {
+    id: 38, category: 'websites', title: 'Moza Racing', description: 'Direct-drive wheels and peripherals',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isWebsite: true, url: 'https://www.mozaracing.com', webGroup: 'hardware-vendors', webIcon: 'fa-gauge-high', content: ''
+  },
+  {
+    id: 39, category: 'websites', title: 'Simucube', description: 'High-end force feedback systems',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isWebsite: true, url: 'https://www.simucube.com', webGroup: 'hardware-vendors', webIcon: 'fa-gears', content: ''
+  },
+  {
+    id: 29, category: 'websites', title: 'Advanced Sim Racing', description: 'Sim rigs and equipment',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isWebsite: true, url: 'https://www.advancedsimracing.com', webGroup: 'hardware-vendors', webIcon: 'fa-chair', content: ''
+  },
+  {
+    id: 30, category: 'websites', title: 'Apex Sim Racing', description: 'Sim racing rigs and products',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isWebsite: true, url: 'https://www.apexsimracing.com', webGroup: 'hardware-vendors', webIcon: 'fa-medal', content: ''
+  },
+  {
+    id: 33, category: 'websites', title: 'Extreme Sim Racing', description: 'Sim rigs and cockpits',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isWebsite: true, url: 'https://www.extremesimracing.com', webGroup: 'hardware-vendors', webIcon: 'fa-bolt', content: ''
+  },
+  {
+    id: 44, category: 'websites', title: 'iRacing', description: 'Online sim racing competition',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isWebsite: true, url: 'https://www.iracing.com', webGroup: 'sim-platforms', webIcon: 'fa-flag-checkered', content: ''
+  },
+  {
+    id: 45, category: 'websites', title: 'Steam', description: 'Game distribution and storefront',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isWebsite: true, url: 'https://store.steampowered.com', webGroup: 'sim-platforms', webIcon: 'fa-gamepad', content: ''
+  },
+  {
+    id: 41, category: 'websites', title: 'SimHub', description: 'Dashboards, telemetry, and overlays',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isWebsite: true, url: 'https://www.simhubdash.com', webGroup: 'software', webIcon: 'fa-tachograph-digital', content: ''
+  },
+  {
+    id: 42, category: 'websites', title: 'CrewChief', description: 'Virtual race engineer and spotter',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isWebsite: true, url: 'https://thecrewchief.org', webGroup: 'software', webIcon: 'fa-headset', content: ''
+  },
+  {
+    id: 43, category: 'websites', title: 'RustDesk', description: 'Remote desktop access',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isWebsite: true, url: 'https://rustdesk.com', webGroup: 'it-tools', webIcon: 'fa-display', content: ''
+  },
+  {
+    id: 40, category: 'websites', title: 'MAS/Graves', description: 'Windows activation scripts',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
+    isWebsite: true, url: 'https://massgrave.dev', webGroup: 'it-tools', webIcon: 'fa-windows', content: ''
   }
 ];
 
@@ -1088,8 +1502,18 @@ let currentCategory = 'dashboard';
 // ── Init ──
 function init() {
   const stored = localStorage.getItem(STORAGE_KEY);
-  sopData = stored ? JSON.parse(stored) : [...defaultSOPs];
-  if (!stored) saveData();
+  if (stored) {
+    sopData = JSON.parse(stored);
+    // Merge in any new default SOPs that don't exist yet
+    const existingIds = new Set(sopData.map(s => s.id));
+    defaultSOPs.forEach(def => {
+      if (!existingIds.has(def.id)) sopData.push(def);
+    });
+    saveData();
+  } else {
+    sopData = [...defaultSOPs];
+    saveData();
+  }
 
   if (sessionStorage.getItem(AUTH_KEY) === 'true') {
     showApp();
@@ -1236,7 +1660,71 @@ function showCategory(catId) {
   renderCategory(catId);
 }
 
+// ── Website Groups Config ──
+const webGroups = [
+  { id: 'our-sites', name: 'Our Websites', icon: 'fa-store', color: '#5CBF2A' },
+  { id: 'business-tools', name: 'Business & Operations', icon: 'fa-briefcase', color: '#3B82F6' },
+  { id: 'hardware-vendors', name: 'Hardware Vendors', icon: 'fa-microchip', color: '#F59E0B' },
+  { id: 'sim-platforms', name: 'Sim Platforms & Games', icon: 'fa-gamepad', color: '#EC4899' },
+  { id: 'software', name: 'Sim Software & Tools', icon: 'fa-puzzle-piece', color: '#8B5CF6' },
+  { id: 'it-tools', name: 'IT & Utilities', icon: 'fa-screwdriver-wrench', color: '#06B6D4' },
+];
+
+function renderWebsitesCategory() {
+  const cat = categories.find(c => c.id === 'websites');
+  const sites = sopData.filter(s => s.category === 'websites' && s.isWebsite);
+  const main = document.getElementById('mainContent');
+
+  let groupsHTML = webGroups.map(group => {
+    const groupSites = sites.filter(s => s.webGroup === group.id);
+    if (!groupSites.length) return '';
+    return `
+      <div class="web-group">
+        <div class="web-group-header">
+          <div class="web-group-icon" style="background:${group.color}15; color:${group.color}">
+            <i class="fas ${group.icon}"></i>
+          </div>
+          <span class="web-group-title">${group.name}</span>
+          <span class="web-group-count">${groupSites.length} link${groupSites.length !== 1 ? 's' : ''}</span>
+        </div>
+        <div class="web-grid">
+          ${groupSites.map(site => `
+            <a class="web-tile" href="${site.url}" target="_blank" rel="noopener">
+              <div class="web-tile-icon" style="background:${group.color}15; color:${group.color}">
+                <i class="fas ${site.webIcon || 'fa-globe'}"></i>
+              </div>
+              <div class="web-tile-body">
+                <div class="web-tile-name">${site.title}</div>
+                <div class="web-tile-desc">${site.description}</div>
+              </div>
+              <i class="fas fa-arrow-right web-tile-arrow"></i>
+            </a>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  main.innerHTML = `
+    <div class="category-header">
+      <div class="category-header-left">
+        <div class="category-icon-lg" style="background:${cat.color}15; color:${cat.color}">
+          <i class="fas ${cat.icon}"></i>
+        </div>
+        <div>
+          <h2>${cat.name}</h2>
+          <span class="subtitle">${sites.length} link${sites.length !== 1 ? 's' : ''} across ${webGroups.filter(g => sites.some(s => s.webGroup === g.id)).length} groups</span>
+        </div>
+      </div>
+    </div>
+    ${groupsHTML}
+  `;
+}
+
 function renderCategory(catId) {
+  if (catId === 'websites') return renderWebsitesCategory();
+  if (catId === 'assets') return renderAssetsCategory();
+
   const cat = categories.find(c => c.id === catId);
   const sops = sopData.filter(s => s.category === catId);
   const main = document.getElementById('mainContent');
@@ -1264,6 +1752,22 @@ function renderCategory(catId) {
 
 function renderSOPCard(sop) {
   const cat = categories.find(c => c.id === sop.category);
+  if (sop.isWebsite) {
+    return `
+      <a class="sop-card website-card" href="${sop.url}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+        <div class="sop-card-icon" style="background:${cat.color}15; color:${cat.color}">
+          <i class="fas fa-globe"></i>
+        </div>
+        <div class="sop-card-body">
+          <div class="sop-card-title">${sop.title}</div>
+          <div class="sop-card-desc">${sop.url.replace('https://www.','')}</div>
+        </div>
+        <div class="sop-card-meta">
+          <span class="website-visit-btn"><i class="fas fa-external-link-alt"></i> Visit</span>
+        </div>
+      </a>
+    `;
+  }
   return `
     <div class="sop-card" onclick="openSOPModal(${sop.id})">
       <div class="sop-card-icon" style="background:${cat.color}15; color:${cat.color}">
@@ -1287,6 +1791,35 @@ function openSOPModal(id) {
   if (!sop) return;
   const cat = categories.find(c => c.id === sop.category);
   document.getElementById('modalTitle').textContent = sop.title;
+
+  let checklistHTML = '';
+  if (sop.isChecklist && sop.checklistItems) {
+    const completed = sop.checklistItems.filter(i => i.checked).length;
+    const total = sop.checklistItems.length;
+    const pct = total ? Math.round((completed / total) * 100) : 0;
+    checklistHTML = `
+      <div class="checklist-progress">
+        <div class="checklist-progress-bar"><div class="checklist-progress-fill" style="width:${pct}%"></div></div>
+        <span class="checklist-progress-text">${completed}/${total} completed (${pct}%)</span>
+        <button class="checklist-reset-btn" onclick="resetChecklist(${sop.id})" title="Reset all"><i class="fas fa-rotate-left"></i> Reset</button>
+      </div>
+      <div class="checklist-items" id="checklistItems">
+        ${sop.checklistItems.map((item, i) => `
+          <label class="checklist-item ${item.checked ? 'checked' : ''}" data-index="${i}">
+            <input type="checkbox" ${item.checked ? 'checked' : ''} onchange="toggleChecklistItem(${sop.id}, ${i}, this.checked)">
+            <span class="checklist-check"><i class="fas fa-check"></i></span>
+            <span class="checklist-text">${item.text}</span>
+            <button class="checklist-delete-btn" onclick="event.preventDefault();event.stopPropagation();deleteChecklistItem(${sop.id}, ${i})" title="Remove item"><i class="fas fa-xmark"></i></button>
+          </label>
+        `).join('')}
+      </div>
+      <div class="checklist-add">
+        <input type="text" id="newChecklistItem" placeholder="Add a new checklist item..." onkeydown="if(event.key==='Enter')addChecklistItem(${sop.id})">
+        <button onclick="addChecklistItem(${sop.id})"><i class="fas fa-plus"></i> Add</button>
+      </div>
+    `;
+  }
+
   document.getElementById('modalBody').innerHTML = `
     <div class="meta-row">
       <div class="meta-item"><span class="meta-label">Category</span><span class="meta-value" style="color:${cat.color}"><i class="fas ${cat.icon}"></i> ${cat.name}</span></div>
@@ -1295,9 +1828,48 @@ function openSOPModal(id) {
       <div class="meta-item"><span class="meta-label">Updated By</span><span class="meta-value">${sop.updatedBy}</span></div>
     </div>
     ${sop.content}
+    ${checklistHTML}
   `;
   document.getElementById('sopModal').classList.add('open');
   document.body.style.overflow = 'hidden';
+}
+
+// ── Checklist Functions ──
+function toggleChecklistItem(sopId, index, checked) {
+  const sop = sopData.find(s => s.id === sopId);
+  if (!sop || !sop.checklistItems) return;
+  sop.checklistItems[index].checked = checked;
+  saveData();
+  openSOPModal(sopId);
+}
+
+function addChecklistItem(sopId) {
+  const input = document.getElementById('newChecklistItem');
+  const text = input.value.trim();
+  if (!text) return;
+  const sop = sopData.find(s => s.id === sopId);
+  if (!sop) return;
+  if (!sop.checklistItems) sop.checklistItems = [];
+  sop.checklistItems.push({ text, checked: false });
+  sop.isChecklist = true;
+  saveData();
+  openSOPModal(sopId);
+}
+
+function deleteChecklistItem(sopId, index) {
+  const sop = sopData.find(s => s.id === sopId);
+  if (!sop || !sop.checklistItems) return;
+  sop.checklistItems.splice(index, 1);
+  saveData();
+  openSOPModal(sopId);
+}
+
+function resetChecklist(sopId) {
+  const sop = sopData.find(s => s.id === sopId);
+  if (!sop || !sop.checklistItems) return;
+  sop.checklistItems.forEach(item => item.checked = false);
+  saveData();
+  openSOPModal(sopId);
 }
 
 function closeModal() {
@@ -1401,9 +1973,211 @@ function formatDate(dateStr) {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
+// ── Marketing Assets ──
+const ASSETS_KEY = 'vps_assets';
+let assetsData = [];
+let assetFilter = 'all';
+let pendingAssetData = null;
+let viewingAssetId = null;
+
+function loadAssets() {
+  const stored = localStorage.getItem(ASSETS_KEY);
+  assetsData = stored ? JSON.parse(stored) : [];
+}
+function saveAssets() { localStorage.setItem(ASSETS_KEY, JSON.stringify(assetsData)); }
+
+function renderAssetsCategory() {
+  loadAssets();
+  const cat = categories.find(c => c.id === 'assets');
+  const main = document.getElementById('mainContent');
+  const tags = ['all', 'logo', 'icon', 'banner', 'social', 'print', 'other'];
+  const filtered = assetFilter === 'all' ? assetsData : assetsData.filter(a => a.tag === assetFilter);
+
+  const filterHTML = tags.map(t =>
+    `<button class="assets-filter-btn ${assetFilter === t ? 'active' : ''}" onclick="assetFilter='${t}';renderAssetsCategory()">
+      ${t === 'all' ? 'All' : t.charAt(0).toUpperCase() + t.slice(1)}${t === 'all' ? ' (' + assetsData.length + ')' : ' (' + assetsData.filter(a=>a.tag===t).length + ')'}
+    </button>`
+  ).join('');
+
+  let gridHTML = '';
+  if (filtered.length) {
+    gridHTML = `<div class="assets-grid">${filtered.map(asset => `
+      <div class="asset-card" onclick="viewAsset('${asset.id}')">
+        <img class="asset-card-img" src="${asset.data}" alt="${asset.name}">
+        <div class="asset-card-body">
+          <div class="asset-card-name">${asset.name}</div>
+          <div class="asset-card-meta">
+            <span class="asset-card-tag">${asset.tag}</span>
+            <span class="asset-card-size">${asset.size}</span>
+          </div>
+        </div>
+      </div>
+    `).join('')}</div>`;
+  } else {
+    gridHTML = `<div class="assets-empty">
+      <i class="fas fa-images"></i>
+      <p>${assetsData.length ? 'No assets match this filter' : 'No assets uploaded yet'}</p>
+      <span>Click "Upload Asset" to add logos, icons, and brand materials</span>
+    </div>`;
+  }
+
+  main.innerHTML = `
+    <div class="category-header">
+      <div class="category-header-left">
+        <div class="category-icon-lg" style="background:${cat.color}15; color:${cat.color}">
+          <i class="fas ${cat.icon}"></i>
+        </div>
+        <div>
+          <h2>${cat.name}</h2>
+          <span class="subtitle">${assetsData.length} asset${assetsData.length !== 1 ? 's' : ''} — logos, icons, and brand materials</span>
+        </div>
+      </div>
+      <button class="btn-add-sop" style="border-color:#E879F9;color:#E879F9;" onclick="openUploadModal()">
+        <i class="fas fa-cloud-arrow-up"></i> Upload Asset
+      </button>
+    </div>
+    ${filterHTML ? '<div class="assets-filter-row">' + filterHTML + '</div>' : ''}
+    ${gridHTML}
+  `;
+}
+
+// Upload Modal
+function openUploadModal() {
+  document.getElementById('assetName').value = '';
+  document.getElementById('assetTag').value = 'logo';
+  clearAssetPreview();
+  document.getElementById('uploadModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeUploadModal() {
+  document.getElementById('uploadModal').classList.remove('open');
+  document.body.style.overflow = '';
+  pendingAssetData = null;
+}
+
+function handleAssetFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) { alert('File must be under 2 MB.'); return; }
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    pendingAssetData = { data: e.target.result, fileName: file.name, fileSize: formatFileSize(file.size), fileType: file.type };
+    document.getElementById('assetPreviewImg').src = e.target.result;
+    document.getElementById('assetPreviewWrap').style.display = 'inline-block';
+    document.getElementById('assetDropzone').style.display = 'none';
+    if (!document.getElementById('assetName').value) {
+      document.getElementById('assetName').value = file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ');
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearAssetPreview() {
+  pendingAssetData = null;
+  document.getElementById('assetPreviewWrap').style.display = 'none';
+  document.getElementById('assetDropzone').style.display = 'flex';
+  document.getElementById('assetFileInput').value = '';
+}
+
+function saveAsset() {
+  const name = document.getElementById('assetName').value.trim();
+  const tag = document.getElementById('assetTag').value;
+  if (!name) { alert('Please enter an asset name.'); return; }
+  if (!pendingAssetData) { alert('Please select a file to upload.'); return; }
+
+  loadAssets();
+  assetsData.push({
+    id: 'asset_' + Date.now(),
+    name, tag,
+    data: pendingAssetData.data,
+    fileName: pendingAssetData.fileName,
+    size: pendingAssetData.fileSize,
+    fileType: pendingAssetData.fileType,
+    uploadedBy: 'Team',
+    uploadedAt: new Date().toISOString().split('T')[0]
+  });
+  saveAssets();
+  closeUploadModal();
+  buildSidebar();
+  renderAssetsCategory();
+}
+
+// Drag & drop
+document.addEventListener('DOMContentLoaded', () => {
+  const dz = document.getElementById('assetDropzone');
+  if (!dz) return;
+  ['dragenter','dragover'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('drag-over'); }));
+  ['dragleave','drop'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('drag-over'); }));
+  dz.addEventListener('drop', e => {
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      const input = document.getElementById('assetFileInput');
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      input.files = dt.files;
+      handleAssetFile(input);
+    }
+  });
+});
+
+// View Asset
+function viewAsset(id) {
+  loadAssets();
+  const asset = assetsData.find(a => a.id === id);
+  if (!asset) return;
+  viewingAssetId = id;
+  document.getElementById('assetViewTitle').textContent = asset.name;
+  document.getElementById('assetViewImg').src = asset.data;
+  document.getElementById('assetDownloadBtn').href = asset.data;
+  document.getElementById('assetDownloadBtn').download = asset.fileName || (asset.name + '.png');
+  document.getElementById('assetViewMeta').innerHTML = `
+    <div class="meta-item"><span class="meta-label">Tag</span><span class="meta-value"><span class="asset-card-tag">${asset.tag}</span></span></div>
+    <div class="meta-item"><span class="meta-label">File Size</span><span class="meta-value">${asset.size}</span></div>
+    <div class="meta-item"><span class="meta-label">Uploaded</span><span class="meta-value">${formatDate(asset.uploadedAt)}</span></div>
+    <div class="meta-item"><span class="meta-label">Uploaded By</span><span class="meta-value">${asset.uploadedBy}</span></div>
+  `;
+  document.getElementById('assetViewModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeAssetViewModal() {
+  document.getElementById('assetViewModal').classList.remove('open');
+  document.body.style.overflow = '';
+  viewingAssetId = null;
+}
+
+async function copyAssetToClipboard() {
+  const asset = assetsData.find(a => a.id === viewingAssetId);
+  if (!asset) return;
+  try {
+    const resp = await fetch(asset.data);
+    const blob = await resp.blob();
+    await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
+    const btn = document.getElementById('assetCopyBtn');
+    btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+    setTimeout(() => { btn.innerHTML = '<i class="fas fa-copy"></i> Copy Image'; }, 2000);
+  } catch (e) {
+    alert('Copy not supported in this browser. Use the Download button instead.');
+  }
+}
+
+function deleteAssetConfirm() {
+  if (!confirm('Delete this asset? This cannot be undone.')) return;
+  assetsData = assetsData.filter(a => a.id !== viewingAssetId);
+  saveAssets();
+  closeAssetViewModal();
+  buildSidebar();
+  renderAssetsCategory();
+}
+
+function formatFileSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
 // ── Keyboard shortcuts ──
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeModal(); closeAddModal(); }
+  if (e.key === 'Escape') { closeModal(); closeAddModal(); closeUploadModal(); closeAssetViewModal(); }
   if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
     e.preventDefault();
     document.getElementById('searchInput').focus();
