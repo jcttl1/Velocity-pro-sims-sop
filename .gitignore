@@ -1,0 +1,14 @@
+# Firebase
+.firebase/
+*.log
+
+# Dependencies
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local

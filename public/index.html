@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Velocity Pro Sims — Standard Operating Procedures</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green: #5CBF2A;
+      --green-light: #7DD94D;
+      --green-dim: rgba(92,191,42,0.12);
+      --green-glow: rgba(92,191,42,0.25);
+      --bg-primary: #0A0A0C;
+      --bg-secondary: #111114;
+      --bg-card: #16161A;
+      --bg-card-hover: #1C1C22;
+      --bg-input: #1A1A20;
+      --border: #2A2A32;
+      --border-light: #3A3A44;
+      --text-primary: #F0F0F2;
+      --text-secondary: #9A9AA8;
+      --text-muted: #6A6A78;
+      --danger: #EF4444;
+      --warning: #F59E0B;
+      --info: #3B82F6;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --radius-lg: 16px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,0.5);
+      --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--border-light); }
+
+    /* ── Login Screen ── */
+    .login-screen {
+      position: fixed; inset: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bg-primary);
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    .login-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    .login-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(92,191,42,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 50%, rgba(92,191,42,0.04) 0%, transparent 60%);
+    }
+
+    .login-card {
+      position: relative; z-index: 1;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 48px 40px;
+      width: 100%; max-width: 420px;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .login-logo { height: 60px; margin-bottom: 24px; filter: drop-shadow(0 2px 8px rgba(92,191,42,0.3)); }
+    .login-title { font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--text-secondary); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 32px; }
+
+    .password-field {
+      position: relative; margin-bottom: 16px;
+    }
+    .password-field input {
+      width: 100%; padding: 14px 48px 14px 16px;
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text-primary);
+      font-size: 0.95rem; font-family: 'Inter', sans-serif;
+      transition: border-color var(--transition);
+      outline: none;
+    }
+    .password-field input:focus { border-color: var(--green); }
+    .password-field input::placeholder { color: var(--text-muted); }
+    .password-field .toggle-pw {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: var(--text-muted); cursor: pointer;
+      font-size: 1rem; transition: color var(--transition);
+    }
+    .password-field .toggle-pw:hover { color: var(--text-secondary); }
+
+    .login-btn {
+      width: 100%; padding: 14px; border: none; border-radius: var(--radius-sm);
+      background: var(--green); color: #000; font-weight: 700;
+      font-size: 0.95rem; font-family: 'Inter', sans-serif;
+      cursor: pointer; transition: all var(--transition);
+      letter-spacing: 0.5px;
+    }
+    .login-btn:hover { background: var(--green-light); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(92,191,42,0.3); }
+    .login-btn:active { transform: translateY(0); }
+
+    .login-error {
+      color: var(--danger); font-size: 0.85rem; margin-top: 12px;
+      opacity: 0; transition: opacity var(--transition);
+    }
+    .login-error.show { opacity: 1; }
+
+    /* ── App Shell ── */
+    .app { display: none; min-height: 100vh; }
+    .app.visible { display: flex; flex-direction: column; }
+
+    /* ── Header ── */
+    .header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,12,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+    }
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1400px; margin: 0 auto;
+      height: 64px;
+    }
+    .header-left { display: flex; align-items: center; gap: 16px; }
+    .header-logo { height: 36px; cursor: pointer; transition: transform var(--transition); }
+    .header-logo:hover { transform: scale(1.05); }
+    .header-divider { width: 1px; height: 24px; background: var(--border); }
+    .header-title { font-family: 'Rajdhani', sans-serif; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); letter-spacing: 2px; text-transform: uppercase; }
+
+    .header-right { display: flex; align-items: center; gap: 16px; }
+
+    .search-bar {
+      position: relative; width: 280px;
+    }
+    .search-bar input {
+      width: 100%; padding: 9px 14px 9px 36px;
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text-primary);
+      font-size: 0.85rem; font-family: 'Inter', sans-serif;
+      outline: none; transition: all var(--transition);
+    }
+    .search-bar input:focus { border-color: var(--green); background: var(--bg-card); }
+    .search-bar input::placeholder { color: var(--text-muted); }
+    .search-bar i {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      color: var(--text-muted); font-size: 0.85rem;
+    }
+    .search-results-dropdown {
+      position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); max-height: 320px; overflow-y: auto;
+      box-shadow: var(--shadow-lg); display: none; z-index: 200;
+    }
+    .search-results-dropdown.open { display: block; }
+    .search-result-item {
+      padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border);
+      transition: background var(--transition);
+    }
+    .search-result-item:last-child { border-bottom: none; }
+    .search-result-item:hover { background: var(--bg-card-hover); }
+    .search-result-item .sr-cat { font-size: 0.7rem; color: var(--green); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+    .search-result-item .sr-title { font-size: 0.85rem; color: var(--text-primary); margin-top: 2px; }
+
+    .btn-icon {
+      width: 36px; height: 36px; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); background: var(--bg-input);
+      color: var(--text-secondary); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; transition: all var(--transition);
+    }
+    .btn-icon:hover { border-color: var(--green); color: var(--green); }
+
+    /* ── Layout ── */
+    .layout {
+      display: flex; flex: 1; max-width: 1400px;
+      margin: 0 auto; width: 100%; padding: 0 32px;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 260px; flex-shrink: 0;
+      padding: 24px 0; position: sticky;
+      top: 64px; height: calc(100vh - 64px);
+      overflow-y: auto;
+      border-right: 1px solid var(--border);
+      padding-right: 24px;
+    }
+
+    .sidebar-label {
+      font-size: 0.7rem; font-weight: 600; color: var(--text-muted);
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 0 12px; margin-bottom: 8px;
+    }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: var(--radius-sm);
+      cursor: pointer; transition: all var(--transition);
+      color: var(--text-secondary); font-size: 0.9rem; font-weight: 450;
+      margin-bottom: 2px;
+    }
+    .nav-item:hover { background: var(--green-dim); color: var(--text-primary); }
+    .nav-item.active { background: var(--green-dim); color: var(--green); }
+    .nav-item i { width: 20px; text-align: center; font-size: 0.85rem; }
+    .nav-item .badge {
+      margin-left: auto; background: var(--bg-input); color: var(--text-muted);
+      font-size: 0.7rem; padding: 2px 7px; border-radius: 10px; font-weight: 600;
+    }
+    .nav-item.active .badge { background: rgba(92,191,42,0.2); color: var(--green); }
+
+    .sidebar-spacer { height: 24px; }
+
+    /* ── Main Content ── */
+    .main { flex: 1; padding: 32px 0 64px 32px; min-width: 0; }
+
+    /* ── Dashboard View ── */
+    .dashboard-header { margin-bottom: 32px; }
+    .dashboard-header h1 {
+      font-family: 'Rajdhani', sans-serif; font-size: 2rem;
+      font-weight: 700; margin-bottom: 4px;
+    }
+    .dashboard-header p { color: var(--text-secondary); font-size: 0.95rem; }
+
+    .stats-row {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px;
+      transition: all var(--transition);
+    }
+    .stat-card:hover { border-color: var(--border-light); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .stat-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    .stat-value { font-family: 'Rajdhani', sans-serif; font-size: 2rem; font-weight: 700; color: var(--text-primary); }
+    .stat-value .accent { color: var(--green); }
+
+    /* ── Category View ── */
+    .category-view { display: none; }
+    .category-view.active { display: block; }
+
+    .category-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 28px; padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .category-header-left { display: flex; align-items: center; gap: 14px; }
+    .category-icon-lg {
+      width: 48px; height: 48px; border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .category-header h2 { font-family: 'Rajdhani', sans-serif; font-size: 1.6rem; font-weight: 700; }
+    .category-header .subtitle { font-size: 0.85rem; color: var(--text-secondary); }
+
+    .btn-add-sop {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 18px; border: 1px solid var(--green);
+      border-radius: var(--radius-sm); background: transparent;
+      color: var(--green); font-size: 0.85rem; font-weight: 600;
+      font-family: 'Inter', sans-serif; cursor: pointer;
+      transition: all var(--transition);
+    }
+    .btn-add-sop:hover { background: var(--green); color: #000; }
+
+    /* ── SOP Cards ── */
+    .sop-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .sop-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 18px 20px;
+      cursor: pointer; transition: all var(--transition);
+      display: flex; align-items: center; gap: 16px;
+    }
+    .sop-card:hover { border-color: var(--border-light); background: var(--bg-card-hover); transform: translateX(4px); }
+
+    .sop-card-icon {
+      width: 40px; height: 40px; border-radius: var(--radius-sm);
+      background: var(--green-dim); color: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.95rem; flex-shrink: 0;
+    }
+    .sop-card-body { flex: 1; min-width: 0; }
+    .sop-card-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 2px; }
+    .sop-card-desc { font-size: 0.82rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .sop-card-meta {
+      display: flex; align-items: center; gap: 14px; flex-shrink: 0;
+    }
+    .sop-tag {
+      font-size: 0.7rem; font-weight: 600; padding: 4px 10px;
+      border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .sop-tag.critical { background: rgba(239,68,68,0.12); color: #EF4444; }
+    .sop-tag.important { background: rgba(245,158,11,0.12); color: #F59E0B; }
+    .sop-tag.standard { background: rgba(92,191,42,0.12); color: var(--green); }
+    .sop-tag.info { background: rgba(59,130,246,0.12); color: #3B82F6; }
+    .sop-card-date { font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; }
+
+    /* ── SOP Detail Modal ── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden; transition: all 0.3s ease;
+      padding: 24px;
+    }
+    .modal-overlay.open { opacity: 1; visibility: visible; }
+
+    .modal {
+      background: var(--bg-secondary); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); width: 100%; max-width: 780px;
+      max-height: 85vh; overflow-y: auto; box-shadow: var(--shadow-lg);
+      transform: translateY(20px); transition: transform 0.3s ease;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 28px; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; background: var(--bg-secondary); z-index: 1;
+    }
+    .modal-header h3 { font-family: 'Rajdhani', sans-serif; font-size: 1.3rem; font-weight: 700; }
+    .modal-close {
+      width: 32px; height: 32px; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); background: none; color: var(--text-secondary);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all var(--transition);
+    }
+    .modal-close:hover { border-color: var(--danger); color: var(--danger); }
+
+    .modal-body { padding: 28px; }
+    .modal-body .meta-row {
+      display: flex; gap: 24px; margin-bottom: 24px; padding-bottom: 20px;
+      border-bottom: 1px solid var(--border); flex-wrap: wrap;
+    }
+    .meta-item { display: flex; flex-direction: column; gap: 4px; }
+    .meta-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+    .meta-value { font-size: 0.85rem; color: var(--text-primary); font-weight: 500; }
+
+    .modal-body h4 { font-family: 'Rajdhani', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--green); margin: 24px 0 12px; }
+    .modal-body h4:first-of-type { margin-top: 0; }
+    .modal-body p, .modal-body li { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; }
+    .modal-body ul, .modal-body ol { padding-left: 20px; margin-bottom: 12px; }
+    .modal-body li { margin-bottom: 6px; }
+
+    /* ── Add/Edit SOP Modal ── */
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 10px 14px;
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text-primary);
+      font-size: 0.9rem; font-family: 'Inter', sans-serif;
+      outline: none; transition: border-color var(--transition);
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--green); }
+    .form-group textarea { min-height: 200px; resize: vertical; line-height: 1.7; }
+    .form-group select { cursor: pointer; }
+    .form-group select option { background: var(--bg-card); }
+
+    .form-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+    .btn-cancel {
+      padding: 10px 20px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      background: none; color: var(--text-secondary); font-size: 0.85rem;
+      font-family: 'Inter', sans-serif; cursor: pointer; transition: all var(--transition);
+    }
+    .btn-cancel:hover { border-color: var(--text-secondary); color: var(--text-primary); }
+    .btn-save {
+      padding: 10px 24px; border: none; border-radius: var(--radius-sm);
+      background: var(--green); color: #000; font-weight: 700;
+      font-size: 0.85rem; font-family: 'Inter', sans-serif;
+      cursor: pointer; transition: all var(--transition);
+    }
+    .btn-save:hover { background: var(--green-light); }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .sidebar { width: 220px; }
+    }
+    @media (max-width: 768px) {
+      .header { padding: 0 16px; }
+      .layout { flex-direction: column; padding: 0 16px; }
+      .sidebar {
+        width: 100%; position: relative; top: 0;
+        height: auto; border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 16px 0; padding-right: 0;
+        display: flex; flex-wrap: wrap; gap: 4px;
+      }
+      .sidebar-label { width: 100%; }
+      .sidebar-spacer { display: none; }
+      .main { padding: 24px 0 48px; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .search-bar { width: 200px; }
+      .header-title { display: none; }
+      .header-divider { display: none; }
+    }
+    @media (max-width: 480px) {
+      .stats-row { grid-template-columns: 1fr; }
+      .search-bar { width: 140px; }
+      .login-card { padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ LOGIN SCREEN ═══ -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-bg"></div>
+  <div class="login-card">
+    <img src="logo.png" alt="Velocity Pro Sims" class="login-logo">
+    <div class="login-title">Standard Operating Procedures</div>
+    <div class="password-field">
+      <input type="password" id="passwordInput" placeholder="Enter team password" autocomplete="off">
+      <button class="toggle-pw" onclick="togglePassword()" tabindex="-1"><i class="fas fa-eye" id="eyeIcon"></i></button>
+    </div>
+    <button class="login-btn" onclick="attemptLogin()">Access SOPs</button>
+    <div class="login-error" id="loginError">Incorrect password. Please try again.</div>
+  </div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div class="app" id="app">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-left">
+        <img src="logo.png" alt="Velocity Pro Sims" class="header-logo" onclick="showDashboard()">
+        <div class="header-divider"></div>
+        <span class="header-title">SOP Portal</span>
+      </div>
+      <div class="header-right">
+        <div class="search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInput" placeholder="Search SOPs..." oninput="handleSearch(this.value)">
+          <div class="search-results-dropdown" id="searchDropdown"></div>
+        </div>
+        <button class="btn-icon" onclick="logout()" title="Sign Out"><i class="fas fa-right-from-bracket"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-label">Navigation</div>
+      <div class="nav-item active" data-cat="dashboard" onclick="showDashboard()">
+        <i class="fas fa-gauge-high"></i> Dashboard
+      </div>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-label">Categories</div>
+      <!-- Populated by JS -->
+    </nav>
+
+    <!-- Main -->
+    <main class="main" id="mainContent">
+      <!-- Dashboard & category views rendered by JS -->
+    </main>
+  </div>
+</div>
+
+<!-- ═══ SOP Detail Modal ═══ -->
+<div class="modal-overlay" id="sopModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">SOP Title</h3>
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ═══ Add SOP Modal ═══ -->
+<div class="modal-overlay" id="addModal" onclick="if(event.target===this)closeAddModal()">
+  <div class="modal" style="max-width:600px;">
+    <div class="modal-header">
+      <h3 id="addModalTitle">Add New SOP</h3>
+      <button class="modal-close" onclick="closeAddModal()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Title</label>
+        <input type="text" id="sopFormTitle" placeholder="e.g. Pre-Session Equipment Check">
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select id="sopFormCategory"></select>
+      </div>
+      <div class="form-group">
+        <label>Priority</label>
+        <select id="sopFormPriority">
+          <option value="standard">Standard</option>
+          <option value="important">Important</option>
+          <option value="critical">Critical</option>
+          <option value="info">Informational</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Description (short summary)</label>
+        <input type="text" id="sopFormDesc" placeholder="Brief one-line description">
+      </div>
+      <div class="form-group">
+        <label>Content (use markdown-style formatting)</label>
+        <textarea id="sopFormContent" placeholder="## Purpose&#10;Describe the purpose...&#10;&#10;## Steps&#10;1. First step&#10;2. Second step&#10;&#10;## Notes&#10;- Important note"></textarea>
+      </div>
+      <div class="form-actions">
+        <button class="btn-cancel" onclick="closeAddModal()">Cancel</button>
+        <button class="btn-save" onclick="saveSOP()">Save SOP</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Configuration ──
+const TEAM_PASSWORD = 'VelocityPro2026';
+const STORAGE_KEY = 'vps_sops_data';
+const AUTH_KEY = 'vps_auth';
+
+// ── Categories ──
+const categories = [
+  { id: 'accounting', name: 'Accounting', icon: 'fa-calculator', color: '#10B981' },
+  { id: 'customer', name: 'Customer Service', icon: 'fa-headset', color: '#8B5CF6' },
+  { id: 'equipment', name: 'Equipment & Simulators', icon: 'fa-desktop', color: '#5CBF2A' },
+  { id: 'events', name: 'Events & Leagues', icon: 'fa-trophy', color: '#EC4899' },
+  { id: 'facility', name: 'Facility Management', icon: 'fa-building', color: '#F59E0B' },
+  { id: 'operations', name: 'Race Operations', icon: 'fa-flag-checkered', color: '#3B82F6' },
+  { id: 'safety', name: 'Safety & Emergency', icon: 'fa-shield-halved', color: '#EF4444' },
+  { id: 'staff', name: 'Staff & Training', icon: 'fa-users', color: '#F97316' },
+  { id: 'tech', name: 'Technical Support', icon: 'fa-wrench', color: '#06B6D4' },
+];
+
+// ── Default SOPs ──
+const defaultSOPs = [
+  {
+    id: 1, category: 'equipment', title: 'Pre-Session Simulator Check',
+    description: 'Complete checklist before each customer session to ensure all simulator hardware is functioning.',
+    priority: 'critical', updatedBy: 'Jose', updatedAt: '2026-03-20',
+    content: `<h4>Purpose</h4><p>Ensure every simulator rig is in proper working condition before a customer begins their session. This prevents mid-session failures and maintains the premium experience our customers expect.</p>
+<h4>Procedure</h4><ol>
+<li>Power on the simulator PC and verify it boots to the desktop without errors</li>
+<li>Check that the monitor(s) display correctly with no dead pixels or flickering</li>
+<li>Test the steering wheel for force feedback — rotate lock-to-lock and verify resistance</li>
+<li>Press each paddle shifter and verify input registers in the calibration tool</li>
+<li>Test all three pedals (throttle, brake, clutch) through full range of motion</li>
+<li>Verify the seat is securely mounted and the slider/recline adjustments work</li>
+<li>Check the headset (VR or headphones) for cleanliness and functionality</li>
+<li>Launch the default sim title and run one test lap to verify full integration</li>
+</ol>
+<h4>If Issues Are Found</h4><ul>
+<li>Tag the rig as "Out of Service" in the booking system immediately</li>
+<li>Log the issue in the maintenance tracker with photos if applicable</li>
+<li>Notify the on-duty technician via the team group chat</li>
+<li>Do NOT allow customer use until the issue is resolved and re-tested</li>
+</ul>`
+  },
+  {
+    id: 2, category: 'equipment', title: 'Wheel Base & Pedal Calibration',
+    description: 'Step-by-step calibration procedure for direct-drive wheel bases and load-cell pedals.',
+    priority: 'important', updatedBy: 'Jose', updatedAt: '2026-03-18',
+    content: `<h4>Purpose</h4><p>Maintain consistent and accurate force feedback and pedal response across all rigs. Properly calibrated equipment ensures fair competition in leagues and the best possible experience for customers.</p>
+<h4>Wheel Base Calibration</h4><ol>
+<li>Open the manufacturer's control panel (e.g., Fanatec, Simucube, Moza)</li>
+<li>Set rotation range to the profile default (typically 900° for GT, 360° for formula)</li>
+<li>Run the auto-calibration / center alignment routine</li>
+<li>Set force feedback strength to the house standard (refer to the Rig Profile Sheet)</li>
+<li>Verify there is no notchiness, dead zones, or drift at center</li>
+</ol>
+<h4>Pedal Calibration</h4><ol>
+<li>Open the pedal calibration software</li>
+<li>Set the throttle dead zone to 2% and max to 98%</li>
+<li>Set the brake pressure curve to the house standard (linear or custom per rig)</li>
+<li>If load-cell, verify the max braking force reads correctly (typically 60-90 kg)</li>
+<li>Save the profile and label it with the rig number and date</li>
+</ol>
+<h4>Frequency</h4><p>Calibration should be performed weekly, after any hardware swap, or whenever a customer reports inconsistent input behavior.</p>`
+  },
+  {
+    id: 3, category: 'equipment', title: 'PC & Software Maintenance',
+    description: 'Weekly maintenance tasks for simulator PCs including updates, driver management, and performance tuning.',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-15',
+    content: `<h4>Purpose</h4><p>Keep all simulator PCs running at peak performance to deliver smooth, lag-free sessions.</p>
+<h4>Weekly Tasks</h4><ol>
+<li>Check for and install Windows updates (schedule restarts for off-hours)</li>
+<li>Update GPU drivers only when tested and verified stable (never auto-update)</li>
+<li>Clear temporary files and browser caches</li>
+<li>Verify all sim racing titles launch correctly and are up-to-date</li>
+<li>Run a quick performance benchmark and compare to baseline scores</li>
+<li>Check disk space — maintain at least 100 GB free on the primary drive</li>
+</ol>
+<h4>Monthly Tasks</h4><ul>
+<li>Clean dust from PC internals using compressed air</li>
+<li>Check thermal paste condition on CPU/GPU if temps are elevated</li>
+<li>Review and clear old replay/recording files</li>
+<li>Backup rig profiles and customer presets</li>
+</ul>`
+  },
+  {
+    id: 4, category: 'operations', title: 'Session Booking & Check-In Flow',
+    description: 'Standard procedure for handling customer bookings, arrivals, and session starts.',
+    priority: 'critical', updatedBy: 'Jose', updatedAt: '2026-03-19',
+    content: `<h4>Purpose</h4><p>Deliver a smooth, professional check-in experience that gets customers into their sessions quickly while capturing necessary information.</p>
+<h4>Booking Confirmation</h4><ol>
+<li>When a booking is made (online or phone), send the automated confirmation email</li>
+<li>Verify payment was processed or note if paying on arrival</li>
+<li>Assign an available rig based on the customer's preference and booking type</li>
+</ol>
+<h4>Customer Arrival</h4><ol>
+<li>Greet the customer by name (check the schedule before they arrive)</li>
+<li>For first-timers: provide the 3-minute orientation briefing (rig controls, safety, sim selection)</li>
+<li>Confirm their session length and sim title preference</li>
+<li>Walk them to their assigned rig and help with seat/pedal adjustment</li>
+<li>Launch their selected title and ensure they are comfortable before stepping away</li>
+</ol>
+<h4>Session End</h4><ol>
+<li>Give a 5-minute warning via the intercom or in person</li>
+<li>Thank them and ask about their experience</li>
+<li>Offer to book their next session or sign up for league racing</li>
+<li>Wipe down the rig (steering wheel, seat, headset) with approved cleaning solution</li>
+</ol>`
+  },
+  {
+    id: 5, category: 'operations', title: 'League Night Operations',
+    description: 'Procedures for running organized league racing events, from setup to results.',
+    priority: 'important', updatedBy: 'Jose', updatedAt: '2026-03-17',
+    content: `<h4>Purpose</h4><p>Ensure every league night runs professionally and on schedule, providing a competitive and fair environment for all participants.</p>
+<h4>Pre-Event (1 Hour Before)</h4><ol>
+<li>Verify all rigs assigned to the league are operational (run Pre-Session check)</li>
+<li>Load the correct track and car combo on all PCs</li>
+<li>Set up the server with the correct league settings (weather, tire wear, fuel usage, penalties)</li>
+<li>Post the race briefing on the display monitors (track map, rules, schedule)</li>
+<li>Test voice comms if using team radios</li>
+</ol>
+<h4>During the Event</h4><ol>
+<li>Run practice and qualifying on schedule — announce session transitions</li>
+<li>Monitor for technical issues and have a backup rig ready if possible</li>
+<li>Enforce the league rules — stewards review incidents post-race</li>
+<li>Keep the energy up — use the PA system for commentary if applicable</li>
+</ol>
+<h4>Post-Event</h4><ol>
+<li>Export race results and upload to the league standings page</li>
+<li>Post results on social media and tag participants (with consent)</li>
+<li>Collect any feedback from drivers</li>
+<li>Reset all rigs to default customer settings</li>
+</ol>`
+  },
+  {
+    id: 6, category: 'customer', title: 'Customer Complaint Resolution',
+    description: 'How to handle customer complaints professionally and turn negative experiences into positive outcomes.',
+    priority: 'important', updatedBy: 'Jose', updatedAt: '2026-03-16',
+    content: `<h4>Purpose</h4><p>Handle all complaints with professionalism and empathy. Our goal is to resolve issues quickly and ensure every customer leaves with a positive impression of Velocity Pro Sims.</p>
+<h4>HEAR Framework</h4><ol>
+<li><strong>Hear</strong> — Let the customer explain the issue fully without interrupting</li>
+<li><strong>Empathize</strong> — Acknowledge their frustration ("I understand that's not the experience you expected")</li>
+<li><strong>Act</strong> — Offer a concrete resolution (see Resolution Options below)</li>
+<li><strong>Resolve</strong> — Follow through, confirm they're satisfied, and document the incident</li>
+</ol>
+<h4>Resolution Options (Staff Authority Level)</h4><ul>
+<li><strong>Any staff</strong>: Offer a free drink, extend session by 15 minutes, move to a different rig</li>
+<li><strong>Shift lead</strong>: Offer a 50% discount on current session, free 30-min future session credit</li>
+<li><strong>Manager</strong>: Full refund, complimentary session package, league entry fee waiver</li>
+</ul>
+<h4>Logging</h4><p>All complaints must be logged in the Incident Tracker within 1 hour. Include: date, customer name, rig number, issue description, resolution given, and staff member who handled it.</p>`
+  },
+  {
+    id: 7, category: 'customer', title: 'First-Time Customer Orientation',
+    description: 'The standard onboarding briefing for customers visiting Velocity Pro Sims for the first time.',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-14',
+    content: `<h4>Purpose</h4><p>Give first-time customers the confidence and knowledge to enjoy their session. A great first impression drives repeat business.</p>
+<h4>Orientation Script (3 Minutes)</h4><ol>
+<li><strong>Welcome</strong>: "Welcome to Velocity Pro Sims! We're excited to have you here."</li>
+<li><strong>Overview</strong>: Briefly explain what sim racing is and what makes our rigs special (direct-drive, triple screens/VR, etc.)</li>
+<li><strong>Controls</strong>: Show them the steering wheel buttons, paddle shifters, and pedals — explain that the force feedback is strong but safe</li>
+<li><strong>Sim Selection</strong>: Ask about their experience level and recommend a title (casual → Gran Turismo, enthusiast → iRacing or ACC)</li>
+<li><strong>Safety</strong>: Point out emergency stop on the wheel base, explain how to exit VR safely, note the location of exits</li>
+<li><strong>Support</strong>: "If you need anything, wave at us or press the call button on the rig — we're here to help!"</li>
+</ol>
+<h4>Tips</h4><ul>
+<li>Be enthusiastic but not overwhelming — read the customer's energy level</li>
+<li>Let them explore at their own pace once briefed</li>
+<li>Check on them 5 minutes into their session</li>
+</ul>`
+  },
+  {
+    id: 8, category: 'safety', title: 'Emergency Evacuation Procedure',
+    description: 'Step-by-step evacuation procedure for fire, natural disaster, or other emergencies.',
+    priority: 'critical', updatedBy: 'Jose', updatedAt: '2026-03-20',
+    content: `<h4>Purpose</h4><p>Ensure the safety of all customers and staff in the event of an emergency requiring building evacuation.</p>
+<h4>Immediate Actions</h4><ol>
+<li>Activate the fire alarm if not already triggered</li>
+<li>Announce calmly over the PA: "Attention — please evacuate the building immediately via the nearest marked exit"</li>
+<li>Cut power to all simulator rigs using the master power switch (located behind the front desk)</li>
+<li>If VR headsets are in use, assist customers in removing them quickly</li>
+</ol>
+<h4>Evacuation Flow</h4><ol>
+<li>Staff nearest to the exit doors — open and hold them</li>
+<li>Guide customers to the designated assembly point (parking lot, NE corner)</li>
+<li>Shift lead conducts a headcount using the active session roster</li>
+<li>Do NOT allow re-entry until cleared by emergency services</li>
+</ol>
+<h4>Post-Emergency</h4><ul>
+<li>Document the incident in the Safety Log</li>
+<li>Notify the business owner/manager immediately</li>
+<li>Inspect all equipment before resuming operations</li>
+</ul>
+<h4>Emergency Contacts</h4><p>Fire / Police / EMS: 911 &nbsp;|&nbsp; Building Management: Posted at front desk &nbsp;|&nbsp; Owner: Posted at front desk</p>`
+  },
+  {
+    id: 9, category: 'safety', title: 'Health & Hygiene Standards',
+    description: 'Cleaning and sanitization protocols for all customer-facing equipment and surfaces.',
+    priority: 'important', updatedBy: 'Jose', updatedAt: '2026-03-12',
+    content: `<h4>Purpose</h4><p>Maintain a clean and hygienic environment for every customer. This is essential for customer confidence, health safety, and equipment longevity.</p>
+<h4>Between Every Session</h4><ol>
+<li>Wipe down the steering wheel rim and buttons with disinfectant wipes</li>
+<li>Clean the seat surface and headrest</li>
+<li>Wipe pedal faces</li>
+<li>If VR headset was used — clean face gasket with VR-safe sanitizer and replace if disposable</li>
+<li>Replace disposable VR covers if applicable</li>
+</ol>
+<h4>Daily (End of Business)</h4><ol>
+<li>Vacuum or sweep all rig areas and walkways</li>
+<li>Mop hard floor surfaces</li>
+<li>Empty all trash cans</li>
+<li>Wipe down the front desk, counters, and any lounge furniture</li>
+<li>Clean restrooms thoroughly</li>
+</ol>
+<h4>Weekly</h4><ul>
+<li>Deep clean all VR headsets with UV sanitizer</li>
+<li>Launder any fabric seat covers or cushions</li>
+<li>Clean display screens with appropriate screen cleaner (no ammonia)</li>
+</ul>`
+  },
+  {
+    id: 10, category: 'facility', title: 'Opening & Closing Procedures',
+    description: 'Daily checklist for staff responsible for opening and closing the facility.',
+    priority: 'critical', updatedBy: 'Jose', updatedAt: '2026-03-19',
+    content: `<h4>Opening (30 Minutes Before First Session)</h4><ol>
+<li>Disarm the security system and unlock all entry points</li>
+<li>Turn on main lighting, HVAC, and display signage</li>
+<li>Power on all simulator PCs and peripherals</li>
+<li>Run a quick visual check of all rigs (seats, wheels, monitors)</li>
+<li>Verify the booking system is online and check the day's schedule</li>
+<li>Ensure the front desk is stocked (waivers, pens, business cards, merch display)</li>
+<li>Turn on background music and any lobby screens/TVs</li>
+<li>Verify POS system is operational and cash drawer has correct starting float</li>
+</ol>
+<h4>Closing (After Last Session)</h4><ol>
+<li>Confirm all customers have left the building</li>
+<li>Shut down all simulator PCs properly (no hard power-offs)</li>
+<li>Complete end-of-day cleaning (see Hygiene SOP)</li>
+<li>Close out the POS system, count the cash drawer, and secure in the safe</li>
+<li>Turn off all non-essential lights, HVAC, and signage</li>
+<li>Check that all windows and back doors are locked</li>
+<li>Arm the security system</li>
+<li>Lock the front door and verify it's secure</li>
+</ol>`
+  },
+  {
+    id: 11, category: 'facility', title: 'HVAC & Climate Control',
+    description: 'Maintaining comfortable temperatures for extended sim sessions and protecting equipment.',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-10',
+    content: `<h4>Purpose</h4><p>Sim rigs generate significant heat. Proper climate control ensures customer comfort and prevents hardware overheating.</p>
+<h4>Temperature Guidelines</h4><ul>
+<li>Target ambient temp: 68–72°F (20–22°C)</li>
+<li>If rig area exceeds 76°F (24°C), increase AC output or open additional ventilation</li>
+<li>Monitor PC intake temps — flag any system running above 85°C under load</li>
+</ul>
+<h4>Seasonal Adjustments</h4><ul>
+<li><strong>Summer</strong>: Pre-cool the facility 1 hour before opening. Consider portable fans near rig clusters.</li>
+<li><strong>Winter</strong>: Don't over-heat — the rigs add warmth. Keep humidity above 30% to prevent static.</li>
+</ul>
+<h4>Maintenance</h4><p>Replace HVAC filters monthly. Schedule professional HVAC servicing quarterly. Log all filter changes in the Facility Maintenance sheet.</p>`
+  },
+  {
+    id: 12, category: 'events', title: 'Corporate Event Hosting',
+    description: 'Complete guide for hosting corporate team-building and private events at Velocity Pro Sims.',
+    priority: 'important', updatedBy: 'Jose', updatedAt: '2026-03-18',
+    content: `<h4>Purpose</h4><p>Corporate events are a key revenue driver. Delivering a premium, organized experience leads to repeat bookings and referrals.</p>
+<h4>Pre-Event (1 Week Before)</h4><ol>
+<li>Confirm guest count, event duration, and any special requests with the organizer</li>
+<li>Block off the required number of rigs in the booking system</li>
+<li>Prepare a custom lobby screen with the company's logo (if requested)</li>
+<li>Coordinate any catering or beverage orders</li>
+<li>Assign a dedicated event host from staff</li>
+</ol>
+<h4>Event Day</h4><ol>
+<li>Set up a welcome table with name tags and event schedule</li>
+<li>Event host gives a group orientation (modified for the group's experience level)</li>
+<li>Run activities in rounds — rotate guests through rigs if guest count exceeds rig count</li>
+<li>Display a live leaderboard on the main screen for competition events</li>
+<li>Take group photos (with permission) for social media</li>
+</ol>
+<h4>Post-Event</h4><ol>
+<li>Send a thank-you email with results, photos, and a rebooking offer</li>
+<li>Request a Google/Yelp review</li>
+<li>Log the event in the CRM for future follow-up</li>
+</ol>`
+  },
+  {
+    id: 13, category: 'events', title: 'Social Media & Live Streaming',
+    description: 'Guidelines for capturing and sharing content from events and daily operations.',
+    priority: 'info', updatedBy: 'Jose', updatedAt: '2026-03-11',
+    content: `<h4>Purpose</h4><p>Consistent social media presence builds brand awareness and attracts new customers. Live streaming events adds excitement and community engagement.</p>
+<h4>Content Guidelines</h4><ul>
+<li>Always get verbal or written consent before posting photos/videos of customers</li>
+<li>Use the official Velocity Pro Sims branding (colors, logo, tone)</li>
+<li>Post at least 3x per week across Instagram, TikTok, and Facebook</li>
+<li>Best performing content: race highlights, customer reactions, rig setup tours, league results</li>
+</ul>
+<h4>Live Streaming</h4><ol>
+<li>Use OBS on the streaming PC with the Velocity Pro Sims overlay template</li>
+<li>Test audio levels and camera angles 15 minutes before going live</li>
+<li>Have a staff member monitor chat and moderate</li>
+<li>Announce streams 24 hours in advance on all channels</li>
+</ol>
+<h4>Branding</h4><p>Always use the approved logo, tag @VelocityProSims, and include the location tag. Keep captions energetic and professional.</p>`
+  },
+  {
+    id: 14, category: 'tech', title: 'Network & Connectivity Troubleshooting',
+    description: 'Resolving common network issues affecting multiplayer, online sim titles, and booking systems.',
+    priority: 'important', updatedBy: 'Jose', updatedAt: '2026-03-13',
+    content: `<h4>Purpose</h4><p>Reliable network connectivity is critical for online racing, league servers, and the booking/POS system.</p>
+<h4>Common Issues & Solutions</h4><ol>
+<li><strong>Single PC can't connect</strong>: Check Ethernet cable, restart network adapter, verify IP assignment via DHCP</li>
+<li><strong>All PCs losing connection</strong>: Restart the main router/switch. Check if the ISP is experiencing an outage.</li>
+<li><strong>High latency / lag</strong>: Run a speed test. Check for bandwidth-hogging processes (e.g., Windows updates). Prioritize sim traffic on the router QoS settings.</li>
+<li><strong>Server browser not loading</strong>: Verify DNS settings, try switching to 8.8.8.8 / 1.1.1.1</li>
+<li><strong>Booking system offline</strong>: Check if the cloud service is up (visit the provider status page). Contact support if the issue persists beyond 15 minutes.</li>
+</ol>
+<h4>Escalation</h4><p>If a network issue cannot be resolved within 15 minutes, contact the IT provider. Keep a printed copy of their contact info at the front desk.</p>`
+  },
+  {
+    id: 15, category: 'tech', title: 'VR Headset Setup & Troubleshooting',
+    description: 'Setting up, maintaining, and troubleshooting VR headsets for sim racing use.',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-09',
+    content: `<h4>Purpose</h4><p>VR provides an immersive experience but requires careful setup and maintenance to avoid issues during customer sessions.</p>
+<h4>Setup for Each Session</h4><ol>
+<li>Check the headset lenses for smudges — clean with a microfiber cloth only</li>
+<li>Verify the cable is securely connected (USB and DisplayPort/USB-C)</li>
+<li>Launch SteamVR (or Oculus software) and confirm tracking is active</li>
+<li>Adjust the IPD (interpupillary distance) based on the customer's preference</li>
+<li>Help the customer put on the headset and adjust the head strap for comfort</li>
+</ol>
+<h4>Troubleshooting</h4><ul>
+<li><strong>Black screen</strong>: Reseat the cable, restart SteamVR, check GPU output</li>
+<li><strong>Tracking lost</strong>: Check base station visibility (if applicable), restart tracking</li>
+<li><strong>Blurry image</strong>: Adjust IPD, clean lenses, check per-app supersampling settings</li>
+<li><strong>Motion sickness reported</strong>: Reduce FOV vignette, ensure framerate is locked at 90 Hz+, suggest a short break</li>
+</ul>`
+  },
+  {
+    id: 16, category: 'staff', title: 'New Hire Onboarding Checklist',
+    description: 'Complete onboarding process for new staff members at Velocity Pro Sims.',
+    priority: 'critical', updatedBy: 'Jose', updatedAt: '2026-03-21',
+    content: `<h4>Purpose</h4><p>Ensure every new team member is fully prepared to represent Velocity Pro Sims and deliver the experience our customers expect.</p>
+<h4>Day 1</h4><ol>
+<li>Facility tour — show all areas including back-of-house, server room, storage</li>
+<li>Introduce to all on-duty staff members</li>
+<li>Issue uniform/branded gear and name badge</li>
+<li>Review and sign: employment agreement, safety policy, NDA (if applicable)</li>
+<li>Set up accounts: POS system, booking system, team chat, email</li>
+</ol>
+<h4>Week 1 Training</h4><ol>
+<li>Shadow an experienced staff member for at least 3 full shifts</li>
+<li>Complete all SOP readings in this portal (quiz to follow)</li>
+<li>Practice: customer check-in flow, rig setup, basic troubleshooting</li>
+<li>Learn the opening and closing procedures</li>
+</ol>
+<h4>Week 2</h4><ol>
+<li>Supervised solo shifts with a senior team member on standby</li>
+<li>Complete the equipment calibration training</li>
+<li>Review performance and address any gaps</li>
+</ol>
+<h4>Sign-Off</h4><p>Manager signs off the onboarding checklist when the new hire can independently perform all core duties. Target: end of Week 2.</p>`
+  },
+  {
+    id: 17, category: 'staff', title: 'Staff Scheduling & Shift Policies',
+    description: 'Policies for shift scheduling, swaps, call-outs, and overtime.',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-08',
+    content: `<h4>Purpose</h4><p>Fair, consistent scheduling ensures proper staffing coverage while respecting team members' time and availability.</p>
+<h4>Schedule Publication</h4><ul>
+<li>Schedules are published every Friday for the following week</li>
+<li>All staff must submit availability preferences by Wednesday</li>
+<li>Schedules are posted in the team chat and on the break room board</li>
+</ul>
+<h4>Shift Swaps</h4><ul>
+<li>Swaps must be arranged directly between staff members</li>
+<li>Both parties must confirm the swap with the shift lead or manager via team chat</li>
+<li>Swaps must be confirmed at least 24 hours before the shift</li>
+</ul>
+<h4>Call-Outs</h4><ul>
+<li>Must notify the shift lead at least 4 hours before the shift starts</li>
+<li>Text and call — a text alone is not sufficient</li>
+<li>Repeated no-call/no-shows will result in disciplinary action per the employee handbook</li>
+</ul>
+<h4>Overtime</h4><p>Overtime must be approved in advance by a manager. Overtime is paid at 1.5x the regular rate per local labor laws.</p>`
+  },
+  {
+    id: 18, category: 'operations', title: 'Cash Handling & POS Procedures',
+    description: 'Proper cash handling, POS operation, and end-of-day reconciliation.',
+    priority: 'critical', updatedBy: 'Jose', updatedAt: '2026-03-20',
+    content: `<h4>Purpose</h4><p>Accurate cash handling protects the business and builds trust. Every dollar must be accounted for.</p>
+<h4>Opening the Register</h4><ol>
+<li>Count the starting float (should be $200 or the amount set by management)</li>
+<li>Verify the count matches the closing count from the previous day</li>
+<li>Log the count in the daily cash sheet with your name and time</li>
+</ol>
+<h4>During Operations</h4><ul>
+<li>Always count change back to the customer</li>
+<li>Place large bills ($50, $100) under the cash tray after verifying they are not counterfeit</li>
+<li>Print and hand receipts for all transactions</li>
+<li>Never leave the register open unattended</li>
+</ul>
+<h4>Closing</h4><ol>
+<li>Run the POS end-of-day report</li>
+<li>Count all cash in the drawer and compare to the POS report</li>
+<li>Document any discrepancies on the cash sheet — do NOT adjust without manager approval</li>
+<li>Place cash in the deposit envelope, seal it, and place it in the safe</li>
+<li>Log the final count and sign off</li>
+</ol>`
+  },
+  {
+    id: 19, category: 'accounting', title: 'Daily Revenue Reconciliation',
+    description: 'End-of-day process for reconciling all revenue streams against POS and booking system records.',
+    priority: 'critical', updatedBy: 'Jose', updatedAt: '2026-03-21',
+    content: `<h4>Purpose</h4><p>Ensure all revenue collected each day is accurately recorded and any discrepancies are identified immediately. This protects the business from losses and keeps financial records audit-ready.</p>
+<h4>Procedure</h4><ol>
+<li>Pull the daily sales report from the POS system</li>
+<li>Cross-reference with the booking system's completed sessions for the day</li>
+<li>Verify card transaction totals match the payment processor dashboard</li>
+<li>Count the physical cash drawer and compare against the POS cash report</li>
+<li>Record any gift card redemptions, promo codes, or comped sessions separately</li>
+<li>Log all figures in the Daily Revenue Sheet (shared Google Sheet or accounting software)</li>
+<li>Flag any discrepancy over $5 and notify the manager with a written note</li>
+</ol>
+<h4>Revenue Categories to Track</h4><ul>
+<li>Walk-in sessions (hourly rentals)</li>
+<li>Pre-booked sessions (online bookings)</li>
+<li>League and event fees</li>
+<li>Corporate event packages</li>
+<li>Merchandise and food/beverage sales</li>
+<li>Gift card sales vs. redemptions</li>
+</ul>
+<h4>Deadline</h4><p>Reconciliation must be completed before the closing staff member leaves for the night. The completed report should be submitted by 11:59 PM.</p>`
+  },
+  {
+    id: 20, category: 'accounting', title: 'Invoice & Accounts Receivable',
+    description: 'Creating, sending, and tracking invoices for corporate events, league sponsorships, and outstanding balances.',
+    priority: 'important', updatedBy: 'Jose', updatedAt: '2026-03-18',
+    content: `<h4>Purpose</h4><p>Maintain a healthy cash flow by ensuring all invoices are sent promptly and payments are tracked until received.</p>
+<h4>When to Invoice</h4><ul>
+<li>Corporate events — send the invoice within 24 hours of the event</li>
+<li>Sponsorship agreements — invoice per the terms in the signed agreement</li>
+<li>Outstanding balances — if a customer's payment fails, send an invoice within 48 hours</li>
+<li>Recurring league fees — invoice at the start of each league season</li>
+</ul>
+<h4>Invoice Creation</h4><ol>
+<li>Use the approved invoice template in the accounting software (QuickBooks, Xero, etc.)</li>
+<li>Include: company name, itemized services, date of service, payment terms (Net 15 or Net 30), and payment methods accepted</li>
+<li>Attach any signed agreements or booking confirmations as supporting documents</li>
+<li>Double-check the recipient email and amounts before sending</li>
+</ol>
+<h4>Follow-Up Schedule</h4><ul>
+<li><strong>Day 7</strong>: Friendly reminder email if unpaid</li>
+<li><strong>Day 15</strong>: Second reminder with the invoice re-attached</li>
+<li><strong>Day 30</strong>: Phone call from the manager, escalation warning</li>
+<li><strong>Day 45+</strong>: Escalate to owner for collections decision</li>
+</ul>`
+  },
+  {
+    id: 21, category: 'accounting', title: 'Expense Tracking & Receipts',
+    description: 'Procedures for logging business expenses, submitting receipts, and managing petty cash.',
+    priority: 'important', updatedBy: 'Jose', updatedAt: '2026-03-15',
+    content: `<h4>Purpose</h4><p>Accurate expense tracking is essential for tax preparation, budgeting, and understanding the true cost of operations.</p>
+<h4>Expense Categories</h4><ul>
+<li><strong>Equipment</strong>: Sim hardware, PCs, peripherals, replacement parts</li>
+<li><strong>Facility</strong>: Rent, utilities, insurance, cleaning supplies</li>
+<li><strong>Software</strong>: Sim licenses, POS subscriptions, booking platform fees</li>
+<li><strong>Marketing</strong>: Social media ads, print materials, sponsorships</li>
+<li><strong>Staff</strong>: Payroll, uniforms, training materials</li>
+<li><strong>Supplies</strong>: Cleaning products, VR face covers, office supplies</li>
+</ul>
+<h4>Receipt Submission</h4><ol>
+<li>Photograph or scan every receipt the same day as the purchase</li>
+<li>Upload to the shared expense folder or accounting software with the correct category</li>
+<li>Include a brief note describing the purchase purpose</li>
+<li>Physical receipts should be stored in the monthly receipt envelope at the front desk</li>
+</ol>
+<h4>Petty Cash</h4><ul>
+<li>Petty cash fund: $150 (replenished monthly)</li>
+<li>Any purchase over $50 requires prior manager approval</li>
+<li>Log every withdrawal in the Petty Cash Ledger with date, amount, purpose, and initials</li>
+<li>Reconcile the petty cash fund at the end of each month</li>
+</ul>`
+  },
+  {
+    id: 22, category: 'accounting', title: 'Payroll Processing',
+    description: 'Bi-weekly payroll workflow including timesheet verification, overtime calculation, and payment submission.',
+    priority: 'critical', updatedBy: 'Jose', updatedAt: '2026-03-20',
+    content: `<h4>Purpose</h4><p>Ensure all staff members are paid accurately and on time, every pay period.</p>
+<h4>Payroll Schedule</h4><p>Payroll is processed bi-weekly. Timesheets are due by end of day Monday, and payments are issued on Friday.</p>
+<h4>Procedure</h4><ol>
+<li>Collect and verify all staff timesheets from the scheduling/time-tracking system</li>
+<li>Cross-reference clock-in/out times with the shift schedule for discrepancies</li>
+<li>Calculate overtime hours (any hours over 40/week at 1.5x rate)</li>
+<li>Apply any bonuses, commissions (e.g., upsell bonuses for league sign-ups), or deductions</li>
+<li>Submit the payroll batch through the payroll provider (ADP, Gusto, etc.)</li>
+<li>Verify direct deposit confirmations and download pay stubs</li>
+<li>Distribute pay stubs to staff (email or printed, per their preference)</li>
+</ol>
+<h4>Records</h4><p>Maintain payroll records for a minimum of 4 years per federal requirements. Store digitally in the secure accounting drive with monthly backups.</p>`
+  },
+  {
+    id: 23, category: 'accounting', title: 'Monthly Financial Reporting',
+    description: 'Generating and reviewing monthly P&L, balance sheet, and KPI reports for the business.',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-10',
+    content: `<h4>Purpose</h4><p>Monthly financial reports give ownership clear visibility into business performance and inform strategic decisions.</p>
+<h4>Reports to Generate</h4><ul>
+<li><strong>Profit & Loss (P&L)</strong>: Revenue vs. expenses broken down by category</li>
+<li><strong>Balance Sheet</strong>: Assets, liabilities, and owner equity snapshot</li>
+<li><strong>Cash Flow Statement</strong>: Money in vs. money out for the month</li>
+<li><strong>KPI Dashboard</strong>: Revenue per rig, average session value, customer retention rate, league participation</li>
+</ul>
+<h4>Timeline</h4><ol>
+<li>Close the books for the prior month by the 3rd business day of the new month</li>
+<li>Generate reports by the 5th business day</li>
+<li>Owner/manager review meeting by the 7th business day</li>
+<li>Archive finalized reports in the shared accounting drive</li>
+</ol>
+<h4>Key Metrics to Watch</h4><ul>
+<li>Total revenue vs. prior month and same month last year</li>
+<li>Labor cost as a percentage of revenue (target: under 30%)</li>
+<li>Equipment maintenance costs trending up or down</li>
+<li>Customer acquisition cost vs. lifetime value</li>
+</ul>`
+  }
+];
+
+// ── State ──
+let sopData = [];
+let currentCategory = 'dashboard';
+
+// ── Init ──
+function init() {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  sopData = stored ? JSON.parse(stored) : [...defaultSOPs];
+  if (!stored) saveData();
+
+  if (sessionStorage.getItem(AUTH_KEY) === 'true') {
+    showApp();
+  }
+
+  document.getElementById('passwordInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') attemptLogin();
+  });
+  document.getElementById('searchInput').addEventListener('blur', () => {
+    setTimeout(() => { document.getElementById('searchDropdown').classList.remove('open'); }, 200);
+  });
+
+  buildSidebar();
+  buildCategorySelect();
+  renderDashboard();
+}
+
+function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(sopData)); }
+
+// ── Auth ──
+function attemptLogin() {
+  const pw = document.getElementById('passwordInput').value;
+  if (pw === TEAM_PASSWORD) {
+    sessionStorage.setItem(AUTH_KEY, 'true');
+    showApp();
+  } else {
+    document.getElementById('loginError').classList.add('show');
+    document.getElementById('passwordInput').value = '';
+    document.getElementById('passwordInput').focus();
+    setTimeout(() => document.getElementById('loginError').classList.remove('show'), 3000);
+  }
+}
+
+function showApp() {
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('app').classList.add('visible');
+}
+
+function logout() {
+  sessionStorage.removeItem(AUTH_KEY);
+  location.reload();
+}
+
+function togglePassword() {
+  const inp = document.getElementById('passwordInput');
+  const icon = document.getElementById('eyeIcon');
+  if (inp.type === 'password') { inp.type = 'text'; icon.className = 'fas fa-eye-slash'; }
+  else { inp.type = 'password'; icon.className = 'fas fa-eye'; }
+}
+
+// ── Sidebar ──
+function buildSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const catLabel = sidebar.querySelectorAll('.sidebar-label')[1];
+  // Remove old nav items after the category label
+  const existingItems = sidebar.querySelectorAll('.nav-item:not([data-cat="dashboard"])');
+  existingItems.forEach(el => el.remove());
+
+  categories.forEach(cat => {
+    const count = sopData.filter(s => s.category === cat.id).length;
+    const div = document.createElement('div');
+    div.className = 'nav-item' + (currentCategory === cat.id ? ' active' : '');
+    div.dataset.cat = cat.id;
+    div.onclick = () => showCategory(cat.id);
+    div.innerHTML = `<i class="fas ${cat.icon}" style="color:${currentCategory === cat.id ? cat.color : ''}"></i> ${cat.name} <span class="badge">${count}</span>`;
+    sidebar.appendChild(div);
+  });
+}
+
+function setActiveNav(catId) {
+  document.querySelectorAll('.nav-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.cat === catId);
+    const icon = el.querySelector('i');
+    if (icon && el.dataset.cat !== 'dashboard') {
+      const cat = categories.find(c => c.id === el.dataset.cat);
+      if (cat) icon.style.color = el.dataset.cat === catId ? cat.color : '';
+    }
+  });
+}
+
+// ── Category Select for Form ──
+function buildCategorySelect() {
+  const sel = document.getElementById('sopFormCategory');
+  sel.innerHTML = categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+}
+
+// ── Dashboard ──
+function showDashboard() {
+  currentCategory = 'dashboard';
+  setActiveNav('dashboard');
+  renderDashboard();
+}
+
+function renderDashboard() {
+  const main = document.getElementById('mainContent');
+  const totalSOPs = sopData.length;
+  const criticalCount = sopData.filter(s => s.priority === 'critical').length;
+  const catCount = new Set(sopData.map(s => s.category)).size;
+  const recentlyUpdated = sopData.filter(s => {
+    const d = new Date(s.updatedAt);
+    const now = new Date();
+    const diff = (now - d) / (1000 * 60 * 60 * 24);
+    return diff <= 7;
+  }).length;
+
+  main.innerHTML = `
+    <div class="dashboard-header">
+      <h1>Dashboard</h1>
+      <p>Manage and review all standard operating procedures for Velocity Pro Sims.</p>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Total SOPs</div>
+        <div class="stat-value"><span class="accent">${totalSOPs}</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Categories</div>
+        <div class="stat-value">${catCount}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Critical SOPs</div>
+        <div class="stat-value" style="color:#EF4444">${criticalCount}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Updated This Week</div>
+        <div class="stat-value"><span class="accent">${recentlyUpdated}</span></div>
+      </div>
+    </div>
+    <div class="sidebar-label" style="margin-bottom:16px;">Recent Updates</div>
+    <div class="sop-list">
+      ${sopData
+        .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+        .slice(0, 6)
+        .map(sop => renderSOPCard(sop))
+        .join('')}
+    </div>
+  `;
+}
+
+// ── Category View ──
+function showCategory(catId) {
+  currentCategory = catId;
+  setActiveNav(catId);
+  renderCategory(catId);
+}
+
+function renderCategory(catId) {
+  const cat = categories.find(c => c.id === catId);
+  const sops = sopData.filter(s => s.category === catId);
+  const main = document.getElementById('mainContent');
+
+  main.innerHTML = `
+    <div class="category-header">
+      <div class="category-header-left">
+        <div class="category-icon-lg" style="background:${cat.color}15; color:${cat.color}">
+          <i class="fas ${cat.icon}"></i>
+        </div>
+        <div>
+          <h2>${cat.name}</h2>
+          <span class="subtitle">${sops.length} procedure${sops.length !== 1 ? 's' : ''}</span>
+        </div>
+      </div>
+      <button class="btn-add-sop" onclick="openAddModal('${catId}')">
+        <i class="fas fa-plus"></i> Add SOP
+      </button>
+    </div>
+    <div class="sop-list">
+      ${sops.length ? sops.map(sop => renderSOPCard(sop)).join('') : '<p style="color:var(--text-muted);padding:20px 0;">No SOPs in this category yet. Click "Add SOP" to create one.</p>'}
+    </div>
+  `;
+}
+
+function renderSOPCard(sop) {
+  const cat = categories.find(c => c.id === sop.category);
+  return `
+    <div class="sop-card" onclick="openSOPModal(${sop.id})">
+      <div class="sop-card-icon" style="background:${cat.color}15; color:${cat.color}">
+        <i class="fas ${cat.icon}"></i>
+      </div>
+      <div class="sop-card-body">
+        <div class="sop-card-title">${sop.title}</div>
+        <div class="sop-card-desc">${sop.description}</div>
+      </div>
+      <div class="sop-card-meta">
+        <span class="sop-tag ${sop.priority}">${sop.priority}</span>
+        <span class="sop-card-date">${formatDate(sop.updatedAt)}</span>
+      </div>
+    </div>
+  `;
+}
+
+// ── SOP Modal ──
+function openSOPModal(id) {
+  const sop = sopData.find(s => s.id === id);
+  if (!sop) return;
+  const cat = categories.find(c => c.id === sop.category);
+  document.getElementById('modalTitle').textContent = sop.title;
+  document.getElementById('modalBody').innerHTML = `
+    <div class="meta-row">
+      <div class="meta-item"><span class="meta-label">Category</span><span class="meta-value" style="color:${cat.color}"><i class="fas ${cat.icon}"></i> ${cat.name}</span></div>
+      <div class="meta-item"><span class="meta-label">Priority</span><span class="meta-value"><span class="sop-tag ${sop.priority}">${sop.priority}</span></span></div>
+      <div class="meta-item"><span class="meta-label">Last Updated</span><span class="meta-value">${formatDate(sop.updatedAt)}</span></div>
+      <div class="meta-item"><span class="meta-label">Updated By</span><span class="meta-value">${sop.updatedBy}</span></div>
+    </div>
+    ${sop.content}
+  `;
+  document.getElementById('sopModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('sopModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── Add SOP Modal ──
+function openAddModal(catId) {
+  document.getElementById('addModalTitle').textContent = 'Add New SOP';
+  document.getElementById('sopFormTitle').value = '';
+  document.getElementById('sopFormCategory').value = catId || categories[0].id;
+  document.getElementById('sopFormPriority').value = 'standard';
+  document.getElementById('sopFormDesc').value = '';
+  document.getElementById('sopFormContent').value = '';
+  document.getElementById('addModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAddModal() {
+  document.getElementById('addModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function saveSOP() {
+  const title = document.getElementById('sopFormTitle').value.trim();
+  const category = document.getElementById('sopFormCategory').value;
+  const priority = document.getElementById('sopFormPriority').value;
+  const desc = document.getElementById('sopFormDesc').value.trim();
+  const rawContent = document.getElementById('sopFormContent').value.trim();
+
+  if (!title || !desc || !rawContent) {
+    alert('Please fill in all fields.');
+    return;
+  }
+
+  // Simple markdown-ish parsing
+  let content = rawContent
+    .replace(/^## (.+)$/gm, '<h4>$1</h4>')
+    .replace(/^### (.+)$/gm, '<h4>$1</h4>')
+    .replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>')
+    .replace(/^[-*]\s+(.+)$/gm, '<li>$1</li>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+  // Wrap consecutive <li> in <ol> or <ul>
+  content = content.replace(/((<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>');
+  // Wrap non-tag lines in <p>
+  content = content.split('\n').map(line => {
+    line = line.trim();
+    if (!line || line.startsWith('<')) return line;
+    return `<p>${line}</p>`;
+  }).join('\n');
+
+  const newSOP = {
+    id: Date.now(),
+    category, title, description: desc, priority,
+    updatedBy: 'Jose',
+    updatedAt: new Date().toISOString().split('T')[0],
+    content
+  };
+
+  sopData.push(newSOP);
+  saveData();
+  closeAddModal();
+  buildSidebar();
+
+  if (currentCategory === 'dashboard') renderDashboard();
+  else if (currentCategory === category) renderCategory(category);
+  else showCategory(category);
+}
+
+// ── Search ──
+function handleSearch(query) {
+  const dropdown = document.getElementById('searchDropdown');
+  if (!query.trim()) { dropdown.classList.remove('open'); return; }
+
+  const q = query.toLowerCase();
+  const results = sopData.filter(s =>
+    s.title.toLowerCase().includes(q) ||
+    s.description.toLowerCase().includes(q) ||
+    s.content.toLowerCase().includes(q)
+  ).slice(0, 8);
+
+  if (!results.length) {
+    dropdown.innerHTML = '<div style="padding:14px;color:var(--text-muted);font-size:0.85rem;">No results found</div>';
+  } else {
+    dropdown.innerHTML = results.map(sop => {
+      const cat = categories.find(c => c.id === sop.category);
+      return `<div class="search-result-item" onclick="openSOPModal(${sop.id})">
+        <div class="sr-cat"><i class="fas ${cat.icon}"></i> ${cat.name}</div>
+        <div class="sr-title">${sop.title}</div>
+      </div>`;
+    }).join('');
+  }
+  dropdown.classList.add('open');
+}
+
+// ── Helpers ──
+function formatDate(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+// ── Keyboard shortcuts ──
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeModal(); closeAddModal(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+  }
+});
+
+// ── Boot ──
+init();
+</script>
+
+</body>
+</html>
