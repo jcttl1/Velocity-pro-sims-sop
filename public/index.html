@@ -258,6 +258,139 @@
     .stat-value { font-family: 'Rajdhani', sans-serif; font-size: 2rem; font-weight: 700; color: var(--text-primary); }
     .stat-value .accent { color: var(--green); }
 
+    /* ── Dynamic Dashboard ── */
+    .dash-date-section { margin-bottom: 24px; }
+    .dash-date-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px; margin-bottom: 12px;
+      background: var(--bg-secondary); border: 1px solid var(--border);
+      border-radius: var(--radius); cursor: pointer;
+      transition: all var(--transition);
+      position: relative;
+    }
+    .dash-date-header:hover { border-color: var(--border-light); background: var(--bg-card); }
+    .dash-date-header.today { border-color: var(--green); border-left: 3px solid var(--green); }
+    .dash-date-icon {
+      width: 44px; height: 44px; border-radius: var(--radius-sm);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-family: 'Rajdhani', sans-serif; font-weight: 700; line-height: 1;
+      flex-shrink: 0;
+    }
+    .dash-date-icon .day-num { font-size: 1.3rem; color: var(--text-primary); }
+    .dash-date-icon .day-name { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+    .dash-date-info { flex: 1; min-width: 0; }
+    .dash-date-title { font-family: 'Rajdhani', sans-serif; font-size: 1.05rem; font-weight: 600; color: var(--text-primary); }
+    .dash-date-sub { font-size: 0.8rem; color: var(--text-secondary); margin-top: 2px; }
+    .dash-date-badge {
+      font-size: 0.7rem; font-weight: 600; padding: 3px 8px;
+      border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0;
+    }
+    .dash-date-badge.srp { background: rgba(249,115,22,0.12); color: #F97316; }
+    .dash-date-badge.vps { background: var(--green-dim); color: var(--green); }
+    .dash-date-chevron {
+      color: var(--text-muted); font-size: 0.8rem; transition: transform var(--transition); flex-shrink: 0;
+    }
+    .dash-date-header.expanded .dash-date-chevron { transform: rotate(90deg); }
+
+    .dash-events-body {
+      max-height: 0; overflow: hidden; transition: max-height 0.35s ease;
+      margin-left: 16px; padding-left: 16px; border-left: 2px solid var(--border);
+    }
+    .dash-events-body.open { max-height: 2000px; }
+
+    .dash-event-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 14px 16px;
+      margin-bottom: 10px; transition: all var(--transition);
+    }
+    .dash-event-card:hover { border-color: var(--border-light); }
+    .dash-event-header {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    }
+    .dash-event-name { font-weight: 600; font-size: 0.95rem; color: var(--text-primary); flex: 1; }
+    .dash-event-time { font-size: 0.8rem; color: var(--text-secondary); }
+    .dash-event-meta {
+      display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;
+    }
+    .dash-event-meta i { margin-right: 4px; }
+
+    .dash-tasks { margin-top: 8px; }
+    .dash-task-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 8px 10px; border-radius: var(--radius-sm);
+      cursor: pointer; transition: background var(--transition);
+    }
+    .dash-task-item:hover { background: var(--bg-card-hover); }
+    .dash-task-check {
+      width: 20px; height: 20px; border-radius: 4px;
+      border: 2px solid var(--border-light); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all var(--transition); margin-top: 1px;
+      cursor: pointer;
+    }
+    .dash-task-check i { font-size: 0.65rem; color: transparent; transition: color var(--transition); }
+    .dash-task-item.completed .dash-task-check {
+      background: var(--green); border-color: var(--green);
+    }
+    .dash-task-item.completed .dash-task-check i { color: #fff; }
+    .dash-task-item.completed .dash-task-text {
+      text-decoration: line-through; color: var(--text-muted);
+    }
+    .dash-task-text { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.4; }
+
+    .dash-add-task {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 10px; margin-top: 4px;
+    }
+    .dash-add-task input {
+      flex: 1; background: transparent; border: none; outline: none;
+      color: var(--text-primary); font-size: 0.85rem; font-family: 'Inter', sans-serif;
+    }
+    .dash-add-task input::placeholder { color: var(--text-muted); }
+    .dash-add-task button {
+      background: transparent; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      color: var(--green); padding: 4px 10px; cursor: pointer; font-size: 0.78rem;
+      transition: all var(--transition);
+    }
+    .dash-add-task button:hover { background: var(--green-dim); border-color: var(--green); }
+
+    .dash-task-progress {
+      display: flex; align-items: center; gap: 8px;
+      margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border);
+    }
+    .dash-task-progress-bar {
+      flex: 1; height: 4px; background: var(--bg-input); border-radius: 2px; overflow: hidden;
+    }
+    .dash-task-progress-fill {
+      height: 100%; background: var(--green); border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+    .dash-task-progress-text { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; }
+
+    .dash-no-events {
+      text-align: center; padding: 60px 20px; color: var(--text-muted);
+    }
+    .dash-no-events i { font-size: 2.5rem; margin-bottom: 16px; display: block; color: var(--border-light); }
+    .dash-no-events p { font-size: 0.95rem; margin-bottom: 8px; }
+    .dash-no-events .sub { font-size: 0.82rem; }
+
+    .dash-section-label {
+      font-size: 0.75rem; font-weight: 600; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .dash-section-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    .dash-task-delete {
+      opacity: 0; background: transparent; border: none; color: var(--text-muted);
+      cursor: pointer; padding: 2px 4px; font-size: 0.7rem; transition: all var(--transition);
+      margin-left: auto; flex-shrink: 0;
+    }
+    .dash-task-item:hover .dash-task-delete { opacity: 1; }
+    .dash-task-delete:hover { color: var(--danger); }
+
     /* ── Category View ── */
     .category-view { display: none; }
     .category-view.active { display: block; }
@@ -870,6 +1003,15 @@
       .stat-value { font-size: 1.6rem; }
       .stat-label { font-size: 0.72rem; }
 
+      .dash-date-header { padding: 10px 12px; gap: 8px; }
+      .dash-date-icon { width: 36px; height: 36px; }
+      .dash-date-icon .day-num { font-size: 1.1rem; }
+      .dash-date-title { font-size: 0.92rem; }
+      .dash-date-sub { font-size: 0.72rem; }
+      .dash-events-body { margin-left: 8px; padding-left: 12px; }
+      .dash-event-meta { gap: 8px; font-size: 0.72rem; }
+      .dash-task-text { font-size: 0.82rem; }
+
       .search-bar { width: 180px; }
       .search-bar input { padding: 8px 12px 8px 32px; font-size: 0.82rem; }
 
@@ -930,6 +1072,454 @@
       .cat-grid { grid-template-columns: 1fr !important; }
 
       .modal-overlay .modal { max-height: 95vh; max-height: 95dvh; }
+    }
+
+    /* ── Contacts Tree & Admin Panel ── */
+    .contacts-tree {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      padding: 24px 0;
+    }
+
+    .tree-level {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .tree-level.level-0 { align-items: center; }
+    .tree-level.level-1 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .tree-level.level-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-left: 40px;
+    }
+
+    .tree-branch {
+      position: relative;
+      height: 30px;
+      margin: 10px 0;
+    }
+
+    .tree-branch svg {
+      width: 100%;
+      height: 100%;
+      stroke: var(--green);
+      stroke-width: 2;
+      fill: none;
+    }
+
+    .contact-node {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      transition: all var(--transition);
+      position: relative;
+    }
+
+    .contact-node:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-light);
+      transform: translateY(-2px);
+    }
+
+    .contact-node.level-0 {
+      max-width: 350px;
+      border: 2px solid var(--green);
+      background: linear-gradient(135deg, rgba(20,184,166,0.08) 0%, rgba(20,184,166,0.04) 100%);
+    }
+
+    .contact-node-header {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .contact-node-title {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .contact-node-details {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.8rem;
+    }
+
+    .contact-detail-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+    }
+
+    .contact-detail-line i {
+      width: 14px;
+      text-align: center;
+      color: var(--green);
+    }
+
+    .contact-detail-line a {
+      color: var(--green);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+
+    .contact-detail-line a:hover {
+      color: var(--green-light);
+    }
+
+    .tree-connector {
+      position: absolute;
+      background: var(--green);
+    }
+
+    .contacts-admin-panel {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-top: 32px;
+    }
+
+    .contacts-admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .contacts-admin-header h3 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .contacts-admin-btn {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      background: var(--green);
+      color: var(--bg-primary);
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 10px 16px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all var(--transition);
+      font-weight: 600;
+    }
+
+    .contacts-admin-btn:hover {
+      background: var(--green-light);
+      transform: translateY(-2px);
+    }
+
+    .contacts-pin-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .contacts-pin-overlay.open {
+      display: flex;
+    }
+
+    .contacts-pin-modal {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .contacts-pin-modal h3 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .contacts-pin-input {
+      width: 100%;
+      padding: 12px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-size: 1rem;
+      letter-spacing: 2px;
+      margin-bottom: 24px;
+      text-align: center;
+      font-family: monospace;
+    }
+
+    .contacts-pin-input:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(92, 191, 42, 0.1);
+    }
+
+    .contacts-pin-error {
+      color: var(--danger);
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+      min-height: 18px;
+    }
+
+    .contacts-pin-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .contacts-pin-buttons button {
+      flex: 1;
+      padding: 10px 16px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .contacts-pin-buttons .btn-submit {
+      background: var(--green);
+      color: var(--bg-primary);
+    }
+
+    .contacts-pin-buttons .btn-submit:hover {
+      background: var(--green-light);
+    }
+
+    .contacts-pin-buttons .btn-cancel {
+      background: var(--border);
+      color: var(--text-primary);
+    }
+
+    .contacts-pin-buttons .btn-cancel:hover {
+      background: var(--border-light);
+    }
+
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .contact-admin-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      font-size: 0.85rem;
+    }
+
+    .contact-admin-item-info {
+      flex: 1;
+    }
+
+    .contact-admin-item-name {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .contact-admin-item-title {
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+    }
+
+    .contact-admin-item-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .contact-admin-item-actions button {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      border-radius: var(--radius-sm);
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: all var(--transition);
+    }
+
+    .contact-admin-item-actions button:hover {
+      border-color: var(--text-secondary);
+      color: var(--text-primary);
+    }
+
+    .contact-admin-item-actions button.btn-delete:hover {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .contact-form {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .contact-form .form-group {
+      margin-bottom: 12px;
+    }
+
+    .contact-form .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .contact-form label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .contact-form input,
+    .contact-form select {
+      width: 100%;
+      padding: 8px 12px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      transition: all var(--transition);
+    }
+
+    .contact-form input:focus,
+    .contact-form select:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(92, 191, 42, 0.1);
+    }
+
+    .contact-form-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .contact-form-actions button {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .contact-form-actions .btn-save {
+      background: var(--green);
+      color: var(--bg-primary);
+    }
+
+    .contact-form-actions .btn-save:hover {
+      background: var(--green-light);
+    }
+
+    .contact-form-actions .btn-cancel-form {
+      background: var(--border);
+      color: var(--text-primary);
+    }
+
+    .contact-form-actions .btn-cancel-form:hover {
+      background: var(--border-light);
+    }
+
+    .contacts-add-btn {
+      background: var(--green);
+      color: var(--bg-primary);
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 10px 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all var(--transition);
+      margin-bottom: 16px;
+    }
+
+    .contacts-add-btn:hover {
+      background: var(--green-light);
+    }
+
+    @media (max-width: 768px) {
+      .tree-level.level-1 {
+        grid-template-columns: 1fr;
+      }
+
+      .tree-level.level-2 {
+        margin-left: 20px;
+        grid-template-columns: 1fr;
+      }
+
+      .contact-node {
+        padding: 12px;
+      }
+
+      .contacts-admin-btn {
+        position: static;
+        width: 100%;
+        margin-top: 16px;
+        justify-content: center;
+      }
+
+      .contact-admin-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .contact-admin-item-actions {
+        width: 100%;
+        margin-top: 8px;
+      }
+
+      .contact-admin-item-actions button {
+        flex: 1;
+      }
+
+      .contacts-pin-modal {
+        padding: 24px;
+      }
     }
   </style>
   <!-- Firebase SDK -->
@@ -1034,6 +1624,19 @@
       <button class="modal-close" onclick="closeModal()"><i class="fas fa-xmark"></i></button>
     </div>
     <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ═══ Contacts Admin PIN Modal ═══ -->
+<div class="contacts-pin-overlay" id="contactsPinOverlay">
+  <div class="contacts-pin-modal">
+    <h3><i class="fas fa-lock" style="margin-right:8px;"></i>Admin Access Required</h3>
+    <input type="password" id="contactsPinInput" class="contacts-pin-input" placeholder="Enter PIN" autocomplete="off" maxlength="6">
+    <div class="contacts-pin-error" id="contactsPinError"></div>
+    <div class="contacts-pin-buttons">
+      <button class="btn-submit" onclick="submitContactsPin()">Unlock</button>
+      <button class="btn-cancel" onclick="closeContactsPin()">Cancel</button>
+    </div>
   </div>
 </div>
 
@@ -1278,6 +1881,7 @@ const AUTH_KEY = 'vps_auth';
 const categories = [
   { id: 'accounting', name: 'Accounting', icon: 'fa-calculator', color: '#10B981' },
   { id: 'calendar', name: 'Calendar', icon: 'fa-calendar-days', color: '#5CBF2A' },
+  { id: 'contacts', name: 'Contacts', icon: 'fa-address-book', color: '#14B8A6' },
   { id: 'customer', name: 'Customer Service', icon: 'fa-headset', color: '#8B5CF6' },
   { id: 'equipment', name: 'Equipment & Simulators', icon: 'fa-desktop', color: '#5CBF2A' },
   { id: 'events', name: 'Events', icon: 'fa-trophy', color: '#EC4899' },
@@ -1995,6 +2599,7 @@ function init() {
     setTimeout(() => { document.getElementById('searchDropdown').classList.remove('open'); }, 200);
   });
 
+  loadContacts();
   buildSidebar();
   buildCategorySelect();
   renderDashboard();
@@ -2071,7 +2676,7 @@ function buildSidebar() {
   existingItems.forEach(el => el.remove());
 
   categories.forEach(cat => {
-    const count = cat.id === 'assets' ? assetsData.length : cat.id === 'calendar' ? (srpEvents.length + vpsEvents.length) : sopData.filter(s => s.category === cat.id).length;
+    const count = cat.id === 'assets' ? assetsData.length : cat.id === 'calendar' ? (srpEvents.length + vpsEvents.length) : cat.id === 'contacts' ? contactsData.length : sopData.filter(s => s.category === cat.id).length;
     const div = document.createElement('div');
     div.className = 'nav-item' + (currentCategory === cat.id ? ' active' : '');
     div.dataset.cat = cat.id;
@@ -2105,49 +2710,318 @@ function showDashboard() {
   renderDashboard();
 }
 
+// ── Dashboard Tasks Storage ──
+const DASH_TASKS_KEY = 'vps_dash_tasks';
+
+function loadDashTasks() {
+  const stored = localStorage.getItem(DASH_TASKS_KEY);
+  return stored ? JSON.parse(stored) : {};
+}
+
+function saveDashTasks(tasks) {
+  localStorage.setItem(DASH_TASKS_KEY, JSON.stringify(tasks));
+}
+
+function toggleDashTask(eventKey, taskIndex) {
+  const tasks = loadDashTasks();
+  if (!tasks[eventKey]) return;
+  tasks[eventKey][taskIndex].done = !tasks[eventKey][taskIndex].done;
+  saveDashTasks(tasks);
+  renderDashboard();
+}
+
+function addDashTask(eventKey) {
+  const input = document.getElementById('dashAddInput_' + CSS.escape(eventKey));
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text) return;
+  const tasks = loadDashTasks();
+  if (!tasks[eventKey]) tasks[eventKey] = [];
+  tasks[eventKey].push({ text, done: false });
+  saveDashTasks(tasks);
+  renderDashboard();
+  // Re-expand that section and refocus
+  setTimeout(() => {
+    const header = document.querySelector(`[data-dash-key="${CSS.escape(eventKey)}"]`);
+    if (header && !header.classList.contains('expanded')) header.click();
+    const newInput = document.getElementById('dashAddInput_' + CSS.escape(eventKey));
+    if (newInput) newInput.focus();
+  }, 50);
+}
+
+function removeDashTask(eventKey, taskIndex) {
+  const tasks = loadDashTasks();
+  if (!tasks[eventKey]) return;
+  tasks[eventKey].splice(taskIndex, 1);
+  if (tasks[eventKey].length === 0) delete tasks[eventKey];
+  saveDashTasks(tasks);
+  renderDashboard();
+}
+
+function toggleDashSection(el) {
+  const body = el.nextElementSibling;
+  const isOpen = el.classList.contains('expanded');
+  if (isOpen) {
+    el.classList.remove('expanded');
+    body.classList.remove('open');
+  } else {
+    el.classList.add('expanded');
+    body.classList.add('open');
+  }
+}
+
+function generateDefaultTasks(evt) {
+  const tasks = [];
+  const type = (evt.type || '').toLowerCase();
+  const name = (evt.name || evt.title || '').toLowerCase();
+  const isSRP = evt._source === 'srp';
+
+  if (isSRP) {
+    tasks.push({ text: 'Confirm event logistics and point of contact', done: false });
+    tasks.push({ text: 'Prepare and load simulators for transport', done: false });
+    if (evt.simulators) tasks.push({ text: 'Verify all ' + evt.simulators + ' simulator(s) are operational', done: false });
+    if (evt.loadInDate) tasks.push({ text: 'Complete load-in by ' + formatDate(evt.loadInDate) + (evt.loadInTime ? ' at ' + evt.loadInTime : ''), done: false });
+    tasks.push({ text: 'Run pre-session check on all rigs', done: false });
+    tasks.push({ text: 'Ensure backup equipment is packed', done: false });
+    if (evt.loadOutDate) tasks.push({ text: 'Complete load-out by ' + formatDate(evt.loadOutDate) + (evt.loadOutTime ? ' at ' + evt.loadOutTime : ''), done: false });
+  } else {
+    // VPS events
+    if (type === 'build') {
+      tasks.push({ text: 'Verify all parts and components received', done: false });
+      tasks.push({ text: 'Assemble chassis and mount hardware', done: false });
+      tasks.push({ text: 'Install and configure software', done: false });
+      tasks.push({ text: 'Run full calibration and QA test', done: false });
+      tasks.push({ text: 'Document build with photos', done: false });
+    } else if (type === 'delivery') {
+      tasks.push({ text: 'Final QA check before delivery', done: false });
+      tasks.push({ text: 'Secure simulator for transport', done: false });
+      tasks.push({ text: 'Deliver and set up at client location', done: false });
+      tasks.push({ text: 'Walk client through operation and care', done: false });
+      tasks.push({ text: 'Collect delivery confirmation / sign-off', done: false });
+    } else {
+      tasks.push({ text: 'Review event details and requirements', done: false });
+      tasks.push({ text: 'Assign team members to this event', done: false });
+      tasks.push({ text: 'Prepare all necessary equipment', done: false });
+      tasks.push({ text: 'Complete post-event wrap-up', done: false });
+    }
+  }
+  return tasks;
+}
+
+function getEventKey(evt) {
+  return evt._source + '_' + evt._id;
+}
+
 function renderDashboard() {
   const main = document.getElementById('mainContent');
-  const totalSOPs = sopData.length;
-  const criticalCount = sopData.filter(s => s.priority === 'critical').length;
-  const catCount = new Set(sopData.map(s => s.category)).size;
-  const recentlyUpdated = sopData.filter(s => {
-    const d = new Date(s.updatedAt);
-    const now = new Date();
-    const diff = (now - d) / (1000 * 60 * 60 * 24);
-    return diff <= 7;
-  }).length;
+  const today = new Date();
+  const todayStr = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+  const allEvents = [...vpsEvents, ...srpEvents];
+
+  // Collect events by date, today and future (next 30 days)
+  const dateMap = {};
+  const endDate = new Date(today);
+  endDate.setDate(endDate.getDate() + 30);
+  const endStr = endDate.getFullYear() + '-' + String(endDate.getMonth()+1).padStart(2,'0') + '-' + String(endDate.getDate()).padStart(2,'0');
+
+  allEvents.forEach(evt => {
+    if (!evt.date) return;
+    const start = evt.date;
+    const end = evt.endDate || evt.date;
+    // Include if any part of the event falls within our window
+    if (end < todayStr || start > endStr) return;
+    // Add to each day it spans within our window
+    const s = new Date(Math.max(new Date(start + 'T00:00:00'), today.setHours(0,0,0,0)));
+    const e = new Date(Math.min(new Date(end + 'T00:00:00'), endDate));
+    for (let d = new Date(s); d <= e; d.setDate(d.getDate() + 1)) {
+      const ds = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+      if (!dateMap[ds]) dateMap[ds] = [];
+      // Avoid duplicates
+      if (!dateMap[ds].find(x => x._source === evt._source && x._id === evt._id)) {
+        dateMap[ds].push(evt);
+      }
+    }
+  });
+
+  // Also include past events (last 3 days) that have incomplete tasks
+  const dashTasks = loadDashTasks();
+  const pastStart = new Date(today);
+  pastStart.setDate(pastStart.getDate() - 3);
+  allEvents.forEach(evt => {
+    if (!evt.date) return;
+    const end = evt.endDate || evt.date;
+    if (end >= todayStr) return; // Already handled above
+    const key = getEventKey(evt);
+    const tasks = dashTasks[key];
+    if (tasks && tasks.some(t => !t.done)) {
+      if (end >= pastStart.getFullYear() + '-' + String(pastStart.getMonth()+1).padStart(2,'0') + '-' + String(pastStart.getDate()).padStart(2,'0')) {
+        if (!dateMap[end]) dateMap[end] = [];
+        if (!dateMap[end].find(x => x._source === evt._source && x._id === evt._id)) {
+          dateMap[end].push(evt);
+        }
+      }
+    }
+  });
+
+  const sortedDates = Object.keys(dateMap).sort();
+
+  // Ensure tasks exist for each event
+  sortedDates.forEach(ds => {
+    dateMap[ds].forEach(evt => {
+      const key = getEventKey(evt);
+      if (!dashTasks[key]) {
+        dashTasks[key] = generateDefaultTasks(evt);
+      }
+    });
+  });
+  saveDashTasks(dashTasks);
+
+  // Separate into "today", "this week", and "upcoming"
+  const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  // Count total tasks and completed
+  let totalTasks = 0, completedTasks = 0;
+  sortedDates.forEach(ds => {
+    dateMap[ds].forEach(evt => {
+      const key = getEventKey(evt);
+      const t = dashTasks[key] || [];
+      totalTasks += t.length;
+      completedTasks += t.filter(x => x.done).length;
+    });
+  });
+
+  let sectionsHTML = '';
+
+  if (sortedDates.length === 0) {
+    sectionsHTML = `
+      <div class="dash-no-events">
+        <i class="fas fa-calendar-check"></i>
+        <p>No upcoming events</p>
+        <p class="sub">Events from your calendar will appear here with task checklists.<br>Head to the <a href="#" onclick="event.preventDefault();showCategory('calendar')" style="color:var(--green);text-decoration:none;">Calendar</a> to add events.</p>
+      </div>
+    `;
+  } else {
+    let currentSection = '';
+    sortedDates.forEach(ds => {
+      const d = new Date(ds + 'T00:00:00');
+      const isToday = ds === todayStr;
+      const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrowStr = tomorrow.getFullYear() + '-' + String(tomorrow.getMonth()+1).padStart(2,'0') + '-' + String(tomorrow.getDate()).padStart(2,'0');
+      const isTomorrow = ds === tomorrowStr;
+      const isPast = ds < todayStr;
+
+      // Section labels
+      let section = '';
+      if (isPast) section = 'Overdue';
+      else if (isToday) section = 'Today';
+      else if (isTomorrow) section = 'Tomorrow';
+      else {
+        const diff = Math.ceil((d - new Date(todayStr + 'T00:00:00')) / (1000*60*60*24));
+        section = diff <= 7 ? 'This Week' : 'Upcoming';
+      }
+
+      if (section !== currentSection) {
+        currentSection = section;
+        const icon = section === 'Overdue' ? 'fa-clock' : section === 'Today' ? 'fa-bolt' : section === 'Tomorrow' ? 'fa-sun' : section === 'This Week' ? 'fa-calendar-week' : 'fa-calendar';
+        const sColor = section === 'Overdue' ? 'color:var(--danger)' : section === 'Today' ? 'color:var(--green)' : '';
+        sectionsHTML += `<div class="dash-section-label" style="${sColor}"><i class="fas ${icon}"></i> ${section}</div>`;
+      }
+
+      const dateLabel = isToday ? 'Today' : isTomorrow ? 'Tomorrow' : dayNames[d.getDay()];
+      const dateSub = monthNames[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+      const events = dateMap[ds];
+
+      events.forEach(evt => {
+        const key = getEventKey(evt);
+        const tasks = dashTasks[key] || [];
+        const doneCount = tasks.filter(t => t.done).length;
+        const totalCount = tasks.length;
+        const pct = totalCount ? Math.round((doneCount / totalCount) * 100) : 0;
+        const evtName = evt.name || evt.title || 'Event';
+        const sourceTag = evt._source === 'srp' ? 'SRP' : 'VPS';
+        const sourceClass = evt._source === 'srp' ? 'srp' : 'vps';
+        const timeStr = evt.startTime ? evt.startTime + (evt.endTime ? ' — ' + evt.endTime : '') : '';
+        const autoExpand = isToday || isPast;
+
+        let metaHTML = '';
+        if (evt.type) metaHTML += `<span><i class="fas fa-tag"></i>${evt.type}</span>`;
+        if (evt.simulators) metaHTML += `<span><i class="fas fa-desktop"></i>${evt.simulators} sim(s)</span>`;
+        if (evt.status) metaHTML += `<span><i class="fas fa-circle-info"></i>${evt.status.replace('-',' ')}</span>`;
+        if (evt.description) metaHTML += `<span><i class="fas fa-align-left"></i>${evt.description.substring(0, 50)}${evt.description.length > 50 ? '...' : ''}</span>`;
+
+        let tasksHTML = tasks.map((t, i) => `
+          <div class="dash-task-item ${t.done ? 'completed' : ''}" onclick="toggleDashTask('${key}', ${i})">
+            <div class="dash-task-check"><i class="fas fa-check"></i></div>
+            <span class="dash-task-text">${t.text}</span>
+            <button class="dash-task-delete" onclick="event.stopPropagation();removeDashTask('${key}', ${i})" title="Remove task"><i class="fas fa-xmark"></i></button>
+          </div>
+        `).join('');
+
+        sectionsHTML += `
+          <div class="dash-date-section">
+            <div class="dash-date-header ${isToday ? 'today' : ''} ${autoExpand ? 'expanded' : ''}" data-dash-key="${key}" onclick="toggleDashSection(this)">
+              <div class="dash-date-icon">
+                <span class="day-num">${d.getDate()}</span>
+                <span class="day-name">${dayNames[d.getDay()].substring(0,3)}</span>
+              </div>
+              <div class="dash-date-info">
+                <div class="dash-date-title">${evtName}</div>
+                <div class="dash-date-sub">${dateLabel} · ${dateSub}${timeStr ? ' · ' + timeStr : ''}</div>
+              </div>
+              <span class="dash-date-badge ${sourceClass}">${sourceTag}</span>
+              ${totalCount > 0 ? `<span style="font-size:0.72rem;color:${pct===100?'var(--green)':'var(--text-muted)'};white-space:nowrap;">${doneCount}/${totalCount}</span>` : ''}
+              <i class="fas fa-chevron-right dash-date-chevron"></i>
+            </div>
+            <div class="dash-events-body ${autoExpand ? 'open' : ''}">
+              <div class="dash-event-card">
+                ${metaHTML ? `<div class="dash-event-meta">${metaHTML}</div>` : ''}
+                <div class="dash-tasks">
+                  ${tasksHTML}
+                  <div class="dash-add-task">
+                    <i class="fas fa-plus" style="color:var(--text-muted);font-size:0.75rem;"></i>
+                    <input type="text" id="dashAddInput_${key}" placeholder="Add a task..." onkeydown="if(event.key==='Enter'){event.stopPropagation();addDashTask('${key}');}">
+                    <button onclick="event.stopPropagation();addDashTask('${key}')">Add</button>
+                  </div>
+                </div>
+                ${totalCount > 0 ? `
+                <div class="dash-task-progress">
+                  <div class="dash-task-progress-bar"><div class="dash-task-progress-fill" style="width:${pct}%"></div></div>
+                  <span class="dash-task-progress-text">${pct}% complete</span>
+                </div>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    });
+  }
+
+  // Summary bar at top
+  const upcomingCount = sortedDates.reduce((acc, ds) => acc + dateMap[ds].length, 0);
+  const overdueDates = sortedDates.filter(ds => ds < todayStr);
+  const overdueCount = overdueDates.reduce((acc, ds) => acc + dateMap[ds].length, 0);
 
   main.innerHTML = `
     <div class="dashboard-header">
       <h1>Dashboard</h1>
-      <p>Manage and review all standard operating procedures for Velocity Pro Sims.</p>
+      <p>Your upcoming events and tasks at a glance.</p>
     </div>
-    <div class="stats-row">
+    <div class="stats-row" style="grid-template-columns: repeat(3, 1fr);">
       <div class="stat-card">
-        <div class="stat-label">Total SOPs</div>
-        <div class="stat-value"><span class="accent">${totalSOPs}</span></div>
+        <div class="stat-label">Upcoming Events</div>
+        <div class="stat-value"><span class="accent">${upcomingCount}</span></div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Categories</div>
-        <div class="stat-value">${catCount}</div>
+        <div class="stat-label">Tasks Complete</div>
+        <div class="stat-value">${totalTasks > 0 ? `<span class="accent">${completedTasks}</span><span style="font-size:1rem;color:var(--text-muted)">/${totalTasks}</span>` : '<span style="color:var(--text-muted)">—</span>'}</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Critical SOPs</div>
-        <div class="stat-value" style="color:#EF4444">${criticalCount}</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Updated This Week</div>
-        <div class="stat-value"><span class="accent">${recentlyUpdated}</span></div>
+        <div class="stat-label">${overdueCount > 0 ? 'Overdue' : 'Status'}</div>
+        <div class="stat-value" style="color:${overdueCount > 0 ? 'var(--danger)' : 'var(--green)'}">${overdueCount > 0 ? overdueCount : (totalTasks > 0 && completedTasks === totalTasks ? '✓' : 'On Track')}</div>
       </div>
     </div>
-    <div class="sidebar-label" style="margin-bottom:16px;">Recent Updates</div>
-    <div class="sop-list">
-      ${sopData
-        .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
-        .slice(0, 6)
-        .map(sop => renderSOPCard(sop))
-        .join('')}
-    </div>
+    ${sectionsHTML}
   `;
 }
 
@@ -2223,6 +3097,7 @@ function renderCategory(catId) {
   if (catId === 'websites') return renderWebsitesCategory();
   if (catId === 'assets') return renderAssetsCategory();
   if (catId === 'calendar') return renderCalendarCategory();
+  if (catId === 'contacts') return renderContactsCategory();
 
   const cat = categories.find(c => c.id === catId);
   const sops = sopData.filter(s => s.category === catId);
@@ -2723,6 +3598,7 @@ function startCalendarListeners() {
     }
     buildSidebar();
     if (currentCategory === 'calendar') renderCalendarCategory();
+    if (currentCategory === 'dashboard') renderDashboard();
   }, err => console.error('SRP events listener error:', err));
   // Listen to VPS events
   rtdb.ref('vps_events').on('value', snap => {
@@ -2734,6 +3610,7 @@ function startCalendarListeners() {
     }
     buildSidebar();
     if (currentCategory === 'calendar') renderCalendarCategory();
+    if (currentCategory === 'dashboard') renderDashboard();
   }, err => console.error('VPS events listener error:', err));
 }
 
@@ -3121,7 +3998,7 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     closeShortcutsPanel();
     closeModal(); closeAddModal(); closeUploadModal(); closeAssetViewModal();
-    closeCalDetail(); closeCalEventModal(); closeMobileNav();
+    closeCalDetail(); closeCalEventModal(); closeMobileNav(); closeContactsAdmin();
     gKeyPending = false;
     return;
   }
@@ -3179,6 +4056,290 @@ document.addEventListener('keydown', e => {
     if (key === 't') { calToday(); return; }
   }
 });
+
+// ── Contacts ──
+const CONTACTS_STORAGE_KEY = 'vps_contacts';
+const CONTACTS_ADMIN_PIN = '12345';
+
+const defaultContacts = [
+  { id: 1, name: 'Jose Cabrera', title: 'Owner, President', phone: '954-296-6197', email: 'sales@velocityprosims.com', level: 0, order: 1 },
+  { id: 2, name: 'Rey Cabrera', title: 'Sales and Marketing Director', phone: '754-252-1130', email: 'sales@velocityprosims.com', level: 1, department: 'Sales & Marketing', order: 2 },
+  { id: 3, name: 'Tery Pickle', title: 'Chief Financial Officer', phone: '305-546-3507', email: 'accounting@velocityprosims.com', level: 1, department: 'Finance', order: 3 },
+  { id: 4, name: 'Robert Tañon', title: 'Operations Partner', phone: '954-639-2951', email: 'Robert.tanon@gmail.com', level: 1, department: 'Operations', order: 4 },
+  { id: 5, name: 'Seth Goodman', title: 'Simulator Tech', phone: '760-703-9708', email: 'sethgoodman657@gmail.com', level: 2, department: 'Technical', order: 5 },
+  { id: 6, name: 'Esdras Lopez', title: 'Simulator Tech', phone: '386-895-7381', email: '', level: 2, department: 'Technical', order: 6 },
+  { id: 7, name: 'Mario Castro', title: 'Simulator Tech', phone: '954-465-3378', email: 'gigioxr2@hotmail.com', level: 2, department: 'Technical', order: 7 },
+  { id: 8, name: 'Christopher Larrea', title: 'Sim Support / Sim Tech', phone: '954-842-5162', email: '', level: 2, department: 'Technical', order: 8 },
+  { id: 9, name: 'Corey Allen', title: 'Simulator Tech', phone: '305-610-2226', email: '', level: 2, department: 'Technical', order: 9 },
+];
+
+let contactsData = [];
+let contactsAdminUnlocked = false;
+let editingContactId = null;
+
+function loadContacts() {
+  const stored = localStorage.getItem(CONTACTS_STORAGE_KEY);
+  if (stored) {
+    contactsData = JSON.parse(stored);
+    const existingIds = new Set(contactsData.map(c => c.id));
+    defaultContacts.forEach(def => { if (!existingIds.has(def.id)) contactsData.push(def); });
+  } else {
+    contactsData = [...defaultContacts];
+  }
+  saveContacts();
+}
+
+function saveContacts() {
+  localStorage.setItem(CONTACTS_STORAGE_KEY, JSON.stringify(contactsData));
+  buildSidebar();
+}
+
+function openContactsPin() {
+  document.getElementById('contactsPinOverlay').classList.add('open');
+  document.getElementById('contactsPinInput').focus();
+  document.getElementById('contactsPinError').textContent = '';
+}
+
+function closeContactsPin() {
+  document.getElementById('contactsPinOverlay').classList.remove('open');
+  document.getElementById('contactsPinInput').value = '';
+  document.getElementById('contactsPinError').textContent = '';
+}
+
+function closeContactsAdmin() {
+  closeContactsPin();
+}
+
+function submitContactsPin() {
+  const pin = document.getElementById('contactsPinInput').value;
+  if (pin === CONTACTS_ADMIN_PIN) {
+    contactsAdminUnlocked = true;
+    closeContactsPin();
+    renderContactsCategory();
+  } else {
+    document.getElementById('contactsPinError').textContent = 'Incorrect PIN. Try again.';
+    document.getElementById('contactsPinInput').value = '';
+    document.getElementById('contactsPinInput').focus();
+  }
+}
+
+function openAddContactForm() {
+  editingContactId = null;
+  renderContactsCategory();
+  const inputs = document.querySelectorAll('.contact-form input, .contact-form select');
+  if (inputs.length > 0) inputs[0].focus();
+}
+
+function openEditContactForm(id) {
+  editingContactId = id;
+  renderContactsCategory();
+  const inputs = document.querySelectorAll('.contact-form input, .contact-form select');
+  if (inputs.length > 0) inputs[0].focus();
+}
+
+function cancelContactForm() {
+  editingContactId = null;
+  renderContactsCategory();
+}
+
+function saveContact() {
+  const name = document.getElementById('contactFormName').value.trim();
+  const title = document.getElementById('contactFormTitle').value.trim();
+  const phone = document.getElementById('contactFormPhone').value.trim();
+  const email = document.getElementById('contactFormEmail').value.trim();
+  const level = parseInt(document.getElementById('contactFormLevel').value);
+  const department = document.getElementById('contactFormDepartment').value.trim();
+
+  if (!name || !title) {
+    alert('Name and Title are required.');
+    return;
+  }
+
+  if (editingContactId) {
+    const contact = contactsData.find(c => c.id === editingContactId);
+    if (contact) {
+      contact.name = name;
+      contact.title = title;
+      contact.phone = phone;
+      contact.email = email;
+      contact.level = level;
+      contact.department = department;
+    }
+  } else {
+    const newId = contactsData.length > 0 ? Math.max(...contactsData.map(c => c.id)) + 1 : 1;
+    const order = contactsData.length + 1;
+    contactsData.push({ id: newId, name, title, phone, email, level, department, order });
+  }
+
+  saveContacts();
+  editingContactId = null;
+  renderContactsCategory();
+}
+
+function deleteContact(id) {
+  if (confirm('Delete this contact? This action cannot be undone.')) {
+    contactsData = contactsData.filter(c => c.id !== id);
+    saveContacts();
+    renderContactsCategory();
+  }
+}
+
+function renderContactsCategory() {
+  const main = document.getElementById('mainContent');
+  const cat = categories.find(c => c.id === 'contacts');
+
+  let contactsHTML = `
+    <div class="category-header">
+      <div class="category-header-left">
+        <div class="category-icon-lg" style="background:${cat.color}15; color:${cat.color}">
+          <i class="fas ${cat.icon}"></i>
+        </div>
+        <div>
+          <h2>${cat.name}</h2>
+          <span class="subtitle">${contactsData.length} contact${contactsData.length !== 1 ? 's' : ''}</span>
+        </div>
+      </div>
+    </div>
+    <div class="contacts-tree">
+  `;
+
+  const level0 = contactsData.filter(c => c.level === 0).sort((a, b) => a.order - b.order);
+  const level1 = contactsData.filter(c => c.level === 1).sort((a, b) => a.order - b.order);
+  const level2 = contactsData.filter(c => c.level === 2).sort((a, b) => a.order - b.order);
+
+  if (level0.length > 0) {
+    contactsHTML += `<div class="tree-level level-0">`;
+    level0.forEach(contact => {
+      contactsHTML += renderContactNode(contact);
+    });
+    contactsHTML += `</div>`;
+    if (level1.length > 0) {
+      contactsHTML += `<div class="tree-branch" style="text-align: center; margin: 0;"></div>`;
+    }
+  }
+
+  if (level1.length > 0) {
+    contactsHTML += `<div class="tree-level level-1">`;
+    level1.forEach(contact => {
+      contactsHTML += renderContactNode(contact);
+    });
+    contactsHTML += `</div>`;
+  }
+
+  if (level2.length > 0) {
+    const techGroup = level2.filter(c => c.department === 'Technical');
+    if (techGroup.length > 0) {
+      contactsHTML += `<div class="tree-level level-2">`;
+      contactsHTML += `<div style="grid-column: 1 / -1; font-weight: 600; color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 8px;">Technical Team</div>`;
+      techGroup.forEach(contact => {
+        contactsHTML += renderContactNode(contact);
+      });
+      contactsHTML += `</div>`;
+    }
+  }
+
+  contactsHTML += `</div>`;
+
+  if (contactsAdminUnlocked) {
+    contactsHTML += `
+      <div class="contacts-admin-panel">
+        <div class="contacts-admin-header">
+          <h3><i class="fas fa-lock-open" style="margin-right:8px;"></i>Admin Panel</h3>
+          <button class="btn-secondary" onclick="contactsAdminUnlocked=false;renderContactsCategory()" style="border: none; background: transparent; color: var(--text-secondary); cursor: pointer; font-size: 0.85rem;">Lock</button>
+        </div>
+        ${editingContactId || editingContactId === null ? renderContactForm() : ''}
+        <div class="contact-list">
+          ${contactsData.length > 0 ? contactsData.map(contact => `
+            <div class="contact-admin-item">
+              <div class="contact-admin-item-info">
+                <div class="contact-admin-item-name">${contact.name}</div>
+                <div class="contact-admin-item-title">${contact.title}</div>
+              </div>
+              <div class="contact-admin-item-actions">
+                <button onclick="openEditContactForm(${contact.id})"><i class="fas fa-pen-to-square"></i> Edit</button>
+                <button class="btn-delete" onclick="deleteContact(${contact.id})"><i class="fas fa-trash"></i> Delete</button>
+              </div>
+            </div>
+          `).join('') : '<p style="color: var(--text-muted); font-size: 0.85rem;">No contacts yet.</p>'}
+        </div>
+      </div>
+    `;
+  } else {
+    contactsHTML += `
+      <button class="contacts-admin-btn" onclick="openContactsPin()">
+        <i class="fas fa-lock"></i> Admin
+      </button>
+    `;
+  }
+
+  main.innerHTML = contactsHTML;
+}
+
+function renderContactNode(contact) {
+  return `
+    <div class="contact-node level-${contact.level}">
+      <div class="contact-node-header">${contact.name}</div>
+      <div class="contact-node-title">${contact.title}</div>
+      <div class="contact-node-details">
+        <div class="contact-detail-line">
+          <i class="fas fa-phone"></i>
+          <a href="tel:${contact.phone}">${contact.phone}</a>
+        </div>
+        ${contact.email ? `
+          <div class="contact-detail-line">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:${contact.email}">${contact.email}</a>
+          </div>
+        ` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function renderContactForm() {
+  const contact = editingContactId ? contactsData.find(c => c.id === editingContactId) : null;
+  return `
+    <button class="contacts-add-btn" onclick="openAddContactForm()">
+      <i class="fas fa-plus"></i> Add New Contact
+    </button>
+    ${editingContactId || editingContactId === null ? `
+      <div class="contact-form">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" id="contactFormName" value="${contact ? contact.name : ''}" placeholder="Full name">
+        </div>
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" id="contactFormTitle" value="${contact ? contact.title : ''}" placeholder="Job title">
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" id="contactFormPhone" value="${contact ? contact.phone : ''}" placeholder="Phone number">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="contactFormEmail" value="${contact ? contact.email : ''}" placeholder="Email address">
+        </div>
+        <div class="form-group">
+          <label>Level</label>
+          <select id="contactFormLevel">
+            <option value="0" ${contact && contact.level === 0 ? 'selected' : ''}>Executive</option>
+            <option value="1" ${contact && contact.level === 1 ? 'selected' : ''}>Director</option>
+            <option value="2" ${contact && contact.level === 2 ? 'selected' : ''}>Staff</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Department</label>
+          <input type="text" id="contactFormDepartment" value="${contact ? contact.department : ''}" placeholder="e.g. Technical, Sales & Marketing">
+        </div>
+        <div class="contact-form-actions">
+          <button class="btn-save" onclick="saveContact()"><i class="fas fa-check"></i> Save</button>
+          <button class="btn-cancel-form" onclick="cancelContactForm()"><i class="fas fa-xmark"></i> Cancel</button>
+        </div>
+      </div>
+    ` : ''}
+  `;
+}
 
 // ── Service Worker Registration ──
 if ('serviceWorker' in navigator) {
