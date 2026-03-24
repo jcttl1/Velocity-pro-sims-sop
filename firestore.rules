@@ -16,5 +16,11 @@ service cloud.firestore {
     match /meta/{document=**} {
       allow read, write: if true;
     }
+    match /crmCustomers/{document=**} {
+      allow read, write: if true;
+    }
+    match /crmMeta/{document=**} {
+      allow read, write: if true;
+    }
   }
 }
