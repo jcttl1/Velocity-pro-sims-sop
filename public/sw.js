@@ -1,13 +1,11 @@
-const CACHE_NAME = 'vps-sop-v1';
+const CACHE_NAME = 'vps-sop-v2';
 const PRECACHE_URLS = [
-  '/',
-  '/index.html',
   '/logo.png',
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
 ];
 
-// Install: cache shell assets
+// Install: cache static assets only (not index.html), activate immediately
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -16,7 +14,7 @@ self.addEventListener('install', event => {
   );
 });
 
-// Activate: clean old caches
+// Activate: clean ALL old caches, take control immediately
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
@@ -25,35 +23,50 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch: network-first for API/Firestore, cache-first for static assets
+// Fetch strategy:
+// - HTML/navigation: network-first (always get latest, fall back to cache if offline)
+// - Firebase/API: skip cache entirely
+// - Static assets (fonts, icons, images): cache-first for speed
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
   // Skip non-GET requests
   if (event.request.method !== 'GET') return;
 
-  // Network-first for Firebase/Firestore requests
-  if (url.hostname.includes('firestore') || url.hostname.includes('firebase') || url.hostname.includes('googleapis.com/google.firestore')) {
+  // Never cache Firebase/Firestore requests
+  if (url.hostname.includes('firestore') || url.hostname.includes('firebase') || url.hostname.includes('googleapis.com')) {
     return;
   }
 
-  // Cache-first for static assets
+  // Network-first for HTML / navigation requests (always get latest deploy)
+  if (event.request.mode === 'navigate' || event.request.destination === 'document' || url.pathname.endsWith('.html') || url.pathname === '/') {
+    event.respondWith(
+      fetch(event.request).then(response => {
+        // Cache the fresh response for offline fallback
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        return response;
+      }).catch(() => {
+        // Offline: serve cached version
+        return caches.match(event.request) || caches.match('/index.html');
+      })
+    );
+    return;
+  }
+
+  // Cache-first for static assets (fonts, icons, images)
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
       return fetch(event.request).then(response => {
-        // Cache successful responses for static assets
-        if (response.ok && (url.origin === location.origin || url.hostname.includes('cdnjs') || url.hostname.includes('fonts.googleapis') || url.hostname.includes('gstatic'))) {
+        if (response.ok && (url.origin === location.origin || url.hostname.includes('cdnjs') || url.hostname.includes('gstatic'))) {
           const clone = response.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
         }
         return response;
       });
     }).catch(() => {
-      // Offline fallback
-      if (event.request.mode === 'navigate') {
-        return caches.match('/index.html');
-      }
+      // Silent fail for missing static assets
     })
   );
 });

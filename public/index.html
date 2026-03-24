@@ -234,7 +234,7 @@
     .sidebar-spacer { height: 24px; }
 
     /* ── Main Content ── */
-    .main { flex: 1; padding: 32px 0 64px 32px; min-width: 0; }
+    .main { flex: 1; padding: 32px 32px 64px 32px; min-width: 0; overflow: hidden; }
 
     /* ── Dashboard View ── */
     .dashboard-header { margin-bottom: 32px; }
@@ -476,7 +476,8 @@
       padding: 24px 28px; border-bottom: 1px solid var(--border);
       position: sticky; top: 0; background: var(--bg-secondary); z-index: 1;
     }
-    .modal-header h3 { font-family: 'Rajdhani', sans-serif; font-size: 1.3rem; font-weight: 700; }
+    .modal-header h3 { font-family: 'Rajdhani', sans-serif; font-size: 1.3rem; font-weight: 700; flex: 1; }
+    .modal-header-actions { display: flex; align-items: center; gap: 8px; }
     .modal-close {
       width: 32px; height: 32px; border: 1px solid var(--border);
       border-radius: var(--radius-sm); background: none; color: var(--text-secondary);
@@ -484,6 +485,215 @@
       transition: all var(--transition);
     }
     .modal-close:hover { border-color: var(--danger); color: var(--danger); }
+    .sop-edit-btn {
+      height: 32px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      background: none; color: var(--text-muted); cursor: pointer;
+      display: inline-flex; align-items: center; gap: 5px; padding: 0 12px;
+      font-size: 0.78rem; font-weight: 500; transition: all var(--transition);
+    }
+    .sop-edit-btn:hover { border-color: var(--green); color: var(--green); background: rgba(92,191,42,0.08); }
+    .sop-delete-btn {
+      height: 32px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      background: none; color: var(--text-muted); cursor: pointer;
+      display: flex; align-items: center; gap: 6px; padding: 0 10px;
+      font-size: 0.78rem; font-weight: 500; transition: all var(--transition);
+    }
+    .sop-delete-btn:hover { border-color: var(--danger); color: var(--danger); background: rgba(239,68,68,0.08); }
+
+    .delete-pin-overlay {
+      position: fixed; inset: 0; z-index: 600;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden; transition: all 0.25s ease;
+    }
+    .delete-pin-overlay.open { opacity: 1; visibility: visible; }
+    .delete-pin-modal {
+      background: var(--bg-secondary); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 32px; width: 100%; max-width: 380px;
+      text-align: center;
+    }
+    .delete-pin-modal h3 {
+      font-family: 'Rajdhani', sans-serif; font-size: 1.2rem; font-weight: 700;
+      color: var(--danger); margin-bottom: 8px;
+    }
+    .delete-pin-modal .delete-sop-name {
+      font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 20px;
+    }
+    .delete-pin-modal input {
+      width: 100%; padding: 12px 16px; background: var(--bg-input);
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      color: var(--text-primary); font-size: 1.1rem; text-align: center;
+      letter-spacing: 8px; font-family: 'Rajdhani', sans-serif; font-weight: 600;
+      margin-bottom: 8px; outline: none; transition: border-color var(--transition);
+    }
+    .delete-pin-modal input:focus { border-color: var(--danger); }
+    .delete-pin-modal .delete-pin-error {
+      font-size: 0.78rem; color: var(--danger); margin-bottom: 12px;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .delete-pin-modal .delete-pin-error.show { opacity: 1; }
+    .delete-pin-actions { display: flex; gap: 10px; }
+    .delete-pin-actions button {
+      flex: 1; padding: 10px; border-radius: var(--radius-sm);
+      font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all var(--transition);
+    }
+    .delete-pin-cancel {
+      background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary);
+    }
+    .delete-pin-cancel:hover { border-color: var(--border-light); color: var(--text-primary); }
+    .delete-pin-confirm {
+      background: var(--danger); border: 1px solid var(--danger); color: #fff;
+    }
+    .delete-pin-confirm:hover { background: #DC2626; }
+
+    /* ── Vendor Contact Cards ── */
+    .vendor-card {
+      display: flex; align-items: center; gap: 16px; padding: 18px 20px;
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+      cursor: pointer; transition: all var(--transition);
+    }
+    .vendor-card:hover { border-color: #F472B6; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(244,114,182,0.08); }
+    .vendor-card-avatar {
+      width: 44px; height: 44px; border-radius: var(--radius-sm);
+      background: rgba(244,114,182,0.12); color: #F472B6;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; font-weight: 700; flex-shrink: 0; overflow: hidden;
+    }
+    .vendor-card-avatar img {
+      width: 100%; height: 100%; object-fit: contain; padding: 4px;
+      filter: brightness(0) invert(1); opacity: 0.7;
+    }
+    .vendor-card:hover .vendor-card-avatar img { opacity: 1; }
+    .vendor-card-body { flex: 1; min-width: 0; }
+    .vendor-card-name { font-weight: 600; font-size: 0.95rem; color: var(--text-primary); margin-bottom: 2px; }
+    .vendor-card-company { font-size: 0.82rem; color: #F472B6; font-weight: 500; }
+    .vendor-card-role { font-size: 0.78rem; color: var(--text-muted); }
+    .vendor-card-contact { display: flex; gap: 14px; flex-shrink: 0; }
+    .vendor-card-contact a {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--bg-tertiary); color: var(--text-muted);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; transition: all var(--transition); text-decoration: none;
+    }
+    .vendor-card-contact a:hover { background: rgba(244,114,182,0.15); color: #F472B6; }
+
+    .vendor-detail-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;
+    }
+    .vendor-detail-item { display: flex; flex-direction: column; gap: 4px; }
+    .vendor-detail-item .meta-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+    .vendor-detail-item .meta-value { font-size: 0.88rem; color: var(--text-primary); font-weight: 500; }
+    .vendor-detail-item .meta-value a { color: #F472B6; text-decoration: none; }
+    .vendor-detail-item .meta-value a:hover { text-decoration: underline; }
+    .vendor-detail-notes { grid-column: 1 / -1; }
+    .vendor-detail-notes .meta-value { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; white-space: pre-wrap; }
+    .vendor-detail-logo {
+      grid-column: 1 / -1; display: flex; align-items: center; gap: 14px;
+      padding-bottom: 16px; margin-bottom: 4px; border-bottom: 1px solid var(--border);
+    }
+    .vendor-detail-logo img {
+      height: 36px; width: auto; filter: brightness(0) invert(1); opacity: 0.6;
+    }
+    .vendor-detail-logo span { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* ── Tech Resources ── */
+    .tr-search {
+      position: relative; margin-bottom: 24px;
+    }
+    .tr-search input {
+      width: 100%; padding: 12px 16px 12px 42px;
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+      color: var(--text-primary); font-size: 0.9rem; font-family: 'Inter', sans-serif;
+      outline: none; transition: border-color var(--transition);
+    }
+    .tr-search input:focus { border-color: #38BDF8; }
+    .tr-search i {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      color: var(--text-muted); font-size: 0.85rem;
+    }
+    .tr-breadcrumb {
+      display: flex; align-items: center; gap: 6px; margin-bottom: 20px;
+      font-size: 0.82rem; flex-wrap: wrap;
+    }
+    .tr-breadcrumb-item {
+      color: var(--text-muted); cursor: pointer; transition: color var(--transition);
+      background: none; border: none; font-size: 0.82rem; font-family: 'Inter', sans-serif; padding: 0;
+    }
+    .tr-breadcrumb-item:hover { color: #38BDF8; }
+    .tr-breadcrumb-item.active { color: var(--text-primary); cursor: default; font-weight: 600; }
+    .tr-breadcrumb-sep { color: var(--text-muted); font-size: 0.7rem; }
+    .tr-brand-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px;
+    }
+    .tr-brand-card {
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      padding: 22px 16px; background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); cursor: pointer; transition: all var(--transition); text-align: center;
+    }
+    .tr-brand-card:hover { border-color: #38BDF8; transform: translateY(-2px); box-shadow: 0 4px 16px rgba(56,189,248,0.1); }
+    .tr-brand-logo {
+      width: 56px; height: 56px; border-radius: var(--radius-sm);
+      background: rgba(56,189,248,0.08); display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .tr-brand-logo img {
+      width: 100%; height: 100%; object-fit: contain; padding: 6px;
+      filter: brightness(0) invert(1); opacity: 0.7;
+    }
+    .tr-brand-card:hover .tr-brand-logo img { opacity: 1; }
+    .tr-brand-logo .tr-initials {
+      font-size: 1.1rem; font-weight: 700; color: #38BDF8;
+    }
+    .tr-brand-name { font-weight: 600; font-size: 0.88rem; color: var(--text-primary); }
+    .tr-brand-count { font-size: 0.75rem; color: var(--text-muted); }
+    .tr-product-list { display: flex; flex-direction: column; gap: 10px; }
+    .tr-product-card {
+      display: flex; align-items: center; gap: 14px; padding: 16px 18px;
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+      cursor: pointer; transition: all var(--transition);
+    }
+    .tr-product-card:hover { border-color: #38BDF8; transform: translateY(-1px); box-shadow: 0 2px 12px rgba(56,189,248,0.08); }
+    .tr-product-icon {
+      width: 40px; height: 40px; border-radius: var(--radius-sm);
+      background: rgba(56,189,248,0.08); color: #38BDF8;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.95rem; flex-shrink: 0;
+    }
+    .tr-product-body { flex: 1; min-width: 0; }
+    .tr-product-name { font-weight: 600; font-size: 0.9rem; color: var(--text-primary); margin-bottom: 2px; }
+    .tr-product-type { font-size: 0.78rem; color: var(--text-muted); }
+    .tr-product-links { display: flex; gap: 8px; flex-shrink: 0; }
+    .tr-product-links a {
+      padding: 5px 10px; border-radius: var(--radius-sm);
+      background: var(--bg-tertiary); color: var(--text-muted);
+      font-size: 0.72rem; font-weight: 500; text-decoration: none;
+      transition: all var(--transition); white-space: nowrap;
+    }
+    .tr-product-links a:hover { background: rgba(56,189,248,0.15); color: #38BDF8; }
+    .tr-detail-links {
+      display: flex; flex-direction: column; gap: 10px; margin-top: 8px;
+    }
+    .tr-detail-link {
+      display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+      text-decoration: none; transition: all var(--transition);
+    }
+    .tr-detail-link:hover { border-color: #38BDF8; background: rgba(56,189,248,0.04); }
+    .tr-detail-link i { color: #38BDF8; font-size: 0.9rem; width: 20px; text-align: center; }
+    .tr-detail-link span { color: var(--text-primary); font-size: 0.88rem; font-weight: 500; }
+    .tr-detail-link .tr-link-url { font-size: 0.75rem; color: var(--text-muted); margin-left: auto; }
+    .tr-empty { color: var(--text-muted); font-size: 0.88rem; padding: 20px 0; }
+    @media (max-width: 600px) {
+      .tr-brand-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+    }
+
+    .vendor-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    @media (max-width: 600px) {
+      .vendor-detail-grid { grid-template-columns: 1fr; }
+      .vendor-form-row { grid-template-columns: 1fr; }
+      .vendor-card-contact { gap: 8px; }
+    }
 
     .modal-body { padding: 28px; }
     .modal-body .meta-row {
@@ -693,9 +903,9 @@
     }
 
     .cal-grid {
-      display: grid; grid-template-columns: repeat(7, 1fr);
+      display: grid; grid-template-columns: repeat(7, minmax(0, 1fr));
       border: 1px solid var(--border); border-radius: var(--radius);
-      overflow: hidden;
+      overflow: hidden; width: 100%;
     }
     .cal-dow {
       padding: 10px 4px; text-align: center;
@@ -709,7 +919,7 @@
       border-right: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
       cursor: pointer; transition: background var(--transition);
-      position: relative;
+      position: relative; overflow: hidden;
     }
     .cal-cell:nth-child(7n) { border-right: none; }
     .cal-cell:hover { background: var(--bg-card-hover); }
@@ -965,6 +1175,9 @@
     @media (max-width: 1024px) {
       .stats-row { grid-template-columns: repeat(2, 1fr); }
       .sidebar { width: 220px; }
+      .contact-node { width: 200px; padding: 14px 16px; }
+      .contact-node.level-0 { width: 240px; }
+      .org-staff-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 200px)); gap: 12px; }
     }
 
     @media (max-width: 768px) {
@@ -1075,78 +1288,134 @@
     }
 
     /* ── Contacts Tree & Admin Panel ── */
+    /* ── Org Chart Tree ── */
     .contacts-tree {
       display: flex;
       flex-direction: column;
-      gap: 40px;
-      padding: 24px 0;
+      align-items: center;
+      padding: 32px 0;
     }
 
-    .tree-level {
+    .org-row {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
       position: relative;
+    }
+
+    .org-connector-down {
+      width: 2px; height: 32px;
+      background: var(--green);
+      margin: 0 auto;
+      opacity: 0.5;
+    }
+
+    .org-connector-split {
+      position: relative;
+      height: 32px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+    }
+    .org-connector-split::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      width: 2px; height: 16px;
+      background: var(--green);
+      opacity: 0.5;
+      transform: translateX(-50%);
+    }
+    .org-connector-split::after {
+      content: '';
+      position: absolute;
+      top: 16px;
+      height: 2px;
+      background: var(--green);
+      opacity: 0.5;
+    }
+
+    .org-branch-drops {
+      display: flex;
+      justify-content: center;
+      position: relative;
+    }
+    .org-branch-drop {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      align-items: center;
+    }
+    .org-branch-drop::before {
+      content: '';
+      width: 2px; height: 16px;
+      background: var(--green);
+      opacity: 0.5;
     }
 
-    .tree-level.level-0 { align-items: center; }
-    .tree-level.level-1 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-    }
-    .tree-level.level-2 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
-      margin-left: 40px;
-    }
-
-    .tree-branch {
-      position: relative;
-      height: 30px;
-      margin: 10px 0;
-    }
-
-    .tree-branch svg {
-      width: 100%;
-      height: 100%;
-      stroke: var(--green);
-      stroke-width: 2;
-      fill: none;
+    .org-dept-label {
+      text-align: center;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin: 24px 0 8px;
     }
 
     .contact-node {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 16px;
+      padding: 18px 20px;
       transition: all var(--transition);
-      position: relative;
+      width: 240px;
+      text-align: center;
     }
 
     .contact-node:hover {
       background: var(--bg-card-hover);
       border-color: var(--border-light);
       transform: translateY(-2px);
+      box-shadow: var(--shadow);
     }
 
     .contact-node.level-0 {
-      max-width: 350px;
+      width: 280px;
       border: 2px solid var(--green);
-      background: linear-gradient(135deg, rgba(20,184,166,0.08) 0%, rgba(20,184,166,0.04) 100%);
+      background: linear-gradient(135deg, rgba(92,191,42,0.08) 0%, var(--bg-card) 100%);
+      box-shadow: 0 0 20px rgba(92,191,42,0.08);
+    }
+
+    .contact-node.level-1 {
+      border-top: 3px solid var(--green);
+    }
+
+    .contact-node-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--green-dim);
+      color: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700; font-size: 0.9rem;
+      margin: 0 auto 10px;
+    }
+    .contact-node.level-0 .contact-node-avatar {
+      width: 48px; height: 48px;
+      font-size: 1rem;
+      background: rgba(92,191,42,0.18);
     }
 
     .contact-node-header {
       font-family: 'Rajdhani', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 600;
+      font-size: 1rem;
+      font-weight: 700;
       color: var(--text-primary);
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .contact-node-title {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-secondary);
       margin-bottom: 12px;
     }
@@ -1154,14 +1423,15 @@
     .contact-node-details {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      font-size: 0.8rem;
+      gap: 6px;
+      font-size: 0.78rem;
     }
 
     .contact-detail-line {
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      gap: 6px;
       color: var(--text-secondary);
     }
 
@@ -1169,6 +1439,7 @@
       width: 14px;
       text-align: center;
       color: var(--green);
+      font-size: 0.72rem;
     }
 
     .contact-detail-line a {
@@ -1181,9 +1452,16 @@
       color: var(--green-light);
     }
 
-    .tree-connector {
-      position: absolute;
-      background: var(--green);
+    .org-staff-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 240px));
+      gap: 16px;
+      justify-content: center;
+      width: 100%;
+      max-width: 1100px;
+    }
+    .org-staff-grid .contact-node {
+      width: 100%;
     }
 
     .contacts-admin-panel {
@@ -1210,26 +1488,25 @@
     }
 
     .contacts-admin-btn {
-      position: absolute;
-      bottom: 24px;
-      right: 24px;
-      background: var(--green);
-      color: var(--bg-primary);
-      border: none;
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      padding: 10px 16px;
-      font-size: 0.85rem;
+      padding: 8px 14px;
+      font-size: 0.82rem;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       transition: all var(--transition);
-      font-weight: 600;
+      font-weight: 500;
+      white-space: nowrap;
     }
 
     .contacts-admin-btn:hover {
-      background: var(--green-light);
-      transform: translateY(-2px);
+      border-color: var(--green);
+      color: var(--green);
+      background: var(--green-dim);
     }
 
     .contacts-pin-overlay {
@@ -1483,24 +1760,35 @@
     }
 
     @media (max-width: 768px) {
-      .tree-level.level-1 {
-        grid-template-columns: 1fr;
+      .org-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
       }
 
-      .tree-level.level-2 {
-        margin-left: 20px;
-        grid-template-columns: 1fr;
+      .org-connector-split::after { display: none; }
+
+      .org-branch-drops {
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
       }
 
       .contact-node {
-        padding: 12px;
+        width: 100%;
+        max-width: 300px;
+        padding: 14px 16px;
+      }
+      .contact-node.level-0 { width: 100%; max-width: 300px; }
+
+      .org-staff-grid {
+        grid-template-columns: 1fr;
+        max-width: 300px;
       }
 
       .contacts-admin-btn {
-        position: static;
-        width: 100%;
-        margin-top: 16px;
-        justify-content: center;
+        padding: 6px 10px;
+        font-size: 0.78rem;
       }
 
       .contact-admin-item {
@@ -1521,11 +1809,307 @@
         padding: 24px;
       }
     }
+
+    /* ── CRM Styles ── */
+    .crm-toolbar {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .crm-search {
+      flex: 1; min-width: 200px; padding: 10px 14px 10px 36px;
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text-primary);
+      font-size: 0.85rem; font-family: 'Inter', sans-serif; outline: none;
+      transition: border-color var(--transition);
+    }
+    .crm-search:focus { border-color: var(--green); }
+    .crm-search-wrap { position: relative; flex: 1; min-width: 200px; }
+    .crm-search-wrap i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.85rem; }
+    .crm-filter-btn {
+      padding: 10px 16px; background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text-secondary); cursor: pointer;
+      font-size: 0.82rem; font-family: 'Inter', sans-serif; transition: all var(--transition);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .crm-filter-btn:hover { border-color: var(--green); color: var(--green); }
+    .crm-filter-btn.active { border-color: #22D3EE; color: #22D3EE; background: rgba(34,211,238,0.08); }
+    .crm-filters-panel {
+      display: none; background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 16px 20px; margin-bottom: 16px;
+      gap: 12px; flex-wrap: wrap;
+    }
+    .crm-filters-panel.open { display: flex; }
+    .crm-filter-group { display: flex; flex-direction: column; gap: 4px; min-width: 150px; }
+    .crm-filter-group label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+    .crm-filter-group select {
+      padding: 8px 10px; background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.82rem;
+      font-family: 'Inter', sans-serif; outline: none;
+    }
+    .crm-customer-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px;
+    }
+    .crm-customer-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 18px 20px; cursor: pointer;
+      transition: all var(--transition); display: flex; flex-direction: column; gap: 10px;
+    }
+    .crm-customer-card:hover { border-color: var(--border-light); background: var(--bg-card-hover); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .crm-card-top { display: flex; align-items: center; gap: 12px; }
+    .crm-card-avatar {
+      width: 42px; height: 42px; border-radius: 50%; background: rgba(34,211,238,0.12);
+      color: #22D3EE; display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85rem; flex-shrink: 0; font-family: 'Rajdhani', sans-serif;
+    }
+    .crm-card-info { flex: 1; min-width: 0; }
+    .crm-card-name { font-weight: 600; font-size: 0.95rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .crm-card-company { font-size: 0.8rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .crm-card-type {
+      font-size: 0.68rem; font-weight: 600; padding: 3px 8px; border-radius: 20px;
+      text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap;
+    }
+    .crm-card-type.sim-purchase { background: rgba(92,191,42,0.12); color: #5CBF2A; }
+    .crm-card-type.event { background: rgba(249,115,22,0.12); color: #F97316; }
+    .crm-card-type.support { background: rgba(59,130,246,0.12); color: #3B82F6; }
+    .crm-card-type.unassigned { background: rgba(106,106,120,0.12); color: #6A6A78; }
+    .crm-card-bottom { display: flex; align-items: center; gap: 12px; font-size: 0.78rem; color: var(--text-muted); }
+    .crm-card-bottom i { font-size: 0.72rem; margin-right: 3px; }
+    .crm-actions-row {
+      display: flex; gap: 8px;
+    }
+    .crm-btn-primary {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 18px; border: 1px solid #22D3EE;
+      border-radius: var(--radius-sm); background: transparent;
+      color: #22D3EE; font-size: 0.85rem; font-weight: 600;
+      font-family: 'Inter', sans-serif; cursor: pointer;
+      transition: all var(--transition);
+    }
+    .crm-btn-primary:hover { background: #22D3EE; color: #000; }
+    .crm-btn-secondary {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 18px; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); background: transparent;
+      color: var(--text-secondary); font-size: 0.85rem; font-weight: 600;
+      font-family: 'Inter', sans-serif; cursor: pointer;
+      transition: all var(--transition);
+    }
+    .crm-btn-secondary:hover { border-color: var(--border-light); color: var(--text-primary); }
+
+    /* CRM Modal */
+    .crm-modal { max-width: 720px; }
+    .crm-modal-body { padding: 24px 28px; }
+    .crm-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .crm-form-grid.single { grid-template-columns: 1fr; }
+    .crm-form-group { display: flex; flex-direction: column; gap: 4px; }
+    .crm-form-group.full { grid-column: 1 / -1; }
+    .crm-form-group label {
+      font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;
+      letter-spacing: 1px; font-weight: 600;
+    }
+    .crm-form-group input, .crm-form-group select, .crm-form-group textarea {
+      padding: 10px 12px; background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text-primary);
+      font-size: 0.85rem; font-family: 'Inter', sans-serif; outline: none;
+      transition: border-color var(--transition);
+    }
+    .crm-form-group input:focus, .crm-form-group select:focus, .crm-form-group textarea:focus { border-color: #22D3EE; }
+    .crm-form-group textarea { min-height: 80px; resize: vertical; }
+    .crm-form-section {
+      font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 600;
+      color: #22D3EE; margin: 20px 0 10px; padding-bottom: 6px;
+      border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;
+    }
+    .crm-form-section:first-child { margin-top: 0; }
+    .crm-form-section i { font-size: 0.85rem; }
+    .crm-form-actions {
+      display: flex; gap: 10px; justify-content: flex-end;
+      padding: 20px 28px; border-top: 1px solid var(--border);
+    }
+    .crm-save-btn {
+      padding: 10px 24px; border: none; border-radius: var(--radius-sm);
+      background: #22D3EE; color: #000; font-weight: 700; font-size: 0.85rem;
+      font-family: 'Inter', sans-serif; cursor: pointer; transition: all var(--transition);
+    }
+    .crm-save-btn:hover { background: #67E8F9; transform: translateY(-1px); }
+    .crm-cancel-btn {
+      padding: 10px 24px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      background: none; color: var(--text-secondary); font-size: 0.85rem;
+      font-family: 'Inter', sans-serif; cursor: pointer; transition: all var(--transition);
+    }
+    .crm-cancel-btn:hover { border-color: var(--border-light); color: var(--text-primary); }
+
+    /* CRM Detail View */
+    .crm-detail { padding: 0; }
+    .crm-detail-header {
+      display: flex; align-items: center; gap: 16px; padding: 24px 28px;
+      border-bottom: 1px solid var(--border);
+    }
+    .crm-detail-avatar {
+      width: 56px; height: 56px; border-radius: 50%; background: rgba(34,211,238,0.12);
+      color: #22D3EE; display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 1.2rem; flex-shrink: 0; font-family: 'Rajdhani', sans-serif;
+    }
+    .crm-detail-name { font-family: 'Rajdhani', sans-serif; font-size: 1.4rem; font-weight: 700; }
+    .crm-detail-body { padding: 24px 28px; }
+    .crm-detail-section {
+      margin-bottom: 24px;
+    }
+    .crm-detail-section-title {
+      font-family: 'Rajdhani', sans-serif; font-size: 0.95rem; font-weight: 600;
+      color: #22D3EE; text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+    }
+    .crm-detail-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    .crm-detail-field { display: flex; flex-direction: column; gap: 2px; }
+    .crm-detail-field .label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .crm-detail-field .value { font-size: 0.88rem; color: var(--text-primary); }
+    .crm-detail-field .value.empty { color: var(--text-muted); font-style: italic; }
+    .crm-detail-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .crm-detail-tag {
+      font-size: 0.75rem; padding: 4px 10px; border-radius: 20px;
+      background: rgba(34,211,238,0.1); color: #22D3EE; font-weight: 500;
+    }
+
+    /* CRM Import */
+    .crm-import-area {
+      border: 2px dashed var(--border); border-radius: var(--radius);
+      padding: 40px; text-align: center; transition: all var(--transition);
+      cursor: pointer; margin-bottom: 20px;
+    }
+    .crm-import-area:hover { border-color: #22D3EE; background: rgba(34,211,238,0.04); }
+    .crm-import-area.dragover { border-color: #22D3EE; background: rgba(34,211,238,0.08); }
+    .crm-import-area i { font-size: 2rem; color: var(--text-muted); margin-bottom: 12px; display: block; }
+    .crm-import-area p { color: var(--text-secondary); font-size: 0.9rem; }
+    .crm-import-area .sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; }
+    .crm-import-preview { max-height: 400px; overflow-y: auto; margin-bottom: 16px; }
+    .crm-import-table {
+      width: 100%; border-collapse: collapse; font-size: 0.82rem;
+    }
+    .crm-import-table th {
+      padding: 10px 12px; text-align: left; background: var(--bg-secondary);
+      color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase;
+      letter-spacing: 1px; font-weight: 600; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0;
+    }
+    .crm-import-table td {
+      padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--text-secondary);
+    }
+    .crm-import-table tr:hover td { background: var(--bg-card-hover); }
+    .crm-import-table select {
+      padding: 4px 8px; background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: 4px; color: var(--text-primary); font-size: 0.78rem;
+    }
+    .crm-import-stats {
+      display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .crm-import-stat {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 12px 16px; display: flex; flex-direction: column; gap: 2px;
+    }
+    .crm-import-stat .num { font-family: 'Rajdhani', sans-serif; font-size: 1.4rem; font-weight: 700; color: #22D3EE; }
+    .crm-import-stat .lbl { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* CRM File Upload for Event Customers */
+    .crm-files-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px;
+      margin-top: 10px;
+    }
+    .crm-file-card {
+      background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 12px; text-align: center; position: relative; transition: all var(--transition);
+    }
+    .crm-file-card:hover { border-color: var(--border-light); }
+    .crm-file-card i { font-size: 1.5rem; color: var(--text-muted); margin-bottom: 6px; display: block; }
+    .crm-file-card .fname { font-size: 0.75rem; color: var(--text-secondary); word-break: break-all; }
+    .crm-file-card .fsize { font-size: 0.68rem; color: var(--text-muted); }
+    .crm-file-delete {
+      position: absolute; top: 4px; right: 4px; width: 20px; height: 20px;
+      border-radius: 50%; background: var(--danger); color: white; border: none;
+      font-size: 0.6rem; cursor: pointer; display: none; align-items: center; justify-content: center;
+    }
+    .crm-file-card:hover .crm-file-delete { display: flex; }
+    .crm-file-upload-btn {
+      border: 2px dashed var(--border); border-radius: var(--radius-sm);
+      padding: 12px; text-align: center; cursor: pointer; transition: all var(--transition);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+      min-height: 80px;
+    }
+    .crm-file-upload-btn:hover { border-color: #22D3EE; background: rgba(34,211,238,0.04); }
+    .crm-file-upload-btn i { font-size: 1.2rem; color: var(--text-muted); }
+    .crm-file-upload-btn span { font-size: 0.72rem; color: var(--text-muted); }
+
+    /* File folder tree */
+    .crm-folder-tree { margin-top: 10px; }
+    .crm-folder-item {
+      display: flex; align-items: center; gap: 8px; padding: 6px 10px;
+      border-radius: var(--radius-sm); cursor: pointer; transition: background var(--transition);
+      font-size: 0.85rem; color: var(--text-secondary);
+    }
+    .crm-folder-item:hover { background: var(--bg-card-hover); }
+    .crm-folder-item.active { color: #22D3EE; background: rgba(34,211,238,0.08); }
+    .crm-folder-item i { font-size: 0.8rem; }
+
+    /* Checkbox styled as toggle */
+    .crm-toggle-wrap { display: flex; align-items: center; gap: 8px; }
+    .crm-toggle {
+      width: 36px; height: 20px; background: var(--border); border-radius: 10px;
+      position: relative; cursor: pointer; transition: background var(--transition);
+      border: none; padding: 0;
+    }
+    .crm-toggle::after {
+      content: ''; position: absolute; left: 2px; top: 2px;
+      width: 16px; height: 16px; background: var(--text-muted);
+      border-radius: 50%; transition: all var(--transition);
+    }
+    .crm-toggle.on { background: #22D3EE; }
+    .crm-toggle.on::after { left: 18px; background: #fff; }
+    .crm-toggle-label { font-size: 0.85rem; color: var(--text-secondary); }
+
+    /* Custom type modal */
+    .crm-chip-input {
+      display: flex; flex-wrap: wrap; gap: 6px; padding: 8px;
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); min-height: 40px; align-items: center;
+    }
+    .crm-chip {
+      display: flex; align-items: center; gap: 4px; padding: 3px 8px 3px 10px;
+      background: rgba(34,211,238,0.12); color: #22D3EE; border-radius: 20px;
+      font-size: 0.78rem; font-weight: 500;
+    }
+    .crm-chip button {
+      background: none; border: none; color: #22D3EE; cursor: pointer; font-size: 0.7rem;
+      padding: 0 2px; opacity: 0.7; transition: opacity var(--transition);
+    }
+    .crm-chip button:hover { opacity: 1; }
+
+    /* CRM Empty state */
+    .crm-empty {
+      text-align: center; padding: 60px 20px; color: var(--text-muted);
+    }
+    .crm-empty i { font-size: 2.5rem; margin-bottom: 16px; display: block; color: var(--border-light); }
+    .crm-empty p { font-size: 0.95rem; margin-bottom: 8px; }
+    .crm-empty .sub { font-size: 0.82rem; }
+
+    /* Tabs for CRM detail */
+    .crm-tabs {
+      display: flex; border-bottom: 1px solid var(--border); margin-bottom: 20px;
+    }
+    .crm-tab {
+      padding: 10px 18px; font-size: 0.85rem; font-weight: 500;
+      color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent;
+      transition: all var(--transition); background: none; border-top: none; border-left: none; border-right: none;
+      font-family: 'Inter', sans-serif;
+    }
+    .crm-tab:hover { color: var(--text-primary); }
+    .crm-tab.active { color: #22D3EE; border-bottom-color: #22D3EE; }
   </style>
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
   <script>
     // VPS SOP Portal — Firestore (for assets)
     const firebaseConfig = {
@@ -1538,6 +2122,7 @@
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+    const storage = firebase.storage();
 
     // SRP Event Calendar — Realtime Database (for shared calendar)
     const srpFirebaseConfig = {
@@ -1621,9 +2206,27 @@
   <div class="modal">
     <div class="modal-header">
       <h3 id="modalTitle">SOP Title</h3>
-      <button class="modal-close" onclick="closeModal()"><i class="fas fa-xmark"></i></button>
+      <div class="modal-header-actions">
+        <button class="sop-edit-btn" id="sopEditBtn" onclick="openEditModal(viewingSopId)"><i class="fas fa-pen"></i> Edit</button>
+        <button class="sop-delete-btn" id="sopDeleteBtn" onclick="promptDeleteSOP()"><i class="fas fa-trash"></i> Delete</button>
+        <button class="modal-close" onclick="closeModal()"><i class="fas fa-xmark"></i></button>
+      </div>
     </div>
     <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ═══ Delete SOP PIN Confirmation ═══ -->
+<div class="delete-pin-overlay" id="deletePinOverlay" onclick="if(event.target===this)closeDeletePin()">
+  <div class="delete-pin-modal">
+    <h3><i class="fas fa-triangle-exclamation" style="margin-right:8px;"></i>Confirm Delete</h3>
+    <div class="delete-sop-name" id="deleteSopName"></div>
+    <input type="password" id="deletePinInput" placeholder="Enter PIN" maxlength="5" onkeydown="if(event.key==='Enter')confirmDeleteSOP()">
+    <div class="delete-pin-error" id="deletePinError">Incorrect PIN</div>
+    <div class="delete-pin-actions">
+      <button class="delete-pin-cancel" onclick="closeDeletePin()">Cancel</button>
+      <button class="delete-pin-confirm" onclick="confirmDeleteSOP()"><i class="fas fa-trash"></i> Delete</button>
+    </div>
   </div>
 </div>
 
@@ -1822,7 +2425,83 @@
       </div>
       <div class="form-actions">
         <button class="btn-cancel" onclick="closeAddModal()">Cancel</button>
-        <button class="btn-save" onclick="saveSOP()">Save SOP</button>
+        <button class="btn-save" id="sopFormSaveBtn" onclick="saveSOP()">Save SOP</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Tech Resources - Add/Edit Product Modal ═══ -->
+<div class="modal-overlay" id="trProductModal" onclick="if(event.target===this)closeTRProductModal()">
+  <div class="modal" style="max-width:560px;">
+    <div class="modal-header">
+      <h3 id="trProductModalTitle">Add Product</h3>
+      <button class="modal-close" onclick="closeTRProductModal()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="vendor-form-row">
+        <div class="form-group"><label>Brand *</label><input type="text" id="trProdBrand" placeholder="e.g. Fanatec"></div>
+        <div class="form-group"><label>Product Name *</label><input type="text" id="trProdName" placeholder="e.g. CSL DD Pro"></div>
+      </div>
+      <div class="vendor-form-row">
+        <div class="form-group"><label>Product Type</label>
+          <select id="trProdType">
+            <option value="Wheel Base">Wheel Base</option>
+            <option value="Wheel">Wheel</option>
+            <option value="Pedals">Pedals</option>
+            <option value="Shifter">Shifter</option>
+            <option value="Handbrake">Handbrake</option>
+            <option value="Cockpit / Rig">Cockpit / Rig</option>
+            <option value="Monitor">Monitor</option>
+            <option value="Motion Platform">Motion Platform</option>
+            <option value="Seat">Seat</option>
+            <option value="Audio">Audio</option>
+            <option value="PC Hardware">PC Hardware</option>
+            <option value="Accessory">Accessory</option>
+            <option value="Software">Software</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Brand Website</label><input type="url" id="trProdBrandUrl" placeholder="https://fanatec.com"></div>
+      </div>
+      <div class="form-group"><label>Product Page URL</label><input type="url" id="trProdPageUrl" placeholder="https://fanatec.com/product/..."></div>
+      <div class="form-group"><label>VPS Listing URL</label><input type="url" id="trProdVpsUrl" placeholder="https://velocityprosims.com/product/..."></div>
+      <div class="form-group"><label>Firmware / Driver URL</label><input type="url" id="trProdFirmwareUrl" placeholder="https://fanatec.com/downloads/..."></div>
+      <div class="form-group"><label>Manual / Docs URL</label><input type="url" id="trProdManualUrl" placeholder="https://..."></div>
+      <div class="form-group"><label>Notes</label><textarea id="trProdNotes" style="min-height:80px;" placeholder="Setup tips, known issues, firmware version notes..."></textarea></div>
+      <div class="form-actions">
+        <button class="btn-cancel" onclick="closeTRProductModal()">Cancel</button>
+        <button class="btn-save" id="trProdSaveBtn" onclick="saveTRProduct()">Save Product</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Vendor Contact Modal ═══ -->
+<div class="modal-overlay" id="vendorModal" onclick="if(event.target===this)closeVendorModal()">
+  <div class="modal" style="max-width:560px;">
+    <div class="modal-header">
+      <h3 id="vendorModalTitle">Add Contact</h3>
+      <button class="modal-close" onclick="closeVendorModal()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="vendor-form-row">
+        <div class="form-group"><label>Contact Name *</label><input type="text" id="vendorName" placeholder="e.g. John Smith"></div>
+        <div class="form-group"><label>Company *</label><input type="text" id="vendorCompany" placeholder="e.g. SimGear Inc."></div>
+      </div>
+      <div class="vendor-form-row">
+        <div class="form-group"><label>Role / Title</label><input type="text" id="vendorRole" placeholder="e.g. Sales Manager"></div>
+        <div class="form-group"><label>Category / Type</label><input type="text" id="vendorType" placeholder="e.g. Hardware, Software, AV"></div>
+      </div>
+      <div class="vendor-form-row">
+        <div class="form-group"><label>Phone</label><input type="tel" id="vendorPhone" placeholder="e.g. (555) 123-4567"></div>
+        <div class="form-group"><label>Email</label><input type="email" id="vendorEmail" placeholder="e.g. john@simgear.com"></div>
+      </div>
+      <div class="form-group"><label>Website</label><input type="url" id="vendorWebsite" placeholder="e.g. https://simgear.com"></div>
+      <div class="form-group"><label>Notes</label><textarea id="vendorNotes" style="min-height:100px;" placeholder="Additional details, account numbers, contract info..."></textarea></div>
+      <div class="form-actions">
+        <button class="btn-cancel" onclick="closeVendorModal()">Cancel</button>
+        <button class="btn-save" id="vendorSaveBtn" onclick="saveVendorContact()">Save Contact</button>
       </div>
     </div>
   </div>
@@ -1879,19 +2558,21 @@ const AUTH_KEY = 'vps_auth';
 
 // ── Categories ──
 const categories = [
+  { id: 'crm', name: 'CRM', icon: 'fa-users-gear', color: '#22D3EE' },
   { id: 'accounting', name: 'Accounting', icon: 'fa-calculator', color: '#10B981' },
   { id: 'calendar', name: 'Calendar', icon: 'fa-calendar-days', color: '#5CBF2A' },
-  { id: 'contacts', name: 'Contacts', icon: 'fa-address-book', color: '#14B8A6' },
+  { id: 'contacts', name: 'Staff Contacts', icon: 'fa-address-book', color: '#14B8A6' },
   { id: 'customer', name: 'Customer Service', icon: 'fa-headset', color: '#8B5CF6' },
   { id: 'equipment', name: 'Equipment & Simulators', icon: 'fa-desktop', color: '#5CBF2A' },
   { id: 'events', name: 'Events', icon: 'fa-trophy', color: '#EC4899' },
   { id: 'facility', name: 'Facility Management', icon: 'fa-building', color: '#F59E0B' },
   { id: 'websites', name: 'Key Websites', icon: 'fa-link', color: '#6366F1' },
   { id: 'assets', name: 'Marketing Assets', icon: 'fa-palette', color: '#E879F9' },
-  { id: 'operations', name: 'Race Operations', icon: 'fa-flag-checkered', color: '#3B82F6' },
   { id: 'safety', name: 'Safety & Emergency', icon: 'fa-shield-halved', color: '#EF4444' },
   { id: 'staff', name: 'Staff & Training', icon: 'fa-users', color: '#F97316' },
   { id: 'tech', name: 'Technical Support', icon: 'fa-wrench', color: '#06B6D4' },
+  { id: 'techresources', name: 'Tech Resources', icon: 'fa-microchip', color: '#38BDF8' },
+  { id: 'vendors', name: 'Vendor Contacts', icon: 'fa-handshake', color: '#F472B6' },
 ];
 
 // ── Default SOPs ──
@@ -2572,22 +3253,144 @@ const defaultSOPs = [
 let sopData = [];
 let currentCategory = 'dashboard';
 
+// ── Firestore SOP Sync ──
+let sopsUnsubscribe = null;
+let sopsLoaded = false;
+
+function loadSOPs() {
+  if (sopsUnsubscribe) return;
+  sopsUnsubscribe = db.collection('sops').onSnapshot(snapshot => {
+    sopData = snapshot.docs.map(doc => ({ id: doc.id, _firestoreId: doc.id, ...doc.data() }));
+    // On first load, seed any missing default vendors to Firestore
+    if (!sopsLoaded) {
+      const existingVendorCompanies = new Set(sopData.filter(s => s.category === 'vendors' && s.isVendorContact).map(s => s.vendorCompany));
+      const defaultVendors = [
+        { vendorCompany: 'Advanced Sim Racing', vendorName: 'Owner: Marc-Andre Ladaceour / Support: Edouard', vendorEmail: 'Info@AdvancedSimRacing.com', vendorWebsite: 'https://www.advancedsimracing.com', vendorType: 'Hardware' },
+        { vendorCompany: 'Apex Sim Racing', vendorName: 'Owner: Jimmy Fisher / Support: Daniel', vendorEmail: 'info@ApexSimRacing.com', vendorWebsite: 'https://www.apexsimracing.com', vendorType: 'Hardware' },
+        { vendorCompany: 'Earthquake', vendorName: 'AJ', vendorEmail: 'cs@earthquakesound.com', vendorPhone: '510-732-1000', vendorWebsite: 'https://www.earthquakesound.com', vendorType: 'Audio' },
+        { vendorCompany: 'Extreme Sim Racing', vendorName: 'Owner: Kiko Tocci / Support: Eduardo', vendorEmail: 'info@ExtremeSimRacing.com', vendorWebsite: 'https://www.extremesimracing.com', vendorType: 'Hardware' },
+        { vendorCompany: 'Moza', vendorName: 'Zack', vendorEmail: 'support@mozaracing.com', vendorWebsite: 'https://mozaracing.com', vendorType: 'Hardware' },
+        { vendorCompany: 'Podium 1', vendorName: 'Owner: Steve Paladino / Support: CJ Conklin', vendorEmail: 'CJ@podium1racing.com / Steve@podium1racing.com', vendorWebsite: 'https://www.podium1racing.com', vendorType: 'Hardware' },
+        { vendorCompany: 'SimSportGadget', vendorName: 'NingYuen Li', vendorEmail: 'info@simsportgadget.com', vendorWebsite: 'https://simsportgadget.com', vendorType: 'Accessories' },
+        { vendorCompany: 'Vero Motion', vendorName: 'Owner: Marc Andre Seguin / Support: Adam', vendorEmail: 'info@vero-motion.com', vendorWebsite: 'https://vero-motion.com', vendorType: 'Motion' },
+      ];
+      const missingVendors = defaultVendors.filter(v => !existingVendorCompanies.has(v.vendorCompany));
+      if (missingVendors.length > 0) {
+        missingVendors.forEach(v => {
+          db.collection('sops').add({
+            ...v, category: 'vendors', isVendorContact: true,
+            title: v.vendorCompany, description: v.vendorCompany,
+            priority: 'standard', content: '',
+            updatedBy: 'Jose', updatedAt: new Date().toISOString().split('T')[0],
+            vendorRole: '', vendorNotes: ''
+          }).catch(err => console.error('Error seeding vendor:', err));
+        });
+      }
+
+      // Seed default Fanatec products
+      const existingTRNames = new Set(sopData.filter(s => s.category === 'techresources' && s.isTechProduct).map(s => s.trBrand + '|' + s.trName));
+      const defaultTRProducts = [
+        // Wheel Bases
+        { trBrand: 'Fanatec', trName: 'Podium DD (25 Nm)', trType: 'Wheel Base', trPageUrl: 'https://www.fanatec.com/us/en/p/wheel-bases/crd-9020022-us/podium-dd-us', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'ClubSport DD+ (15 Nm)', trType: 'Wheel Base', trPageUrl: 'https://www.fanatec.com/us/en/p/wheel-bases/cs_dd+_us/clubsport-dd-plus-us', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'ClubSport DD (12 Nm)', trType: 'Wheel Base', trPageUrl: 'https://www.fanatec.com/us/en/p/wheel-bases/cs_dd_us/clubsport-dd-us', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'Gran Turismo DD PRO (8 Nm)', trType: 'Wheel Base', trPageUrl: 'https://www.fanatec.com/us/en/p/wheel-bases/crd-9020006-us/gran-turismo-dd-pro-wheel-base-qr2-us', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'CSL DD QR2 (8 Nm)', trType: 'Wheel Base', trPageUrl: 'https://www.fanatec.com/us/en/p/wheel-bases/csl_dd_qr2l_8nm_us/csl-dd-qr2-lite-8-nm-us', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'CSL DD QR2 (5 Nm)', trType: 'Wheel Base', trPageUrl: 'https://www.fanatec.com/us/en/p/wheel-bases/csl_dd_qr2l_90_us/csl-dd-qr2l-5-nm-us', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'Podium Wheel Base DD1 QR2', trType: 'Wheel Base', trPageUrl: 'https://www.fanatec.com/us/en/p/wheel-bases/p_wb_dd1_qr2_us/podium-wheel-base-dd1-qr2-us', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        // Steering Wheels
+        { trBrand: 'Fanatec', trName: 'CSL Steering Wheel GT3', trType: 'Wheel', trPageUrl: 'https://www.fanatec.com/us/en/p/steering-wheels/crd-9020021-ww/csl-steering-wheel-gt3', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'ClubSport Steering Wheel GT3', trType: 'Wheel', trPageUrl: 'https://www.fanatec.com/us/en/p/steering-wheels/sw_cs_gt3_uh/clubsport-steering-wheel-gt3', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'Podium Steering Wheel BMW M4 GT3', trType: 'Wheel', trPageUrl: 'https://www.fanatec.com/us/en/p/steering-wheels/p_sw_bmw_gt3_h/podium-steering-wheel-bmw-m4-gt3', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'CSL Steering Wheel BMW + QR2 Lite', trType: 'Wheel', trPageUrl: 'https://www.fanatec.com/us/en/p/steering-wheels/wheel-bmw-v2-qr-2-lite/csl-steering-wheel-bmw-qr2-lite-wheel-side', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'CSL Elite Steering Wheel WRC', trType: 'Wheel', trPageUrl: 'https://www.fanatec.com/us/en/p/steering-wheels/crd-9020016-ww/csl-elite-steering-wheel-wrc', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'ClubSport Steering Wheel RS', trType: 'Wheel', trPageUrl: 'https://www.fanatec.com/us/en/p/steering-wheels/crd-9020011-ww/clubsport-steering-wheel-rs', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'Podium Steering Wheel Monte Carlo Rally', trType: 'Wheel', trPageUrl: 'https://www.fanatec.com/us/en/p/steering-wheels/sw_p_mcr/podium-steering-wheel-monte-carlo-rally', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'CSL Steering Wheel P1 V2', trType: 'Wheel', trPageUrl: 'https://www.fanatec.com/us/en/p/steering-wheels/csl_sw_p1_v2r_qr2l/csl-steering-wheel-p1-v2-qr2-lite', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'ClubSport Steering Wheel Drift V2 for Xbox', trType: 'Wheel', trPageUrl: 'https://www.fanatec.com/us/en/p/steering-wheels/sw_cs_drift_v2_x_qr2/clubsport-steering-wheel-drift-v2-xbox-qr2', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'CSL Elite Steering Wheel Porsche Vision GT', trType: 'Wheel', trPageUrl: 'https://www.fanatec.com/us/en/p/steering-wheels/csl_e_sw_pvgt/csl-elite-steering-wheel-porsche-vision-gt', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'ClubSport Steering Wheel GT3 Endurance for Xbox', trType: 'Wheel', trPageUrl: 'https://www.fanatec.com/us/en/p/steering-wheels/sw_cs_gt3_e_x_qr2/clubsport-steering-wheel-gt3-endurance-xbox-qr2', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'CSL Steering Wheel R300 V2', trType: 'Wheel', trPageUrl: 'https://www.fanatec.com/us/en/p/steering-wheels/sw_csl_r300_v2_qr2l/csl-steering-wheel-r300-v2-qr2l', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'CSL Steering Wheel GT V2', trType: 'Wheel', trPageUrl: 'https://www.fanatec.com/us/en/p/steering-wheels/sw_csl_gt_v2_qr2l/csl-steering-wheel-gt-v2-qr2l', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'ClubSport Steering Wheel SPARCO GT for Xbox', trType: 'Wheel', trPageUrl: 'https://www.fanatec.com/us/en/p/steering-wheels/sw_cs_sp_gt_x_qr2/clubsport-steering-wheel-sparco-gt-xbox-qr2', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'ClubSport Steering Wheel Rally Sweden for Xbox', trType: 'Wheel', trPageUrl: 'https://www.fanatec.com/us/en/p/steering-wheels/sw_cs_rsw_x_qr2/clubsport-steering-wheel-rally-sweden-xbox-qr2', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'ClubSport Steering Wheel Flat 1 V2 for Xbox', trType: 'Wheel', trPageUrl: 'https://www.fanatec.com/us/en/p/steering-wheels/sw_cs_fl1_v2_x_qr2/clubsport-steering-wheel-flat1-v2-xbox-qr2', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'ClubSport Steering Wheel R300 V2 for Xbox', trType: 'Wheel', trPageUrl: 'https://www.fanatec.com/us/en/p/steering-wheels/sw_cs_r300_v2_x_qr2/clubsport-steering-wheel-r300-v2-xbox-qr2', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        // Pedals
+        { trBrand: 'Fanatec', trName: 'CSL Pedals', trType: 'Pedals', trPageUrl: 'https://www.fanatec.com/us/en/p/pedals/csl_p/csl-pedals', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'CSL Pedals LC', trType: 'Pedals', trPageUrl: 'https://www.fanatec.com/us/en/p/pedals/csl_p_lc/csl_pedals_lc', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'CSL Elite Pedals V2', trType: 'Pedals', trPageUrl: 'https://www.fanatec.com/us/en/p/pedals/csl_ep_v2/csl-elite-pedals-v2', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'ClubSport Pedals V3', trType: 'Pedals', trPageUrl: 'https://www.fanatec.com/us/en/p/pedals/csp_v3/clubsport-pedals-v3', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'ClubSport Pedals V3 Inverted', trType: 'Pedals', trPageUrl: 'https://www.fanatec.com/us/en/p/pedals/csp_v3i/clubsport-pedals-v3-inverted', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        // Shifter & Handbrake
+        { trBrand: 'Fanatec', trName: 'ClubSport Shifter SQ V1.5', trType: 'Shifter', trPageUrl: 'https://www.fanatec.com/us/en/p/add-ons/crd-9040002-ww/clubsport-shifter-sq', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'ClubSport Handbrake V2', trType: 'Handbrake', trPageUrl: 'https://www.fanatec.com/us/en/p/add-ons/cs_hb_v2/clubsport-handbrake-v2', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        // Key Accessories
+        { trBrand: 'Fanatec', trName: 'CSL Universal Hub V2', trType: 'Accessory', trPageUrl: 'https://www.fanatec.com/us/en/p/sim-racing-accessories/crd-9020017-ww/csl-universal-hub-v2-qr2l', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'ClubSport Universal Hub V2 for Xbox', trType: 'Accessory', trPageUrl: 'https://www.fanatec.com/us/en/p/sim-racing-accessories/crd-9020014-ww/clubsport-universal-hub-v2-xbox-qr-2', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'Podium Advanced Paddle Module', trType: 'Accessory', trPageUrl: 'https://www.fanatec.com/us/en/p/sim-racing-accessories/p_apm/podium-advanced-paddle-module', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'ClubSport Magnetic Paddle Module', trType: 'Accessory', trPageUrl: 'https://www.fanatec.com/us/en/p/sim-racing-accessories/cs_mpm/clubsport-magnetic-paddle-module', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'Podium Button Module Endurance', trType: 'Accessory', trPageUrl: 'https://www.fanatec.com/us/en/p/sim-racing-accessories/p_bme/podium-button-module-endurance', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'CSL Pedals Load Cell Kit', trType: 'Accessory', trPageUrl: 'https://www.fanatec.com/us/en/p/sim-racing-accessories/csl_p_lck/csl-pedals-load-cell-kit', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+        { trBrand: 'Fanatec', trName: 'QR2 Base-Side (Type-M)', trType: 'Accessory', trPageUrl: 'https://www.fanatec.com/us/en/p/sim-racing-accessories/qr2_bs_m/qr2-base-side-type-m', trBrandUrl: 'https://www.fanatec.com', trFirmwareUrl: 'https://www.fanatec.com/driver' },
+      ];
+      const missingTRProducts = defaultTRProducts.filter(p => !existingTRNames.has(p.trBrand + '|' + p.trName));
+      if (missingTRProducts.length > 0) {
+        missingTRProducts.forEach(p => {
+          db.collection('sops').add({
+            ...p, category: 'techresources', isTechProduct: true,
+            title: p.trName, description: p.trBrand + ' — ' + p.trName,
+            priority: 'standard', content: '',
+            updatedBy: 'Jose', updatedAt: new Date().toISOString().split('T')[0],
+            trManualUrl: '', trVpsUrl: '', trNotes: ''
+          }).catch(err => console.error('Error seeding TR product:', err));
+        });
+      }
+    }
+    sopsLoaded = true;
+    buildSidebar();
+    buildCategorySelect();
+    if (currentCategory === 'dashboard') renderDashboard();
+    else if (currentCategory !== 'assets' && currentCategory !== 'calendar' && currentCategory !== 'contacts') {
+      renderCategory(currentCategory);
+    }
+  }, err => {
+    console.error('Firestore SOPs error:', err);
+    // Fallback to localStorage
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      sopData = JSON.parse(stored);
+    } else {
+      sopData = [...defaultSOPs];
+    }
+    sopsLoaded = true;
+    buildSidebar();
+  });
+}
+
+function saveSOPToFirestore(sop) {
+  const { _firestoreId, ...data } = sop;
+  if (_firestoreId) {
+    db.collection('sops').doc(_firestoreId).set(data).catch(err => console.error('Error saving SOP:', err));
+  } else {
+    const { id, ...cleanData } = data;
+    db.collection('sops').add(cleanData).catch(err => console.error('Error adding SOP:', err));
+  }
+}
+
+function deleteSOPFromFirestore(sop) {
+  if (sop._firestoreId) {
+    db.collection('sops').doc(sop._firestoreId).delete().catch(err => console.error('Error deleting SOP:', err));
+  }
+}
+
+// Keep saveData for backward compat (also saves to localStorage as backup)
+function saveData() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(sopData));
+}
+
 // ── Init ──
 function init() {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored) {
-    sopData = JSON.parse(stored);
-    // Merge in any new default SOPs that don't exist yet
-    const existingIds = new Set(sopData.map(s => s.id));
-    defaultSOPs.forEach(def => {
-      if (!existingIds.has(def.id)) sopData.push(def);
-    });
-    saveData();
-  } else {
-    sopData = [...defaultSOPs];
-    saveData();
-  }
-
   if (sessionStorage.getItem(AUTH_KEY) === 'true') {
     showApp();
   }
@@ -2604,14 +3407,46 @@ function init() {
   buildCategorySelect();
   renderDashboard();
 
-  // Start Firestore listener for assets (updates sidebar badge in real time)
+  // Start Firestore listeners for SOPs and assets (real-time sync)
+  loadSOPs();
   loadAssets();
+  startDashTasksListener();
+  startCRMListener();
 
   // Start calendar listeners (SRP + VPS events from shared RTDB)
   startCalendarListeners();
 
-  // Migrate localStorage assets to Firestore (one-time)
+  // One-time migrations from localStorage to Firestore
   migrateAssetsToFirestore();
+  migrateSOPsToFirestore();
+  migrateDashTasksToFirestore();
+}
+
+async function migrateSOPsToFirestore() {
+  const localSOPs = localStorage.getItem(STORAGE_KEY);
+  if (!localSOPs) return;
+  const sops = JSON.parse(localSOPs);
+  if (!sops.length) return;
+  try {
+    // Check if Firestore already has SOPs (avoid double-migration)
+    const existing = await db.collection('sops').limit(1).get();
+    if (!existing.empty) {
+      // Firestore already has data, clear localStorage backup
+      localStorage.removeItem(STORAGE_KEY);
+      return;
+    }
+    const batch = db.batch();
+    sops.forEach(sop => {
+      const docRef = db.collection('sops').doc();
+      const { id, _firestoreId, ...sopClean } = sop;
+      batch.set(docRef, sopClean);
+    });
+    await batch.commit();
+    localStorage.removeItem(STORAGE_KEY);
+    console.log('Migrated ' + sops.length + ' SOPs from localStorage to Firestore');
+  } catch (err) {
+    console.error('SOP migration failed (will retry next load):', err);
+  }
 }
 
 async function migrateAssetsToFirestore() {
@@ -2627,14 +3462,12 @@ async function migrateAssetsToFirestore() {
       batch.set(docRef, assetData);
     });
     await batch.commit();
-    localStorage.removeItem('vps_assets'); // Remove after successful migration
+    localStorage.removeItem('vps_assets');
     console.log('Migrated ' + assets.length + ' assets from localStorage to Firestore');
   } catch (err) {
     console.error('Asset migration failed (will retry next load):', err);
   }
 }
-
-function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(sopData)); }
 
 // ── Auth ──
 function attemptLogin() {
@@ -2676,7 +3509,7 @@ function buildSidebar() {
   existingItems.forEach(el => el.remove());
 
   categories.forEach(cat => {
-    const count = cat.id === 'assets' ? assetsData.length : cat.id === 'calendar' ? (srpEvents.length + vpsEvents.length) : cat.id === 'contacts' ? contactsData.length : sopData.filter(s => s.category === cat.id).length;
+    const count = cat.id === 'crm' ? crmCustomers.length : cat.id === 'assets' ? assetsData.length : cat.id === 'calendar' ? (srpEvents.length + vpsEvents.length) : cat.id === 'contacts' ? contactsData.length : sopData.filter(s => s.category === cat.id).length;
     const div = document.createElement('div');
     div.className = 'nav-item' + (currentCategory === cat.id ? ' active' : '');
     div.dataset.cat = cat.id;
@@ -2712,14 +3545,89 @@ function showDashboard() {
 
 // ── Dashboard Tasks Storage ──
 const DASH_TASKS_KEY = 'vps_dash_tasks';
+let dashTasksCache = {};
+let dashTasksListenerStarted = false;
+let dashTasksLoaded = false;
+let dashTasksLocalUpdate = false;
+
+function startDashTasksListener() {
+  if (dashTasksListenerStarted) return;
+  dashTasksListenerStarted = true;
+  db.collection('dashTasks').onSnapshot(snapshot => {
+    dashTasksCache = {};
+    snapshot.docs.forEach(doc => {
+      dashTasksCache[doc.id] = doc.data().tasks || [];
+    });
+    dashTasksLoaded = true;
+    // Also keep localStorage as offline backup
+    localStorage.setItem(DASH_TASKS_KEY, JSON.stringify(dashTasksCache));
+    // Only re-render if this was a remote change (not our own write)
+    if (!dashTasksLocalUpdate && currentCategory === 'dashboard') {
+      renderDashboard();
+    }
+    dashTasksLocalUpdate = false;
+  }, err => {
+    console.error('Firestore dashTasks error:', err);
+    // Fallback to localStorage
+    const stored = localStorage.getItem(DASH_TASKS_KEY);
+    dashTasksCache = stored ? JSON.parse(stored) : {};
+    dashTasksLoaded = true;
+    if (currentCategory === 'dashboard') renderDashboard();
+  });
+}
 
 function loadDashTasks() {
-  const stored = localStorage.getItem(DASH_TASKS_KEY);
-  return stored ? JSON.parse(stored) : {};
+  return dashTasksCache;
 }
 
 function saveDashTasks(tasks) {
+  dashTasksCache = tasks;
+  dashTasksLocalUpdate = true;
   localStorage.setItem(DASH_TASKS_KEY, JSON.stringify(tasks));
+  // Write each event's tasks to its own Firestore doc
+  Object.keys(tasks).forEach(key => {
+    db.collection('dashTasks').doc(key).set({ tasks: tasks[key] }).catch(err => console.error('Error saving dash task:', err));
+  });
+}
+
+function migrateDashTasksToFirestore() {
+  const stored = localStorage.getItem(DASH_TASKS_KEY);
+  if (!stored) return;
+  const tasks = JSON.parse(stored);
+  if (!tasks || Object.keys(tasks).length === 0) return;
+  // Check if Firestore already has dash tasks
+  db.collection('dashTasks').limit(1).get().then(snap => {
+    if (!snap.empty) return; // Already migrated
+    Object.keys(tasks).forEach(key => {
+      db.collection('dashTasks').doc(key).set({ tasks: tasks[key] }).catch(err => console.error('Dash task migration error:', err));
+    });
+    console.log('Migrated dashboard tasks to Firestore');
+  }).catch(err => console.error('Dash task migration check failed:', err));
+}
+
+function getExpandedDashKeys() {
+  const keys = [];
+  document.querySelectorAll('.dash-date-header.expanded').forEach(el => {
+    if (el.dataset.dashKey) keys.push(el.dataset.dashKey);
+  });
+  return keys;
+}
+
+function restoreExpandedDashKeys(keys) {
+  keys.forEach(key => {
+    const header = document.querySelector(`[data-dash-key="${CSS.escape(key)}"]`);
+    if (header && !header.classList.contains('expanded')) {
+      header.classList.add('expanded');
+      const body = header.nextElementSibling;
+      if (body) body.classList.add('open');
+    }
+  });
+}
+
+function renderDashboardPreserving() {
+  const expanded = getExpandedDashKeys();
+  renderDashboard();
+  restoreExpandedDashKeys(expanded);
 }
 
 function toggleDashTask(eventKey, taskIndex) {
@@ -2727,7 +3635,7 @@ function toggleDashTask(eventKey, taskIndex) {
   if (!tasks[eventKey]) return;
   tasks[eventKey][taskIndex].done = !tasks[eventKey][taskIndex].done;
   saveDashTasks(tasks);
-  renderDashboard();
+  renderDashboardPreserving();
 }
 
 function addDashTask(eventKey) {
@@ -2739,11 +3647,11 @@ function addDashTask(eventKey) {
   if (!tasks[eventKey]) tasks[eventKey] = [];
   tasks[eventKey].push({ text, done: false });
   saveDashTasks(tasks);
+  const expanded = getExpandedDashKeys();
+  if (!expanded.includes(eventKey)) expanded.push(eventKey);
   renderDashboard();
-  // Re-expand that section and refocus
+  restoreExpandedDashKeys(expanded);
   setTimeout(() => {
-    const header = document.querySelector(`[data-dash-key="${CSS.escape(eventKey)}"]`);
-    if (header && !header.classList.contains('expanded')) header.click();
     const newInput = document.getElementById('dashAddInput_' + CSS.escape(eventKey));
     if (newInput) newInput.focus();
   }, 50);
@@ -2755,7 +3663,7 @@ function removeDashTask(eventKey, taskIndex) {
   tasks[eventKey].splice(taskIndex, 1);
   if (tasks[eventKey].length === 0) delete tasks[eventKey];
   saveDashTasks(tasks);
-  renderDashboard();
+  renderDashboardPreserving();
 }
 
 function toggleDashSection(el) {
@@ -2818,82 +3726,74 @@ function renderDashboard() {
   const todayStr = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
   const allEvents = [...vpsEvents, ...srpEvents];
 
-  // Collect events by date, today and future (next 30 days)
+  // Collect events by date, today through end of year
   const dateMap = {};
-  const endDate = new Date(today);
-  endDate.setDate(endDate.getDate() + 30);
+  const endDate = new Date(today.getFullYear(), 11, 31);
   const endStr = endDate.getFullYear() + '-' + String(endDate.getMonth()+1).padStart(2,'0') + '-' + String(endDate.getDate()).padStart(2,'0');
 
-  allEvents.forEach(evt => {
-    if (!evt.date) return;
-    const start = evt.date;
-    const end = evt.endDate || evt.date;
-    // Include if any part of the event falls within our window
-    if (end < todayStr || start > endStr) return;
-    // Add to each day it spans within our window
-    const s = new Date(Math.max(new Date(start + 'T00:00:00'), today.setHours(0,0,0,0)));
-    const e = new Date(Math.min(new Date(end + 'T00:00:00'), endDate));
-    for (let d = new Date(s); d <= e; d.setDate(d.getDate() + 1)) {
-      const ds = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-      if (!dateMap[ds]) dateMap[ds] = [];
-      // Avoid duplicates
-      if (!dateMap[ds].find(x => x._source === evt._source && x._id === evt._id)) {
-        dateMap[ds].push(evt);
-      }
-    }
-  });
-
-  // Also include past events (last 3 days) that have incomplete tasks
+  // Build unique event list (one entry per event, not per day)
   const dashTasks = loadDashTasks();
   const pastStart = new Date(today);
   pastStart.setDate(pastStart.getDate() - 3);
+  const pastStartStr = pastStart.getFullYear() + '-' + String(pastStart.getMonth()+1).padStart(2,'0') + '-' + String(pastStart.getDate()).padStart(2,'0');
+
+  const uniqueEvents = [];
+  const seenKeys = new Set();
+
   allEvents.forEach(evt => {
     if (!evt.date) return;
-    const end = evt.endDate || evt.date;
-    if (end >= todayStr) return; // Already handled above
     const key = getEventKey(evt);
-    const tasks = dashTasks[key];
-    if (tasks && tasks.some(t => !t.done)) {
-      if (end >= pastStart.getFullYear() + '-' + String(pastStart.getMonth()+1).padStart(2,'0') + '-' + String(pastStart.getDate()).padStart(2,'0')) {
-        if (!dateMap[end]) dateMap[end] = [];
-        if (!dateMap[end].find(x => x._source === evt._source && x._id === evt._id)) {
-          dateMap[end].push(evt);
-        }
+    if (seenKeys.has(key)) return;
+    const start = evt.date;
+    const end = evt.endDate || evt.date;
+
+    // Include if event overlaps with today through end of year
+    if (end >= todayStr && start <= endStr) {
+      seenKeys.add(key);
+      uniqueEvents.push(evt);
+      return;
+    }
+    // Also include recent past events with incomplete tasks
+    if (end < todayStr && end >= pastStartStr) {
+      const tasks = dashTasks[key];
+      if (tasks && tasks.some(t => !t.done)) {
+        seenKeys.add(key);
+        uniqueEvents.push(evt);
       }
     }
   });
 
-  const sortedDates = Object.keys(dateMap).sort();
+  // Sort by start date
+  uniqueEvents.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
 
-  // Ensure tasks exist for each event
-  sortedDates.forEach(ds => {
-    dateMap[ds].forEach(evt => {
+  // Ensure tasks exist for each event (only generate defaults AFTER Firestore data has loaded)
+  if (dashTasksLoaded) {
+    let newTasksGenerated = false;
+    uniqueEvents.forEach(evt => {
       const key = getEventKey(evt);
       if (!dashTasks[key]) {
         dashTasks[key] = generateDefaultTasks(evt);
+        newTasksGenerated = true;
       }
     });
-  });
-  saveDashTasks(dashTasks);
+    if (newTasksGenerated) saveDashTasks(dashTasks);
+  }
 
-  // Separate into "today", "this week", and "upcoming"
   const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
   // Count total tasks and completed
   let totalTasks = 0, completedTasks = 0;
-  sortedDates.forEach(ds => {
-    dateMap[ds].forEach(evt => {
-      const key = getEventKey(evt);
-      const t = dashTasks[key] || [];
-      totalTasks += t.length;
-      completedTasks += t.filter(x => x.done).length;
-    });
+  uniqueEvents.forEach(evt => {
+    const key = getEventKey(evt);
+    const t = dashTasks[key] || [];
+    totalTasks += t.length;
+    completedTasks += t.filter(x => x.done).length;
   });
 
   let sectionsHTML = '';
 
-  if (sortedDates.length === 0) {
+  if (uniqueEvents.length === 0) {
     sectionsHTML = `
       <div class="dash-no-events">
         <i class="fas fa-calendar-check"></i>
@@ -2903,21 +3803,28 @@ function renderDashboard() {
     `;
   } else {
     let currentSection = '';
-    sortedDates.forEach(ds => {
-      const d = new Date(ds + 'T00:00:00');
-      const isToday = ds === todayStr;
-      const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
-      const tomorrowStr = tomorrow.getFullYear() + '-' + String(tomorrow.getMonth()+1).padStart(2,'0') + '-' + String(tomorrow.getDate()).padStart(2,'0');
-      const isTomorrow = ds === tomorrowStr;
-      const isPast = ds < todayStr;
+    const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowStr = tomorrow.getFullYear() + '-' + String(tomorrow.getMonth()+1).padStart(2,'0') + '-' + String(tomorrow.getDate()).padStart(2,'0');
 
-      // Section labels
+    uniqueEvents.forEach(evt => {
+      const start = evt.date;
+      const end = evt.endDate || evt.date;
+      const isMultiDay = end !== start;
+      const startD = new Date(start + 'T00:00:00');
+      const endD = new Date(end + 'T00:00:00');
+
+      // Determine which section this event belongs to based on its start (or if ongoing, today)
+      const effectiveDate = start < todayStr ? todayStr : start;
+      const isPast = end < todayStr;
+      const isToday = !isPast && start <= todayStr && end >= todayStr;
+      const isTomorrow = !isPast && !isToday && start === tomorrowStr;
+
       let section = '';
       if (isPast) section = 'Overdue';
       else if (isToday) section = 'Today';
       else if (isTomorrow) section = 'Tomorrow';
       else {
-        const diff = Math.ceil((d - new Date(todayStr + 'T00:00:00')) / (1000*60*60*24));
+        const diff = Math.ceil((new Date(start + 'T00:00:00') - new Date(todayStr + 'T00:00:00')) / (1000*60*60*24));
         section = diff <= 7 ? 'This Week' : 'Upcoming';
       }
 
@@ -2928,79 +3835,86 @@ function renderDashboard() {
         sectionsHTML += `<div class="dash-section-label" style="${sColor}"><i class="fas ${icon}"></i> ${section}</div>`;
       }
 
-      const dateLabel = isToday ? 'Today' : isTomorrow ? 'Tomorrow' : dayNames[d.getDay()];
-      const dateSub = monthNames[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
-      const events = dateMap[ds];
+      // Build date display
+      let dateLabel, dateSub;
+      if (isMultiDay) {
+        const startLabel = monthNames[startD.getMonth()] + ' ' + startD.getDate();
+        const endLabel = monthNames[endD.getMonth()] + ' ' + endD.getDate() + ', ' + endD.getFullYear();
+        dateSub = startLabel + ' — ' + endLabel;
+        if (isToday) dateLabel = 'Ongoing';
+        else if (isPast) dateLabel = 'Ended ' + dayNames[endD.getDay()];
+        else dateLabel = dayNames[startD.getDay()];
+      } else {
+        dateLabel = isToday ? 'Today' : isTomorrow ? 'Tomorrow' : dayNames[startD.getDay()];
+        dateSub = monthNames[startD.getMonth()] + ' ' + startD.getDate() + ', ' + startD.getFullYear();
+      }
 
-      events.forEach(evt => {
-        const key = getEventKey(evt);
-        const tasks = dashTasks[key] || [];
-        const doneCount = tasks.filter(t => t.done).length;
-        const totalCount = tasks.length;
-        const pct = totalCount ? Math.round((doneCount / totalCount) * 100) : 0;
-        const evtName = evt.name || evt.title || 'Event';
-        const sourceTag = evt._source === 'srp' ? 'SRP' : 'VPS';
-        const sourceClass = evt._source === 'srp' ? 'srp' : 'vps';
-        const timeStr = evt.startTime ? evt.startTime + (evt.endTime ? ' — ' + evt.endTime : '') : '';
-        const autoExpand = isToday || isPast;
+      const key = getEventKey(evt);
+      const tasks = dashTasks[key] || [];
+      const doneCount = tasks.filter(t => t.done).length;
+      const totalCount = tasks.length;
+      const pct = totalCount ? Math.round((doneCount / totalCount) * 100) : 0;
+      const evtName = evt.name || evt.title || 'Event';
+      const sourceTag = evt._source === 'srp' ? 'SRP' : 'VPS';
+      const sourceClass = evt._source === 'srp' ? 'srp' : 'vps';
+      const timeStr = evt.startTime ? evt.startTime + (evt.endTime ? ' — ' + evt.endTime : '') : '';
+      const autoExpand = isToday || isPast;
 
-        let metaHTML = '';
-        if (evt.type) metaHTML += `<span><i class="fas fa-tag"></i>${evt.type}</span>`;
-        if (evt.simulators) metaHTML += `<span><i class="fas fa-desktop"></i>${evt.simulators} sim(s)</span>`;
-        if (evt.status) metaHTML += `<span><i class="fas fa-circle-info"></i>${evt.status.replace('-',' ')}</span>`;
-        if (evt.description) metaHTML += `<span><i class="fas fa-align-left"></i>${evt.description.substring(0, 50)}${evt.description.length > 50 ? '...' : ''}</span>`;
+      let metaHTML = '';
+      if (evt.type) metaHTML += `<span><i class="fas fa-tag"></i>${evt.type}</span>`;
+      if (evt.simulators) metaHTML += `<span><i class="fas fa-desktop"></i>${evt.simulators} sim(s)</span>`;
+      if (evt.status) metaHTML += `<span><i class="fas fa-circle-info"></i>${evt.status.replace('-',' ')}</span>`;
+      if (evt.description) metaHTML += `<span><i class="fas fa-align-left"></i>${evt.description.substring(0, 50)}${evt.description.length > 50 ? '...' : ''}</span>`;
 
-        let tasksHTML = tasks.map((t, i) => `
-          <div class="dash-task-item ${t.done ? 'completed' : ''}" onclick="toggleDashTask('${key}', ${i})">
-            <div class="dash-task-check"><i class="fas fa-check"></i></div>
-            <span class="dash-task-text">${t.text}</span>
-            <button class="dash-task-delete" onclick="event.stopPropagation();removeDashTask('${key}', ${i})" title="Remove task"><i class="fas fa-xmark"></i></button>
-          </div>
-        `).join('');
+      let tasksHTML = tasks.map((t, i) => `
+        <div class="dash-task-item ${t.done ? 'completed' : ''}" onclick="toggleDashTask('${key}', ${i})">
+          <div class="dash-task-check"><i class="fas fa-check"></i></div>
+          <span class="dash-task-text">${t.text}</span>
+          <button class="dash-task-delete" onclick="event.stopPropagation();removeDashTask('${key}', ${i})" title="Remove task"><i class="fas fa-xmark"></i></button>
+        </div>
+      `).join('');
 
-        sectionsHTML += `
-          <div class="dash-date-section">
-            <div class="dash-date-header ${isToday ? 'today' : ''} ${autoExpand ? 'expanded' : ''}" data-dash-key="${key}" onclick="toggleDashSection(this)">
-              <div class="dash-date-icon">
-                <span class="day-num">${d.getDate()}</span>
-                <span class="day-name">${dayNames[d.getDay()].substring(0,3)}</span>
-              </div>
-              <div class="dash-date-info">
-                <div class="dash-date-title">${evtName}</div>
-                <div class="dash-date-sub">${dateLabel} · ${dateSub}${timeStr ? ' · ' + timeStr : ''}</div>
-              </div>
-              <span class="dash-date-badge ${sourceClass}">${sourceTag}</span>
-              ${totalCount > 0 ? `<span style="font-size:0.72rem;color:${pct===100?'var(--green)':'var(--text-muted)'};white-space:nowrap;">${doneCount}/${totalCount}</span>` : ''}
-              <i class="fas fa-chevron-right dash-date-chevron"></i>
+      sectionsHTML += `
+        <div class="dash-date-section">
+          <div class="dash-date-header ${isToday ? 'today' : ''} ${autoExpand ? 'expanded' : ''}" data-dash-key="${key}" onclick="toggleDashSection(this)">
+            <div class="dash-date-icon">
+              <span class="day-num">${startD.getDate()}</span>
+              <span class="day-name">${dayNames[startD.getDay()].substring(0,3)}</span>
             </div>
-            <div class="dash-events-body ${autoExpand ? 'open' : ''}">
-              <div class="dash-event-card">
-                ${metaHTML ? `<div class="dash-event-meta">${metaHTML}</div>` : ''}
-                <div class="dash-tasks">
-                  ${tasksHTML}
-                  <div class="dash-add-task">
-                    <i class="fas fa-plus" style="color:var(--text-muted);font-size:0.75rem;"></i>
-                    <input type="text" id="dashAddInput_${key}" placeholder="Add a task..." onkeydown="if(event.key==='Enter'){event.stopPropagation();addDashTask('${key}');}">
-                    <button onclick="event.stopPropagation();addDashTask('${key}')">Add</button>
-                  </div>
+            <div class="dash-date-info">
+              <div class="dash-date-title">${evtName}</div>
+              <div class="dash-date-sub">${dateLabel} · ${dateSub}${timeStr ? ' · ' + timeStr : ''}</div>
+            </div>
+            <span class="dash-date-badge ${sourceClass}">${sourceTag}</span>
+            ${totalCount > 0 ? `<span style="font-size:0.72rem;color:${pct===100?'var(--green)':'var(--text-muted)'};white-space:nowrap;">${doneCount}/${totalCount}</span>` : ''}
+            <i class="fas fa-chevron-right dash-date-chevron"></i>
+          </div>
+          <div class="dash-events-body ${autoExpand ? 'open' : ''}">
+            <div class="dash-event-card">
+              ${metaHTML ? `<div class="dash-event-meta">${metaHTML}</div>` : ''}
+              <div class="dash-tasks">
+                ${tasksHTML}
+                <div class="dash-add-task">
+                  <i class="fas fa-plus" style="color:var(--text-muted);font-size:0.75rem;"></i>
+                  <input type="text" id="dashAddInput_${key}" placeholder="Add a task..." onkeydown="if(event.key==='Enter'){event.stopPropagation();addDashTask('${key}');}">
+                  <button onclick="event.stopPropagation();addDashTask('${key}')">Add</button>
                 </div>
-                ${totalCount > 0 ? `
-                <div class="dash-task-progress">
-                  <div class="dash-task-progress-bar"><div class="dash-task-progress-fill" style="width:${pct}%"></div></div>
-                  <span class="dash-task-progress-text">${pct}% complete</span>
-                </div>` : ''}
               </div>
+              ${totalCount > 0 ? `
+              <div class="dash-task-progress">
+                <div class="dash-task-progress-bar"><div class="dash-task-progress-fill" style="width:${pct}%"></div></div>
+                <span class="dash-task-progress-text">${pct}% complete</span>
+              </div>` : ''}
             </div>
           </div>
-        `;
-      });
+        </div>
+      `;
     });
   }
 
   // Summary bar at top
-  const upcomingCount = sortedDates.reduce((acc, ds) => acc + dateMap[ds].length, 0);
-  const overdueDates = sortedDates.filter(ds => ds < todayStr);
-  const overdueCount = overdueDates.reduce((acc, ds) => acc + dateMap[ds].length, 0);
+  const upcomingCount = uniqueEvents.length;
+  const overdueCount = uniqueEvents.filter(evt => (evt.endDate || evt.date) < todayStr).length;
 
   main.innerHTML = `
     <div class="dashboard-header">
@@ -3094,10 +4008,13 @@ function renderWebsitesCategory() {
 }
 
 function renderCategory(catId) {
+  if (catId === 'crm') return renderCRMCategory();
   if (catId === 'websites') return renderWebsitesCategory();
   if (catId === 'assets') return renderAssetsCategory();
   if (catId === 'calendar') return renderCalendarCategory();
   if (catId === 'contacts') return renderContactsCategory();
+  if (catId === 'vendors') return renderVendorsCategory();
+  if (catId === 'techresources') return renderTechResources();
 
   const cat = categories.find(c => c.id === catId);
   const sops = sopData.filter(s => s.category === catId);
@@ -3143,7 +4060,7 @@ function renderSOPCard(sop) {
     `;
   }
   return `
-    <div class="sop-card" onclick="openSOPModal(${sop.id})">
+    <div class="sop-card" onclick="openSOPModal('${sop.id}')">
       <div class="sop-card-icon" style="background:${cat.color}15; color:${cat.color}">
         <i class="fas ${cat.icon}"></i>
       </div>
@@ -3159,11 +4076,462 @@ function renderSOPCard(sop) {
   `;
 }
 
+// ── Tech Resources ──
+let trView = 'brands'; // 'brands' | 'products' | 'detail'
+let trSelectedBrand = null;
+let trSelectedProduct = null;
+let trSearchQuery = '';
+let editingTRProductId = null;
+
+const defaultTechBrands = [
+  { name: 'Advanced Sim Racing', domain: 'advancedsimracing.com', url: 'https://www.advancedsimracing.com', types: ['Cockpit / Rig', 'Accessory'] },
+  { name: 'Asetek', domain: 'asetek.com', url: 'https://www.asetek.com/simsports/', types: ['Pedals', 'Wheel Base'] },
+  { name: 'Fanatec', domain: 'fanatec.com', url: 'https://www.fanatec.com', firmware: 'https://www.fanatec.com/driver', types: ['Wheel Base', 'Wheel', 'Pedals', 'Shifter', 'Handbrake'] },
+  { name: 'Gomez Sim Industries', domain: 'gomezsimindustries.com', url: 'https://gomezsimindustries.com', types: ['Pedals'] },
+  { name: 'Heusinkveld', domain: 'heusinkveld.com', url: 'https://heusinkveld.com', types: ['Pedals', 'Handbrake', 'Shifter'] },
+  { name: 'Logitech', domain: 'logitechg.com', url: 'https://www.logitechg.com', types: ['Wheel Base', 'Wheel', 'Pedals'] },
+  { name: 'Moza Racing', domain: 'mozaracing.com', url: 'https://mozaracing.com', types: ['Wheel Base', 'Wheel', 'Pedals', 'Shifter', 'Handbrake'] },
+  { name: 'Next Level Racing', domain: 'nextlevelracing.com', url: 'https://nextlevelracing.com', types: ['Cockpit / Rig', 'Seat', 'Motion Platform'] },
+  { name: 'Playseat', domain: 'playseat.com', url: 'https://www.playseat.com', types: ['Cockpit / Rig', 'Seat'] },
+  { name: 'Samsung', domain: 'samsung.com', url: 'https://www.samsung.com/us/computing/monitors/gaming/', types: ['Monitor'] },
+  { name: 'Simagic', domain: 'simagic.com', url: 'https://simagic.com', types: ['Wheel Base', 'Wheel', 'Pedals', 'Shifter'] },
+  { name: 'Simucube', domain: 'simucube.com', url: 'https://simucube.com', types: ['Wheel Base', 'Pedals'] },
+  { name: 'Thrustmaster', domain: 'thrustmaster.com', url: 'https://www.thrustmaster.com', types: ['Wheel Base', 'Wheel', 'Pedals', 'Shifter'] },
+  { name: 'Trak Racer', domain: 'trakracer.com', url: 'https://trakracer.com', types: ['Cockpit / Rig', 'Seat'] },
+  { name: 'VNM', domain: 'vnmsimulation.com', url: 'https://vnmsimulation.com', types: ['Handbrake', 'Shifter'] },
+];
+
+function getTRProducts() {
+  return sopData.filter(s => s.category === 'techresources' && s.isTechProduct);
+}
+
+function getTRBrands() {
+  const products = getTRProducts();
+  const brandMap = {};
+  // Start with default brands
+  defaultTechBrands.forEach(b => {
+    brandMap[b.name] = { name: b.name, domain: b.domain, url: b.url || '', firmware: b.firmware || '', count: 0 };
+  });
+  // Count products per brand and add any custom brands
+  products.forEach(p => {
+    const bName = p.trBrand || '';
+    if (!brandMap[bName]) {
+      brandMap[bName] = { name: bName, domain: '', count: 0 };
+    }
+    brandMap[bName].count++;
+    if (p.trBrandUrl && !brandMap[bName].domain) {
+      brandMap[bName].domain = p.trBrandUrl.replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, '');
+    }
+  });
+  return Object.values(brandMap).sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function renderTechResources() {
+  const cat = categories.find(c => c.id === 'techresources');
+  const main = document.getElementById('mainContent');
+  const products = getTRProducts();
+
+  let breadcrumbHTML = '';
+  if (trView === 'brands') {
+    breadcrumbHTML = `<span class="tr-breadcrumb-item active">All Brands</span>`;
+  } else if (trView === 'products') {
+    breadcrumbHTML = `<button class="tr-breadcrumb-item" onclick="trGoToBrands()">All Brands</button><i class="fas fa-chevron-right tr-breadcrumb-sep"></i><span class="tr-breadcrumb-item active">${trSelectedBrand}</span>`;
+  } else if (trView === 'detail') {
+    breadcrumbHTML = `<button class="tr-breadcrumb-item" onclick="trGoToBrands()">All Brands</button><i class="fas fa-chevron-right tr-breadcrumb-sep"></i><button class="tr-breadcrumb-item" onclick="trGoToProducts('${trSelectedBrand}')">${trSelectedBrand}</button><i class="fas fa-chevron-right tr-breadcrumb-sep"></i><span class="tr-breadcrumb-item active">${trSelectedProduct ? (sopData.find(s=>s.id===trSelectedProduct)||{}).trName||'' : ''}</span>`;
+  }
+
+  let contentHTML = '';
+
+  if (trView === 'brands') {
+    const brands = getTRBrands();
+    const filteredBrands = trSearchQuery ? brands.filter(b => b.name.toLowerCase().includes(trSearchQuery.toLowerCase())) : brands;
+    contentHTML = `<div class="tr-brand-grid">${filteredBrands.map(b => {
+      const logoUrl = b.domain ? `https://logo.clearbit.com/${b.domain}` : '';
+      const initials = b.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+      return `
+        <div class="tr-brand-card" onclick="trGoToProducts('${b.name.replace(/'/g,"\\'")}')">
+          <div class="tr-brand-logo">${logoUrl ? `<img src="${logoUrl}" alt="" onerror="this.outerHTML='<span class=\\'tr-initials\\'>${initials}</span>'">` : `<span class="tr-initials">${initials}</span>`}</div>
+          <div class="tr-brand-name">${b.name}</div>
+          <div class="tr-brand-count">${b.count} product${b.count !== 1 ? 's' : ''}${b.url ? ` · <a href="${b.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:#38BDF8;text-decoration:none;"><i class="fas fa-globe" style="margin-right:3px;"></i>Website</a>` : ''}</div>
+        </div>`;
+    }).join('')}</div>`;
+    if (!filteredBrands.length) contentHTML = `<p class="tr-empty">No brands match your search.</p>`;
+
+  } else if (trView === 'products') {
+    const brandProducts = products.filter(p => p.trBrand === trSelectedBrand);
+    const filtered = trSearchQuery ? brandProducts.filter(p => (p.trName||'').toLowerCase().includes(trSearchQuery.toLowerCase()) || (p.trType||'').toLowerCase().includes(trSearchQuery.toLowerCase())) : brandProducts;
+    const typeIcons = { 'Wheel Base': 'fa-circle-dot', 'Wheel': 'fa-dharmachakra', 'Pedals': 'fa-shoe-prints', 'Shifter': 'fa-arrows-up-down', 'Handbrake': 'fa-hand', 'Cockpit / Rig': 'fa-chair', 'Monitor': 'fa-tv', 'Motion Platform': 'fa-wave-square', 'Seat': 'fa-couch', 'Audio': 'fa-volume-high', 'PC Hardware': 'fa-server', 'Accessory': 'fa-puzzle-piece', 'Software': 'fa-code' };
+    contentHTML = `<div class="tr-product-list">${filtered.map(p => {
+      const icon = typeIcons[p.trType] || 'fa-box';
+      const links = [];
+      if (p.trPageUrl) links.push(`<a href="${p.trPageUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Product</a>`);
+      if (p.trFirmwareUrl) links.push(`<a href="${p.trFirmwareUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Firmware</a>`);
+      if (p.trVpsUrl) links.push(`<a href="${p.trVpsUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">VPS</a>`);
+      return `
+        <div class="tr-product-card" onclick="trGoToDetail('${p.id}')">
+          <div class="tr-product-icon"><i class="fas ${icon}"></i></div>
+          <div class="tr-product-body">
+            <div class="tr-product-name">${p.trName || p.title}</div>
+            <div class="tr-product-type">${p.trType || ''}</div>
+          </div>
+          <div class="tr-product-links">${links.join('')}</div>
+        </div>`;
+    }).join('')}</div>`;
+    if (!filtered.length) contentHTML = `<p class="tr-empty">No products for ${trSelectedBrand} yet. Click "Add Product" to add one.</p>`;
+
+  } else if (trView === 'detail') {
+    const p = sopData.find(s => s.id === trSelectedProduct);
+    if (p) {
+      const links = [];
+      if (p.trBrandUrl) links.push({ icon: 'fa-globe', label: `${p.trBrand} Website`, url: p.trBrandUrl });
+      if (p.trPageUrl) links.push({ icon: 'fa-box-open', label: 'Product Page', url: p.trPageUrl });
+      if (p.trVpsUrl) links.push({ icon: 'fa-store', label: 'VPS Listing', url: p.trVpsUrl });
+      if (p.trFirmwareUrl) links.push({ icon: 'fa-download', label: 'Firmware / Drivers', url: p.trFirmwareUrl });
+      if (p.trManualUrl) links.push({ icon: 'fa-book', label: 'Manual / Documentation', url: p.trManualUrl });
+      contentHTML = `
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+          <div class="tr-product-icon" style="width:48px;height:48px;font-size:1.1rem;"><i class="fas fa-microchip"></i></div>
+          <div>
+            <div style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">${p.trName || p.title}</div>
+            <div style="font-size:0.82rem;color:#38BDF8;font-weight:500;">${p.trBrand}${p.trType ? ' — ' + p.trType : ''}</div>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:8px;">
+            <button class="sop-edit-btn" onclick="openTRProductModal('${p.id}')"><i class="fas fa-pen"></i> Edit</button>
+            <button class="sop-delete-btn" onclick="deleteTRProduct('${p.id}')"><i class="fas fa-trash"></i> Delete</button>
+          </div>
+        </div>
+        ${links.length ? `<div class="tr-detail-links">${links.map(l => `
+          <a class="tr-detail-link" href="${l.url}" target="_blank" rel="noopener">
+            <i class="fas ${l.icon}"></i>
+            <span>${l.label}</span>
+            <span class="tr-link-url">${l.url.replace(/^https?:\/\/(www\.)?/, '').substring(0, 40)}${l.url.length > 55 ? '...' : ''}</span>
+          </a>`).join('')}</div>` : '<p class="tr-empty">No links added yet. Click Edit to add URLs.</p>'}
+        ${p.trNotes ? `<div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);"><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:8px;">Notes</div><div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;white-space:pre-wrap;">${p.trNotes}</div></div>` : ''}
+      `;
+    }
+  }
+
+  main.innerHTML = `
+    <div class="category-header">
+      <div class="category-header-left">
+        <div class="category-icon-lg" style="background:${cat.color}15; color:${cat.color}"><i class="fas ${cat.icon}"></i></div>
+        <div>
+          <h2>${cat.name}</h2>
+          <span class="subtitle">${products.length} product${products.length !== 1 ? 's' : ''} across ${getTRBrands().filter(b => b.count > 0).length} brands</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        ${trSelectedBrand ? (() => { const bd = defaultTechBrands.find(x => x.name === trSelectedBrand); return bd && bd.firmware ? `<a class="btn-add-sop" style="border-color:#38BDF8;color:#38BDF8;text-decoration:none;" href="${bd.firmware}" target="_blank" rel="noopener"><i class="fas fa-download"></i> Firmware Updater</a>` : ''; })() : ''}
+        <button class="btn-add-sop" style="border-color:#38BDF8;color:#38BDF8;" onclick="openTRProductModal()">
+          <i class="fas fa-plus"></i> Add Product
+        </button>
+      </div>
+    </div>
+    <div class="tr-search">
+      <i class="fas fa-search"></i>
+      <input type="text" id="trSearchInput" placeholder="Search brands or products..." value="${trSearchQuery}" oninput="trSearch(this.value)">
+    </div>
+    <div class="tr-breadcrumb">${breadcrumbHTML}</div>
+    <div id="trContent">${contentHTML}</div>
+  `;
+}
+
+function trSearch(q) {
+  trSearchQuery = q;
+  renderTechResources();
+  const input = document.getElementById('trSearchInput');
+  if (input) { input.focus(); input.setSelectionRange(q.length, q.length); }
+}
+
+function trGoToBrands() { trView = 'brands'; trSelectedBrand = null; trSelectedProduct = null; trSearchQuery = ''; renderTechResources(); }
+function trGoToProducts(brand) { trView = 'products'; trSelectedBrand = brand; trSelectedProduct = null; trSearchQuery = ''; renderTechResources(); }
+function trGoToDetail(productId) { trView = 'detail'; trSelectedProduct = productId; trSearchQuery = ''; renderTechResources(); }
+
+function openTRProductModal(productId) {
+  editingTRProductId = productId || null;
+  const modal = document.getElementById('trProductModal');
+  if (productId) {
+    const p = sopData.find(s => s.id === productId);
+    if (!p) return;
+    document.getElementById('trProductModalTitle').textContent = 'Edit Product';
+    document.getElementById('trProdSaveBtn').textContent = 'Update Product';
+    document.getElementById('trProdBrand').value = p.trBrand || '';
+    document.getElementById('trProdName').value = p.trName || '';
+    document.getElementById('trProdType').value = p.trType || 'Wheel Base';
+    document.getElementById('trProdBrandUrl').value = p.trBrandUrl || '';
+    document.getElementById('trProdPageUrl').value = p.trPageUrl || '';
+    document.getElementById('trProdVpsUrl').value = p.trVpsUrl || '';
+    document.getElementById('trProdFirmwareUrl').value = p.trFirmwareUrl || '';
+    document.getElementById('trProdManualUrl').value = p.trManualUrl || '';
+    document.getElementById('trProdNotes').value = p.trNotes || '';
+  } else {
+    document.getElementById('trProductModalTitle').textContent = 'Add Product';
+    document.getElementById('trProdSaveBtn').textContent = 'Save Product';
+    document.getElementById('trProdBrand').value = trSelectedBrand || '';
+    document.getElementById('trProdName').value = '';
+    document.getElementById('trProdType').value = 'Wheel Base';
+    document.getElementById('trProdBrandUrl').value = '';
+    document.getElementById('trProdPageUrl').value = '';
+    document.getElementById('trProdVpsUrl').value = '';
+    document.getElementById('trProdFirmwareUrl').value = '';
+    document.getElementById('trProdManualUrl').value = '';
+    document.getElementById('trProdNotes').value = '';
+    // Auto-fill brand URL from defaults
+    if (trSelectedBrand) {
+      const def = defaultTechBrands.find(b => b.name === trSelectedBrand);
+      if (def) document.getElementById('trProdBrandUrl').value = def.url || ('https://' + def.domain);
+    }
+  }
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeTRProductModal() {
+  document.getElementById('trProductModal').classList.remove('open');
+  document.body.style.overflow = '';
+  editingTRProductId = null;
+}
+
+function saveTRProduct() {
+  const brand = document.getElementById('trProdBrand').value.trim();
+  const name = document.getElementById('trProdName').value.trim();
+  if (!brand || !name) { alert('Please fill in Brand and Product Name.'); return; }
+
+  const payload = {
+    category: 'techresources', isTechProduct: true,
+    title: name, description: `${brand} — ${name}`,
+    trBrand: brand, trName: name,
+    trType: document.getElementById('trProdType').value,
+    trBrandUrl: document.getElementById('trProdBrandUrl').value.trim(),
+    trPageUrl: document.getElementById('trProdPageUrl').value.trim(),
+    trVpsUrl: document.getElementById('trProdVpsUrl').value.trim(),
+    trFirmwareUrl: document.getElementById('trProdFirmwareUrl').value.trim(),
+    trManualUrl: document.getElementById('trProdManualUrl').value.trim(),
+    trNotes: document.getElementById('trProdNotes').value.trim(),
+    priority: 'standard', content: '',
+    updatedBy: 'Jose', updatedAt: new Date().toISOString().split('T')[0]
+  };
+
+  if (editingTRProductId) {
+    const existing = sopData.find(s => s.id === editingTRProductId);
+    if (existing && existing._firestoreId) {
+      db.collection('sops').doc(existing._firestoreId).update(payload).then(() => {
+        closeTRProductModal();
+      }).catch(err => console.error('Error updating product:', err));
+    }
+  } else {
+    db.collection('sops').add(payload).then(() => {
+      closeTRProductModal();
+      trSelectedBrand = brand;
+      trView = 'products';
+    }).catch(err => {
+      console.error('Error adding product:', err);
+      payload.id = Date.now();
+      sopData.push(payload);
+      saveData();
+      closeTRProductModal();
+      renderTechResources();
+    });
+  }
+}
+
+function deleteTRProduct(productId) {
+  if (!confirm('Delete this product?')) return;
+  const p = sopData.find(s => s.id === productId);
+  if (p && p._firestoreId) {
+    db.collection('sops').doc(p._firestoreId).delete().then(() => {
+      trView = 'products';
+      trSelectedProduct = null;
+    }).catch(err => console.error('Error deleting product:', err));
+  }
+}
+
+// ── Vendor Contacts ──
+function renderVendorsCategory() {
+  const cat = categories.find(c => c.id === 'vendors');
+  const vendors = sopData.filter(s => s.category === 'vendors' && s.isVendorContact);
+  const main = document.getElementById('mainContent');
+
+  // Sort vendors alphabetically by company name
+  vendors.sort((a, b) => (a.vendorCompany || '').localeCompare(b.vendorCompany || ''));
+
+  const vendorCards = vendors.length ? vendors.map(v => {
+    const initials = (v.vendorCompany || v.vendorName || v.title || '?').split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    const logoUrl = v.vendorLogoUrl || (v.vendorWebsite ? `https://logo.clearbit.com/${v.vendorWebsite.replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, '')}` : '');
+    const avatarContent = logoUrl ? `<img src="${logoUrl}" alt="" onerror="this.parentElement.textContent='${initials}'">` : initials;
+    const quickLinks = [];
+    if (v.vendorPhone) quickLinks.push(`<a href="tel:${v.vendorPhone}" title="Call" onclick="event.stopPropagation()"><i class="fas fa-phone"></i></a>`);
+    if (v.vendorEmail) quickLinks.push(`<a href="mailto:${v.vendorEmail.split('/')[0].trim()}" title="Email" onclick="event.stopPropagation()"><i class="fas fa-envelope"></i></a>`);
+    if (v.vendorWebsite) quickLinks.push(`<a href="${v.vendorWebsite}" target="_blank" rel="noopener" title="Website" onclick="event.stopPropagation()"><i class="fas fa-globe"></i></a>`);
+    return `
+      <div class="vendor-card" onclick="openVendorDetail('${v.id}')">
+        <div class="vendor-card-avatar">${avatarContent}</div>
+        <div class="vendor-card-body">
+          <div class="vendor-card-name">${v.vendorCompany || v.vendorName || v.title}</div>
+          ${v.vendorRole ? `<div class="vendor-card-role">${v.vendorRole}</div>` : ''}
+        </div>
+        <div class="vendor-card-contact">${quickLinks.join('')}</div>
+      </div>
+    `;
+  }).join('') : '<p style="color:var(--text-muted);padding:20px 0;">No vendor contacts yet. Click "Add Contact" to create one.</p>';
+
+  main.innerHTML = `
+    <div class="category-header">
+      <div class="category-header-left">
+        <div class="category-icon-lg" style="background:${cat.color}15; color:${cat.color}">
+          <i class="fas ${cat.icon}"></i>
+        </div>
+        <div>
+          <h2>${cat.name}</h2>
+          <span class="subtitle">${vendors.length} contact${vendors.length !== 1 ? 's' : ''}</span>
+        </div>
+      </div>
+      <button class="btn-add-sop" style="border-color:#F472B6;color:#F472B6;" onclick="openVendorModal()">
+        <i class="fas fa-plus"></i> Add Contact
+      </button>
+    </div>
+    <div class="sop-list">${vendorCards}</div>
+  `;
+}
+
+let editingVendorId = null;
+
+function openVendorModal(vendorId) {
+  editingVendorId = vendorId || null;
+  const modal = document.getElementById('vendorModal');
+  if (vendorId) {
+    const v = sopData.find(s => s.id === vendorId);
+    if (!v) return;
+    document.getElementById('vendorModalTitle').textContent = 'Edit Contact';
+    document.getElementById('vendorSaveBtn').textContent = 'Update Contact';
+    document.getElementById('vendorName').value = v.vendorName || '';
+    document.getElementById('vendorCompany').value = v.vendorCompany || '';
+    document.getElementById('vendorRole').value = v.vendorRole || '';
+    document.getElementById('vendorType').value = v.vendorType || '';
+    document.getElementById('vendorPhone').value = v.vendorPhone || '';
+    document.getElementById('vendorEmail').value = v.vendorEmail || '';
+    document.getElementById('vendorWebsite').value = v.vendorWebsite || '';
+    document.getElementById('vendorNotes').value = v.vendorNotes || '';
+  } else {
+    document.getElementById('vendorModalTitle').textContent = 'Add Contact';
+    document.getElementById('vendorSaveBtn').textContent = 'Save Contact';
+    document.getElementById('vendorName').value = '';
+    document.getElementById('vendorCompany').value = '';
+    document.getElementById('vendorRole').value = '';
+    document.getElementById('vendorType').value = '';
+    document.getElementById('vendorPhone').value = '';
+    document.getElementById('vendorEmail').value = '';
+    document.getElementById('vendorWebsite').value = '';
+    document.getElementById('vendorNotes').value = '';
+  }
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeVendorModal() {
+  document.getElementById('vendorModal').classList.remove('open');
+  document.body.style.overflow = '';
+  editingVendorId = null;
+}
+
+function saveVendorContact() {
+  const name = document.getElementById('vendorName').value.trim();
+  const company = document.getElementById('vendorCompany').value.trim();
+  if (!name || !company) { alert('Please fill in at least Name and Company.'); return; }
+
+  const payload = {
+    category: 'vendors',
+    isVendorContact: true,
+    title: name,
+    vendorName: name,
+    vendorCompany: company,
+    vendorRole: document.getElementById('vendorRole').value.trim(),
+    vendorType: document.getElementById('vendorType').value.trim(),
+    vendorPhone: document.getElementById('vendorPhone').value.trim(),
+    vendorEmail: document.getElementById('vendorEmail').value.trim(),
+    vendorWebsite: document.getElementById('vendorWebsite').value.trim(),
+    vendorNotes: document.getElementById('vendorNotes').value.trim(),
+    description: `${company}${document.getElementById('vendorRole').value.trim() ? ' — ' + document.getElementById('vendorRole').value.trim() : ''}`,
+    priority: 'standard',
+    content: '',
+    updatedBy: 'Jose',
+    updatedAt: new Date().toISOString().split('T')[0]
+  };
+
+  if (editingVendorId) {
+    const existing = sopData.find(s => s.id === editingVendorId);
+    if (existing && existing._firestoreId) {
+      db.collection('sops').doc(existing._firestoreId).update(payload).then(() => {
+        closeVendorModal(); closeModal();
+      }).catch(err => { console.error('Error updating vendor:', err); });
+    }
+  } else {
+    db.collection('sops').add(payload).then(() => {
+      closeVendorModal();
+    }).catch(err => {
+      console.error('Error adding vendor:', err);
+      payload.id = Date.now();
+      sopData.push(payload);
+      saveData();
+      closeVendorModal();
+      renderVendorsCategory();
+    });
+  }
+}
+
+function openVendorDetail(id) {
+  viewingSopId = id;
+  const v = sopData.find(s => s.id === id);
+  if (!v) return;
+  document.getElementById('modalTitle').textContent = v.vendorCompany || v.vendorName || v.title;
+
+  const logoUrl = v.vendorLogoUrl || (v.vendorWebsite ? `https://logo.clearbit.com/${v.vendorWebsite.replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, '')}` : '');
+  const logoHTML = logoUrl ? `<div class="vendor-detail-logo"><img src="${logoUrl}" alt="${v.vendorCompany}" onerror="this.parentElement.style.display='none'"></div>` : '';
+
+  const fields = [
+    { label: 'Contacts', value: v.vendorName },
+    { label: 'Type', value: v.vendorType },
+    { label: 'Phone', value: v.vendorPhone, link: v.vendorPhone ? `tel:${v.vendorPhone}` : null },
+    { label: 'Email', value: v.vendorEmail, link: v.vendorEmail ? `mailto:${v.vendorEmail.split('/')[0].trim()}` : null, raw: v.vendorEmail },
+    { label: 'Website', value: v.vendorWebsite ? v.vendorWebsite.replace(/^https?:\/\/(www\.)?/, '') : '', link: v.vendorWebsite },
+  ].filter(f => f.value);
+
+  const notesHTML = v.vendorNotes ? `<div class="vendor-detail-item vendor-detail-notes"><span class="meta-label">Notes</span><span class="meta-value">${v.vendorNotes}</span></div>` : '';
+
+  document.getElementById('modalBody').innerHTML = `
+    <div class="vendor-detail-grid">
+      ${logoHTML}
+      ${fields.map(f => `
+        <div class="vendor-detail-item">
+          <span class="meta-label">${f.label}</span>
+          <span class="meta-value">${f.link ? `<a href="${f.link}" ${f.label === 'Website' ? 'target="_blank" rel="noopener"' : ''}>${f.raw || f.value}</a>` : f.value}</span>
+        </div>
+      `).join('')}
+      ${notesHTML}
+    </div>
+    <div style="font-size:0.75rem;color:var(--text-muted);border-top:1px solid var(--border);padding-top:14px;margin-top:8px;">
+      Last updated ${formatDate(v.updatedAt)} by ${v.updatedBy}
+    </div>
+  `;
+
+  // Swap the edit button to use vendor edit
+  document.getElementById('sopEditBtn').setAttribute('onclick', `closeModal();openVendorModal('${v.id}')`);
+  document.getElementById('sopModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
 // ── SOP Modal ──
+let viewingSopId = null;
+
 function openSOPModal(id) {
+  viewingSopId = id;
   const sop = sopData.find(s => s.id === id);
   if (!sop) return;
+  // Route vendor contacts to their own detail view
+  if (sop.isVendorContact) return openVendorDetail(id);
   const cat = categories.find(c => c.id === sop.category);
+  // Reset edit button to standard SOP behavior
+  document.getElementById('sopEditBtn').setAttribute('onclick', `openEditModal(viewingSopId)`);
   document.getElementById('modalTitle').textContent = sop.title;
 
   let checklistHTML = '';
@@ -3175,21 +4543,21 @@ function openSOPModal(id) {
       <div class="checklist-progress">
         <div class="checklist-progress-bar"><div class="checklist-progress-fill" style="width:${pct}%"></div></div>
         <span class="checklist-progress-text">${completed}/${total} completed (${pct}%)</span>
-        <button class="checklist-reset-btn" onclick="resetChecklist(${sop.id})" title="Reset all"><i class="fas fa-rotate-left"></i> Reset</button>
+        <button class="checklist-reset-btn" onclick="resetChecklist('${sop.id}')" title="Reset all"><i class="fas fa-rotate-left"></i> Reset</button>
       </div>
       <div class="checklist-items" id="checklistItems">
         ${sop.checklistItems.map((item, i) => `
           <label class="checklist-item ${item.checked ? 'checked' : ''}" data-index="${i}">
-            <input type="checkbox" ${item.checked ? 'checked' : ''} onchange="toggleChecklistItem(${sop.id}, ${i}, this.checked)">
+            <input type="checkbox" ${item.checked ? 'checked' : ''} onchange="toggleChecklistItem('${sop.id}', ${i}, this.checked)">
             <span class="checklist-check"><i class="fas fa-check"></i></span>
             <span class="checklist-text">${item.text}</span>
-            <button class="checklist-delete-btn" onclick="event.preventDefault();event.stopPropagation();deleteChecklistItem(${sop.id}, ${i})" title="Remove item"><i class="fas fa-xmark"></i></button>
+            <button class="checklist-delete-btn" onclick="event.preventDefault();event.stopPropagation();deleteChecklistItem('${sop.id}', ${i})" title="Remove item"><i class="fas fa-xmark"></i></button>
           </label>
         `).join('')}
       </div>
       <div class="checklist-add">
-        <input type="text" id="newChecklistItem" placeholder="Add a new checklist item..." onkeydown="if(event.key==='Enter')addChecklistItem(${sop.id})">
-        <button onclick="addChecklistItem(${sop.id})"><i class="fas fa-plus"></i> Add</button>
+        <input type="text" id="newChecklistItem" placeholder="Add a new checklist item..." onkeydown="if(event.key==='Enter')addChecklistItem('${sop.id}')">
+        <button onclick="addChecklistItem('${sop.id}')"><i class="fas fa-plus"></i> Add</button>
       </div>
     `;
   }
@@ -3209,11 +4577,19 @@ function openSOPModal(id) {
 }
 
 // ── Checklist Functions ──
+function saveSopUpdate(sop) {
+  if (sop._firestoreId) {
+    const { id, _firestoreId, ...data } = sop;
+    db.collection('sops').doc(sop._firestoreId).update(data).catch(err => console.error('Error updating SOP:', err));
+  }
+  saveData();
+}
+
 function toggleChecklistItem(sopId, index, checked) {
   const sop = sopData.find(s => s.id === sopId);
   if (!sop || !sop.checklistItems) return;
   sop.checklistItems[index].checked = checked;
-  saveData();
+  saveSopUpdate(sop);
   openSOPModal(sopId);
 }
 
@@ -3226,7 +4602,7 @@ function addChecklistItem(sopId) {
   if (!sop.checklistItems) sop.checklistItems = [];
   sop.checklistItems.push({ text, checked: false });
   sop.isChecklist = true;
-  saveData();
+  saveSopUpdate(sop);
   openSOPModal(sopId);
 }
 
@@ -3234,7 +4610,7 @@ function deleteChecklistItem(sopId, index) {
   const sop = sopData.find(s => s.id === sopId);
   if (!sop || !sop.checklistItems) return;
   sop.checklistItems.splice(index, 1);
-  saveData();
+  saveSopUpdate(sop);
   openSOPModal(sopId);
 }
 
@@ -3242,23 +4618,110 @@ function resetChecklist(sopId) {
   const sop = sopData.find(s => s.id === sopId);
   if (!sop || !sop.checklistItems) return;
   sop.checklistItems.forEach(item => item.checked = false);
-  saveData();
+  saveSopUpdate(sop);
   openSOPModal(sopId);
 }
 
 function closeModal() {
   document.getElementById('sopModal').classList.remove('open');
   document.body.style.overflow = '';
+  viewingSopId = null;
 }
 
-// ── Add SOP Modal ──
+// ── Delete SOP with PIN ──
+const DELETE_PIN = '12345';
+
+function promptDeleteSOP() {
+  const sop = sopData.find(s => s.id === viewingSopId);
+  if (!sop) return;
+  document.getElementById('deleteSopName').textContent = '"' + sop.title + '"';
+  document.getElementById('deletePinInput').value = '';
+  document.getElementById('deletePinError').classList.remove('show');
+  document.getElementById('deletePinOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('deletePinInput').focus(), 100);
+}
+
+function closeDeletePin() {
+  document.getElementById('deletePinOverlay').classList.remove('open');
+  document.getElementById('deletePinInput').value = '';
+  document.getElementById('deletePinError').classList.remove('show');
+}
+
+function confirmDeleteSOP() {
+  const pin = document.getElementById('deletePinInput').value;
+  if (pin !== DELETE_PIN) {
+    document.getElementById('deletePinError').classList.add('show');
+    document.getElementById('deletePinInput').value = '';
+    document.getElementById('deletePinInput').focus();
+    setTimeout(() => document.getElementById('deletePinError').classList.remove('show'), 3000);
+    return;
+  }
+  const sopId = viewingSopId;
+  const sop = sopData.find(s => s.id === sopId);
+  if (!sop) return;
+  closeDeletePin();
+  closeModal();
+  // Delete from Firestore (listener will update sopData automatically)
+  if (sop._firestoreId) {
+    db.collection('sops').doc(sop._firestoreId).delete().catch(err => {
+      console.error('Error deleting SOP:', err);
+    });
+  } else {
+    // Fallback: remove locally
+    sopData = sopData.filter(s => s.id !== sopId);
+    saveData();
+    buildSidebar();
+    if (currentCategory === 'dashboard') renderDashboard();
+    else renderCategory(currentCategory);
+  }
+}
+
+// ── Add / Edit SOP Modal ──
+let editingSopId = null;
+
 function openAddModal(catId) {
+  editingSopId = null;
   document.getElementById('addModalTitle').textContent = 'Add New SOP';
+  document.getElementById('sopFormSaveBtn').textContent = 'Save SOP';
   document.getElementById('sopFormTitle').value = '';
   document.getElementById('sopFormCategory').value = catId || categories[0].id;
   document.getElementById('sopFormPriority').value = 'standard';
   document.getElementById('sopFormDesc').value = '';
   document.getElementById('sopFormContent').value = '';
+  document.getElementById('addModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function htmlToMarkdown(html) {
+  let text = html;
+  text = text.replace(/<h4>(.*?)<\/h4>/gi, '## $1');
+  text = text.replace(/<strong>(.*?)<\/strong>/gi, '**$1**');
+  text = text.replace(/<ul>\s*/gi, '');
+  text = text.replace(/<\/ul>/gi, '');
+  text = text.replace(/<ol>\s*/gi, '');
+  text = text.replace(/<\/ol>/gi, '');
+  text = text.replace(/<li>(.*?)<\/li>/gi, '- $1');
+  text = text.replace(/<p>(.*?)<\/p>/gi, '$1');
+  text = text.replace(/<br\s*\/?>/gi, '\n');
+  text = text.replace(/<[^>]+>/g, '');
+  text = text.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+  text = text.split('\n').map(l => l.trim()).join('\n');
+  text = text.replace(/\n{3,}/g, '\n\n');
+  return text.trim();
+}
+
+function openEditModal(sopId) {
+  const sop = sopData.find(s => s.id === sopId);
+  if (!sop) return;
+  editingSopId = sopId;
+  closeModal();
+  document.getElementById('addModalTitle').textContent = 'Edit SOP';
+  document.getElementById('sopFormSaveBtn').textContent = 'Update SOP';
+  document.getElementById('sopFormTitle').value = sop.title || '';
+  document.getElementById('sopFormCategory').value = sop.category || categories[0].id;
+  document.getElementById('sopFormPriority').value = sop.priority || 'standard';
+  document.getElementById('sopFormDesc').value = sop.description || '';
+  document.getElementById('sopFormContent').value = htmlToMarkdown(sop.content || '');
   document.getElementById('addModal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -3297,22 +4760,61 @@ function saveSOP() {
     return `<p>${line}</p>`;
   }).join('\n');
 
-  const newSOP = {
-    id: Date.now(),
+  const sopPayload = {
     category, title, description: desc, priority,
     updatedBy: 'Jose',
     updatedAt: new Date().toISOString().split('T')[0],
     content
   };
 
-  sopData.push(newSOP);
-  saveData();
-  closeAddModal();
-  buildSidebar();
-
-  if (currentCategory === 'dashboard') renderDashboard();
-  else if (currentCategory === category) renderCategory(category);
-  else showCategory(category);
+  if (editingSopId) {
+    // ── Update existing SOP ──
+    const existingSop = sopData.find(s => s.id === editingSopId);
+    if (existingSop && existingSop._firestoreId) {
+      // Preserve checklist data if it exists
+      if (existingSop.isChecklist) sopPayload.isChecklist = true;
+      if (existingSop.checklistItems) sopPayload.checklistItems = existingSop.checklistItems;
+      db.collection('sops').doc(existingSop._firestoreId).update(sopPayload).then(() => {
+        editingSopId = null;
+        closeAddModal();
+      }).catch(err => {
+        console.error('Error updating SOP:', err);
+        // Fallback: update locally
+        Object.assign(existingSop, sopPayload);
+        saveData();
+        editingSopId = null;
+        closeAddModal();
+        buildSidebar();
+        if (currentCategory === category) renderCategory(category);
+      });
+    } else {
+      // Local-only SOP update
+      if (existingSop) Object.assign(existingSop, sopPayload);
+      saveData();
+      editingSopId = null;
+      closeAddModal();
+      buildSidebar();
+      if (currentCategory === category) renderCategory(category);
+    }
+  } else {
+    // ── Create new SOP ──
+    db.collection('sops').add(sopPayload).then(() => {
+      closeAddModal();
+      if (currentCategory !== category && currentCategory !== 'dashboard') {
+        showCategory(category);
+      }
+    }).catch(err => {
+      console.error('Error adding SOP:', err);
+      sopPayload.id = Date.now();
+      sopData.push(sopPayload);
+      saveData();
+      closeAddModal();
+      buildSidebar();
+      if (currentCategory === 'dashboard') renderDashboard();
+      else if (currentCategory === category) renderCategory(category);
+      else showCategory(category);
+    });
+  }
 }
 
 // ── Search ──
@@ -3332,7 +4834,7 @@ function handleSearch(query) {
   } else {
     dropdown.innerHTML = results.map(sop => {
       const cat = categories.find(c => c.id === sop.category);
-      return `<div class="search-result-item" onclick="openSOPModal(${sop.id})">
+      return `<div class="search-result-item" onclick="openSOPModal('${sop.id}')">
         <div class="sr-cat"><i class="fas ${cat.icon}"></i> ${cat.name}</div>
         <div class="sr-title">${sop.title}</div>
       </div>`;
@@ -3997,7 +5499,7 @@ document.addEventListener('keydown', e => {
   // Escape always works
   if (e.key === 'Escape') {
     closeShortcutsPanel();
-    closeModal(); closeAddModal(); closeUploadModal(); closeAssetViewModal();
+    closeDeletePin(); closeModal(); closeAddModal(); closeVendorModal(); closeTRProductModal(); closeUploadModal(); closeAssetViewModal();
     closeCalDetail(); closeCalEventModal(); closeMobileNav(); closeContactsAdmin();
     gKeyPending = false;
     return;
@@ -4188,6 +5690,57 @@ function renderContactsCategory() {
   const main = document.getElementById('mainContent');
   const cat = categories.find(c => c.id === 'contacts');
 
+  const level0 = contactsData.filter(c => c.level === 0).sort((a, b) => a.order - b.order);
+  const level1 = contactsData.filter(c => c.level === 1).sort((a, b) => a.order - b.order);
+  const level2 = contactsData.filter(c => c.level === 2).sort((a, b) => a.order - b.order);
+
+  // Group level 2 by department
+  const deptGroups = {};
+  level2.forEach(c => {
+    const dept = c.department || 'Staff';
+    if (!deptGroups[dept]) deptGroups[dept] = [];
+    deptGroups[dept].push(c);
+  });
+
+  let treeHTML = '';
+
+  // Level 0 — Executive at the top
+  if (level0.length > 0) {
+    treeHTML += `<div class="org-row">${level0.map(c => renderContactNode(c)).join('')}</div>`;
+  }
+
+  // Connector from executive to directors
+  if (level0.length > 0 && level1.length > 0) {
+    treeHTML += `<div class="org-connector-down"></div>`;
+    // Horizontal split line with drops
+    const splitWidth = Math.max((level1.length - 1) * 260, 0);
+    treeHTML += `<div class="org-connector-split" style="width:${splitWidth}px;">`;
+    treeHTML += `</div>`;
+    treeHTML += `<div class="org-branch-drops" style="gap:20px;">`;
+    level1.forEach(c => {
+      treeHTML += `<div class="org-branch-drop">${renderContactNode(c)}</div>`;
+    });
+    treeHTML += `</div>`;
+  } else if (level1.length > 0) {
+    treeHTML += `<div class="org-row">${level1.map(c => renderContactNode(c)).join('')}</div>`;
+  }
+
+  // Level 2 — Staff grouped by department
+  Object.keys(deptGroups).forEach(dept => {
+    const members = deptGroups[dept];
+    treeHTML += `<div class="org-dept-label"><span>${dept} Team</span></div>`;
+    treeHTML += `<div class="org-connector-down" style="height:16px;"></div>`;
+    treeHTML += `<div class="org-staff-grid">`;
+    members.forEach(c => {
+      treeHTML += renderContactNode(c);
+    });
+    treeHTML += `</div>`;
+  });
+
+  const adminHeaderBtn = contactsAdminUnlocked
+    ? `<button class="contacts-admin-btn" onclick="contactsAdminUnlocked=false;renderContactsCategory()" style="background:transparent;border:1px solid var(--border);color:var(--text-secondary);"><i class="fas fa-lock-open" style="color:var(--green);"></i> Locked</button>`
+    : `<button class="contacts-admin-btn" onclick="openContactsPin()"><i class="fas fa-lock"></i> Admin</button>`;
+
   let contactsHTML = `
     <div class="category-header">
       <div class="category-header-left">
@@ -4196,56 +5749,21 @@ function renderContactsCategory() {
         </div>
         <div>
           <h2>${cat.name}</h2>
-          <span class="subtitle">${contactsData.length} contact${contactsData.length !== 1 ? 's' : ''}</span>
+          <span class="subtitle">${contactsData.length} team member${contactsData.length !== 1 ? 's' : ''}</span>
         </div>
       </div>
+      ${adminHeaderBtn}
     </div>
     <div class="contacts-tree">
+      ${treeHTML}
+    </div>
   `;
-
-  const level0 = contactsData.filter(c => c.level === 0).sort((a, b) => a.order - b.order);
-  const level1 = contactsData.filter(c => c.level === 1).sort((a, b) => a.order - b.order);
-  const level2 = contactsData.filter(c => c.level === 2).sort((a, b) => a.order - b.order);
-
-  if (level0.length > 0) {
-    contactsHTML += `<div class="tree-level level-0">`;
-    level0.forEach(contact => {
-      contactsHTML += renderContactNode(contact);
-    });
-    contactsHTML += `</div>`;
-    if (level1.length > 0) {
-      contactsHTML += `<div class="tree-branch" style="text-align: center; margin: 0;"></div>`;
-    }
-  }
-
-  if (level1.length > 0) {
-    contactsHTML += `<div class="tree-level level-1">`;
-    level1.forEach(contact => {
-      contactsHTML += renderContactNode(contact);
-    });
-    contactsHTML += `</div>`;
-  }
-
-  if (level2.length > 0) {
-    const techGroup = level2.filter(c => c.department === 'Technical');
-    if (techGroup.length > 0) {
-      contactsHTML += `<div class="tree-level level-2">`;
-      contactsHTML += `<div style="grid-column: 1 / -1; font-weight: 600; color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 8px;">Technical Team</div>`;
-      techGroup.forEach(contact => {
-        contactsHTML += renderContactNode(contact);
-      });
-      contactsHTML += `</div>`;
-    }
-  }
-
-  contactsHTML += `</div>`;
 
   if (contactsAdminUnlocked) {
     contactsHTML += `
       <div class="contacts-admin-panel">
         <div class="contacts-admin-header">
-          <h3><i class="fas fa-lock-open" style="margin-right:8px;"></i>Admin Panel</h3>
-          <button class="btn-secondary" onclick="contactsAdminUnlocked=false;renderContactsCategory()" style="border: none; background: transparent; color: var(--text-secondary); cursor: pointer; font-size: 0.85rem;">Lock</button>
+          <h3><i class="fas fa-user-gear" style="margin-right:8px;"></i>Manage Contacts</h3>
         </div>
         ${editingContactId || editingContactId === null ? renderContactForm() : ''}
         <div class="contact-list">
@@ -4264,20 +5782,16 @@ function renderContactsCategory() {
         </div>
       </div>
     `;
-  } else {
-    contactsHTML += `
-      <button class="contacts-admin-btn" onclick="openContactsPin()">
-        <i class="fas fa-lock"></i> Admin
-      </button>
-    `;
   }
 
   main.innerHTML = contactsHTML;
 }
 
 function renderContactNode(contact) {
+  const initials = contact.name.split(' ').map(n => n[0]).join('').substring(0, 2);
   return `
     <div class="contact-node level-${contact.level}">
+      <div class="contact-node-avatar">${initials}</div>
       <div class="contact-node-header">${contact.name}</div>
       <div class="contact-node-title">${contact.title}</div>
       <div class="contact-node-details">
@@ -4339,6 +5853,1217 @@ function renderContactForm() {
       </div>
     ` : ''}
   `;
+}
+
+// ══════════════════════════════════════════════════════════════
+// ── CRM SYSTEM ──
+// ══════════════════════════════════════════════════════════════
+
+let crmCustomers = [];
+let crmCustomerTypes = ['sim-purchase', 'event', 'support'];
+let crmCustomerTypeLabels = { 'sim-purchase': 'Sim Purchase', 'event': 'Event', 'support': 'Support' };
+let crmListenerStarted = false;
+let crmSearchQuery = '';
+let crmFilterType = '';
+let crmFilterChassis = '';
+let crmFilterMotion = '';
+let crmImportData = [];
+let crmCurrentFolder = 'general';
+
+function startCRMListener() {
+  if (crmListenerStarted) return;
+  crmListenerStarted = true;
+  db.collection('crmCustomers').onSnapshot(snapshot => {
+    crmCustomers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    crmCustomers.sort((a, b) => {
+      const dateA = a.createdAt ? (a.createdAt.toDate ? a.createdAt.toDate() : new Date(a.createdAt)) : new Date(0);
+      const dateB = b.createdAt ? (b.createdAt.toDate ? b.createdAt.toDate() : new Date(b.createdAt)) : new Date(0);
+      return dateB - dateA;
+    });
+    buildSidebar();
+    if (currentCategory === 'crm') renderCRMCategory();
+  }, err => console.error('CRM listener error:', err));
+  // Load custom types
+  db.collection('crmMeta').doc('customerTypes').onSnapshot(doc => {
+    if (doc.exists) {
+      const data = doc.data();
+      if (data.types) crmCustomerTypes = data.types;
+      if (data.labels) crmCustomerTypeLabels = data.labels;
+    }
+  });
+}
+
+function getCustomerTypeLabel(type) {
+  return crmCustomerTypeLabels[type] || type.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+}
+
+function getCustomerTypeClass(type) {
+  if (['sim-purchase', 'event', 'support'].includes(type)) return type;
+  return 'unassigned';
+}
+
+function getCustomerInitials(c) {
+  const name = c.firstName && c.lastName ? `${c.firstName} ${c.lastName}` : c.firstName || c.companyName || '?';
+  return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+}
+
+function getCustomerDisplayName(c) {
+  if (c.firstName || c.lastName) return `${c.firstName || ''} ${c.lastName || ''}`.trim();
+  return c.companyName || 'Unknown';
+}
+
+// ── CRM Main View ──
+function renderCRMCategory() {
+  const cat = categories.find(c => c.id === 'crm');
+  const main = document.getElementById('mainContent');
+
+  // Apply filters
+  let filtered = crmCustomers.filter(c => {
+    if (crmFilterType && c.customerType !== crmFilterType) return false;
+    if (crmFilterChassis && (!c.simConfig || !c.simConfig.chassis || !c.simConfig.chassis.toLowerCase().includes(crmFilterChassis.toLowerCase()))) return false;
+    if (crmFilterMotion) {
+      if (crmFilterMotion === 'yes' && (!c.simConfig || !c.simConfig.hasMotion)) return false;
+      if (crmFilterMotion === 'no' && (c.simConfig && c.simConfig.hasMotion)) return false;
+    }
+    if (crmSearchQuery) {
+      const q = crmSearchQuery.toLowerCase();
+      const searchable = [
+        c.firstName, c.lastName, c.companyName, c.email, c.phone,
+        c.customerType, c.simConfig?.chassis, c.simConfig?.steeringMotor
+      ].filter(Boolean).join(' ').toLowerCase();
+      if (!searchable.includes(q)) return false;
+    }
+    return true;
+  });
+
+  const typeOptions = crmCustomerTypes.map(t =>
+    `<option value="${t}" ${crmFilterType === t ? 'selected' : ''}>${getCustomerTypeLabel(t)}</option>`
+  ).join('');
+
+  main.innerHTML = `
+    <div class="category-header">
+      <div class="category-header-left">
+        <div class="category-icon-lg" style="background:${cat.color}15; color:${cat.color}">
+          <i class="fas ${cat.icon}"></i>
+        </div>
+        <div>
+          <h2>Customer CRM</h2>
+          <span class="subtitle">${crmCustomers.length} customer${crmCustomers.length !== 1 ? 's' : ''}</span>
+        </div>
+      </div>
+      <div class="crm-actions-row">
+        <button class="crm-btn-secondary" onclick="openCRMImportModal()">
+          <i class="fas fa-file-import"></i> Import
+        </button>
+        <button class="crm-btn-primary" onclick="openCRMAddModal()">
+          <i class="fas fa-plus"></i> Add Customer
+        </button>
+      </div>
+    </div>
+    <div class="crm-toolbar">
+      <div class="crm-search-wrap">
+        <i class="fas fa-search"></i>
+        <input type="text" class="crm-search" id="crmSearchInput" placeholder="Search customers by name, email, phone..." value="${crmSearchQuery}" oninput="crmSearchQuery=this.value;renderCRMCategory();">
+      </div>
+      <button class="crm-filter-btn ${crmFilterType || crmFilterChassis || crmFilterMotion ? 'active' : ''}" onclick="toggleCRMFilters()">
+        <i class="fas fa-sliders"></i> Filters ${crmFilterType || crmFilterChassis || crmFilterMotion ? '<span style="background:#22D3EE;color:#000;border-radius:50%;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;">!</span>' : ''}
+      </button>
+    </div>
+    <div class="crm-filters-panel" id="crmFiltersPanel">
+      <div class="crm-filter-group">
+        <label>Customer Type</label>
+        <select onchange="crmFilterType=this.value;renderCRMCategory();">
+          <option value="">All Types</option>
+          ${typeOptions}
+          <option value="unassigned" ${crmFilterType === 'unassigned' ? 'selected' : ''}>Unassigned</option>
+        </select>
+      </div>
+      <div class="crm-filter-group">
+        <label>Chassis Brand</label>
+        <input type="text" placeholder="e.g. SimLab, Trak Racer" value="${crmFilterChassis}" oninput="crmFilterChassis=this.value;renderCRMCategory();" style="padding:8px 10px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.82rem;font-family:'Inter',sans-serif;outline:none;">
+      </div>
+      <div class="crm-filter-group">
+        <label>Has Motion</label>
+        <select onchange="crmFilterMotion=this.value;renderCRMCategory();">
+          <option value="" ${crmFilterMotion === '' ? 'selected' : ''}>Any</option>
+          <option value="yes" ${crmFilterMotion === 'yes' ? 'selected' : ''}>Yes</option>
+          <option value="no" ${crmFilterMotion === 'no' ? 'selected' : ''}>No</option>
+        </select>
+      </div>
+      <div class="crm-filter-group" style="justify-content:flex-end;">
+        <button class="crm-btn-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="crmFilterType='';crmFilterChassis='';crmFilterMotion='';renderCRMCategory();">
+          <i class="fas fa-xmark"></i> Clear Filters
+        </button>
+      </div>
+    </div>
+    <div class="crm-customer-grid">
+      ${filtered.length ? filtered.map(c => renderCRMCard(c)).join('') : `
+        <div class="crm-empty" style="grid-column:1/-1;">
+          <i class="fas fa-users-slash"></i>
+          <p>${crmSearchQuery || crmFilterType ? 'No customers match your search or filters.' : 'No customers yet.'}</p>
+          <div class="sub">${crmSearchQuery || crmFilterType ? 'Try adjusting your search or filters.' : 'Click "Add Customer" or "Import" to get started.'}</div>
+        </div>
+      `}
+    </div>
+  `;
+  // Re-focus search
+  const si = document.getElementById('crmSearchInput');
+  if (si && document.activeElement && document.activeElement.classList.contains('crm-search')) {
+    si.focus();
+    si.setSelectionRange(si.value.length, si.value.length);
+  }
+}
+
+function renderCRMCard(c) {
+  const initials = getCustomerInitials(c);
+  const name = getCustomerDisplayName(c);
+  const typeClass = getCustomerTypeClass(c.customerType);
+  const typeLabel = c.customerType ? getCustomerTypeLabel(c.customerType) : 'Unassigned';
+  const contactBits = [];
+  if (c.email) contactBits.push(`<span><i class="fas fa-envelope"></i> ${c.email}</span>`);
+  if (c.phone) contactBits.push(`<span><i class="fas fa-phone"></i> ${c.phone}</span>`);
+
+  return `
+    <div class="crm-customer-card" onclick="openCRMDetail('${c.id}')">
+      <div class="crm-card-top">
+        <div class="crm-card-avatar">${initials}</div>
+        <div class="crm-card-info">
+          <div class="crm-card-name">${name}</div>
+          ${c.companyName && (c.firstName || c.lastName) ? `<div class="crm-card-company">${c.companyName}</div>` : ''}
+        </div>
+        <span class="crm-card-type ${typeClass}">${typeLabel}</span>
+      </div>
+      <div class="crm-card-bottom">${contactBits.join('') || '<span style="font-style:italic;">No contact info</span>'}</div>
+    </div>
+  `;
+}
+
+function toggleCRMFilters() {
+  const panel = document.getElementById('crmFiltersPanel');
+  panel.classList.toggle('open');
+}
+
+// ── CRM Add/Edit Modal ──
+let crmEditingId = null;
+
+function openCRMAddModal(customerId) {
+  crmEditingId = customerId || null;
+  const c = customerId ? crmCustomers.find(x => x.id === customerId) : null;
+  const isEdit = !!c;
+  const currentType = c ? c.customerType : '';
+
+  const typeOptions = crmCustomerTypes.map(t =>
+    `<option value="${t}" ${currentType === t ? 'selected' : ''}>${getCustomerTypeLabel(t)}</option>`
+  ).join('');
+
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay open';
+  overlay.id = 'crmAddModal';
+  overlay.onclick = e => { if (e.target === overlay) closeCRMModal(); };
+
+  overlay.innerHTML = `
+    <div class="modal crm-modal">
+      <div class="modal-header">
+        <h3>${isEdit ? 'Edit Customer' : 'Add Customer'}</h3>
+        <div class="modal-header-actions">
+          ${isEdit ? `<button class="sop-delete-btn" onclick="deleteCRMCustomer('${c.id}')" title="Delete Customer"><i class="fas fa-trash"></i></button>` : ''}
+          <button class="modal-close" onclick="closeCRMModal()"><i class="fas fa-xmark"></i></button>
+        </div>
+      </div>
+      <div class="crm-modal-body" id="crmFormBody">
+        <div class="crm-form-section"><i class="fas fa-tag"></i> Customer Type</div>
+        <div class="crm-form-grid">
+          <div class="crm-form-group">
+            <label>Type</label>
+            <select id="crmFormType" onchange="updateCRMFormFields()">
+              <option value="">— Select Type —</option>
+              ${typeOptions}
+            </select>
+          </div>
+          <div class="crm-form-group" style="justify-content:flex-end;">
+            <button class="crm-btn-secondary" style="padding:6px 12px;font-size:0.78rem;margin-top:auto;" onclick="openAddCustomerTypeModal()">
+              <i class="fas fa-plus"></i> New Type
+            </button>
+          </div>
+        </div>
+
+        <div class="crm-form-section"><i class="fas fa-user"></i> Contact Information</div>
+        <div class="crm-form-grid">
+          <div class="crm-form-group">
+            <label>First Name</label>
+            <input type="text" id="crmFormFirstName" value="${c?.firstName || ''}" placeholder="John">
+          </div>
+          <div class="crm-form-group">
+            <label>Last Name</label>
+            <input type="text" id="crmFormLastName" value="${c?.lastName || ''}" placeholder="Doe">
+          </div>
+          <div class="crm-form-group">
+            <label>Company / Organization</label>
+            <input type="text" id="crmFormCompany" value="${c?.companyName || ''}" placeholder="Optional">
+          </div>
+          <div class="crm-form-group">
+            <label>Email</label>
+            <input type="email" id="crmFormEmail" value="${c?.email || ''}" placeholder="john@example.com">
+          </div>
+          <div class="crm-form-group">
+            <label>Phone</label>
+            <input type="tel" id="crmFormPhone" value="${c?.phone || ''}" placeholder="(555) 123-4567">
+          </div>
+          <div class="crm-form-group">
+            <label>Address</label>
+            <input type="text" id="crmFormAddress" value="${c?.address || ''}" placeholder="123 Main St, City, State ZIP">
+          </div>
+        </div>
+
+        <div id="crmDynamicFields"></div>
+
+        <div class="crm-form-section"><i class="fas fa-sticky-note"></i> Notes</div>
+        <div class="crm-form-grid single">
+          <div class="crm-form-group full">
+            <label>General Notes</label>
+            <textarea id="crmFormNotes" placeholder="Any additional notes about this customer...">${c?.notes || ''}</textarea>
+          </div>
+        </div>
+      </div>
+      <div class="crm-form-actions">
+        <button class="crm-cancel-btn" onclick="closeCRMModal()">Cancel</button>
+        <button class="crm-save-btn" onclick="saveCRMCustomer()">${isEdit ? 'Update' : 'Save'} Customer</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+  document.body.style.overflow = 'hidden';
+
+  // Build dynamic fields based on type
+  if (currentType) {
+    setTimeout(() => updateCRMFormFields(c), 50);
+  }
+}
+
+function updateCRMFormFields(existingData) {
+  const type = document.getElementById('crmFormType').value;
+  const container = document.getElementById('crmDynamicFields');
+  if (!container) return;
+
+  const c = existingData || (crmEditingId ? crmCustomers.find(x => x.id === crmEditingId) : null);
+  const sim = c?.simConfig || {};
+  const evt = c?.eventConfig || {};
+
+  if (type === 'sim-purchase') {
+    container.innerHTML = `
+      <div class="crm-form-section"><i class="fas fa-desktop"></i> Simulator Configuration</div>
+      <div class="crm-form-grid">
+        <div class="crm-form-group">
+          <label>Chassis</label>
+          <input type="text" id="crmSimChassis" value="${sim.chassis || ''}" placeholder="e.g. SimLab GT1 Evo, Trak Racer TR160">
+        </div>
+        <div class="crm-form-group">
+          <label>Steering Motor / Wheelbase</label>
+          <input type="text" id="crmSimSteeringMotor" value="${sim.steeringMotor || ''}" placeholder="e.g. Simucube 2 Pro, Fanatec DD2">
+        </div>
+        <div class="crm-form-group">
+          <label>Steering Wheel(s)</label>
+          <input type="text" id="crmSimWheels" value="${sim.wheels || ''}" placeholder="e.g. Ascher Racing F64, Cube Controls GT Pro">
+        </div>
+        <div class="crm-form-group">
+          <label>Pedals</label>
+          <input type="text" id="crmSimPedals" value="${sim.pedals || ''}" placeholder="e.g. Heusinkveld Sprint, Simtag Hydraulics">
+        </div>
+        <div class="crm-form-group">
+          <label>Display Type</label>
+          <select id="crmSimDisplay">
+            <option value="">— Select —</option>
+            <option value="Triple Monitors" ${sim.display === 'Triple Monitors' ? 'selected' : ''}>Triple Monitors</option>
+            <option value="Single Monitor" ${sim.display === 'Single Monitor' ? 'selected' : ''}>Single Monitor</option>
+            <option value="VR Headset" ${sim.display === 'VR Headset' ? 'selected' : ''}>VR Headset</option>
+            <option value="Ultrawide" ${sim.display === 'Ultrawide' ? 'selected' : ''}>Ultrawide</option>
+            <option value="Triple + VR" ${sim.display === 'Triple + VR' ? 'selected' : ''}>Triple + VR</option>
+          </select>
+        </div>
+        <div class="crm-form-group">
+          <label>Display Details</label>
+          <input type="text" id="crmSimDisplayDetail" value="${sim.displayDetail || ''}" placeholder="e.g. Samsung Odyssey G9, Meta Quest 3">
+        </div>
+      </div>
+
+      <div class="crm-form-grid" style="margin-top:14px;">
+        <div class="crm-form-group">
+          <label>Motion Platform</label>
+          <div class="crm-toggle-wrap" style="margin-top:4px;">
+            <button type="button" class="crm-toggle ${sim.hasMotion ? 'on' : ''}" id="crmSimMotionToggle" onclick="this.classList.toggle('on');document.getElementById('crmMotionBrandGroup').style.display=this.classList.contains('on')?'flex':'none';"></button>
+            <span class="crm-toggle-label">Has Motion</span>
+          </div>
+        </div>
+        <div class="crm-form-group" id="crmMotionBrandGroup" style="display:${sim.hasMotion ? 'flex' : 'none'};">
+          <label>Motion Brand</label>
+          <select id="crmSimMotionBrand">
+            <option value="">— Select —</option>
+            <option value="D-BOX" ${sim.motionBrand === 'D-BOX' ? 'selected' : ''}>D-BOX</option>
+            <option value="Vero Motion" ${sim.motionBrand === 'Vero Motion' ? 'selected' : ''}>Vero Motion</option>
+            <option value="Advanced Sim Racing" ${sim.motionBrand === 'Advanced Sim Racing' ? 'selected' : ''}>Advanced Sim Racing</option>
+            <option value="Other" ${sim.motionBrand === 'Other' ? 'selected' : ''}>Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="crm-form-grid" style="margin-top:14px;">
+        <div class="crm-form-group">
+          <label>Button Box</label>
+          <div class="crm-toggle-wrap" style="margin-top:4px;">
+            <button type="button" class="crm-toggle ${sim.hasButtonBox ? 'on' : ''}" id="crmSimButtonBoxToggle" onclick="this.classList.toggle('on');"></button>
+            <span class="crm-toggle-label">Has Button Box</span>
+          </div>
+        </div>
+        <div class="crm-form-group">
+          <label>StreamDeck</label>
+          <div class="crm-toggle-wrap" style="margin-top:4px;">
+            <button type="button" class="crm-toggle ${sim.hasStreamDeck ? 'on' : ''}" id="crmSimStreamDeckToggle" onclick="this.classList.toggle('on');"></button>
+            <span class="crm-toggle-label">Uses StreamDeck</span>
+          </div>
+        </div>
+        <div class="crm-form-group">
+          <label>VPS Built PC</label>
+          <div class="crm-toggle-wrap" style="margin-top:4px;">
+            <button type="button" class="crm-toggle ${sim.isVPSBuiltPC ? 'on' : ''}" id="crmSimVPSPCToggle" onclick="this.classList.toggle('on');"></button>
+            <span class="crm-toggle-label">Velocity Pro Sims PC</span>
+          </div>
+        </div>
+        <div class="crm-form-group">
+          <label>Transducers</label>
+          <div class="crm-toggle-wrap" style="margin-top:4px;">
+            <button type="button" class="crm-toggle ${sim.hasTransducers ? 'on' : ''}" id="crmSimTransducersToggle" onclick="this.classList.toggle('on');"></button>
+            <span class="crm-toggle-label">Has Transducers</span>
+          </div>
+        </div>
+        <div class="crm-form-group">
+          <label>Wind Simulation</label>
+          <div class="crm-toggle-wrap" style="margin-top:4px;">
+            <button type="button" class="crm-toggle ${sim.hasWindSim ? 'on' : ''}" id="crmSimWindSimToggle" onclick="this.classList.toggle('on');"></button>
+            <span class="crm-toggle-label">Has Wind Sim</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="crm-form-section"><i class="fas fa-flag-checkered"></i> Racing Preferences</div>
+      <div class="crm-form-grid">
+        <div class="crm-form-group full">
+          <label>Disciplines (select all that apply)</label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;" id="crmDisciplines">
+            ${['Oval', 'Road Course', 'Dirt Oval', 'Dirt Road / Rally', 'GT', 'F1', 'NASCAR', 'IndyCar', 'Drag Racing', 'Drifting'].map(d => `
+              <label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:6px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:20px;font-size:0.82rem;color:var(--text-secondary);transition:all 0.2s;">
+                <input type="checkbox" value="${d}" ${sim.disciplines && sim.disciplines.includes(d) ? 'checked' : ''} style="accent-color:#22D3EE;" onchange="this.parentElement.style.borderColor=this.checked?'#22D3EE':'var(--border)';this.parentElement.style.color=this.checked?'#22D3EE':'var(--text-secondary)';this.parentElement.style.background=this.checked?'rgba(34,211,238,0.08)':'var(--bg-input)';">
+                ${d}
+              </label>
+            `).join('')}
+          </div>
+        </div>
+        <div class="crm-form-group full">
+          <label>Specific Car to Mimic</label>
+          <input type="text" id="crmSimMimicCar" value="${sim.mimicCar || ''}" placeholder="e.g. 2024 Toyota Camry TRD NASCAR, Porsche 911 GT3 R">
+        </div>
+        <div class="crm-form-group full">
+          <label>Simulator Goals</label>
+          <textarea id="crmSimGoals" placeholder="What are they trying to achieve with the simulator? Competition prep, fun, training...">${sim.goals || ''}</textarea>
+        </div>
+      </div>
+    `;
+    // Re-apply checked styles
+    setTimeout(() => {
+      document.querySelectorAll('#crmDisciplines input[type="checkbox"]:checked').forEach(cb => {
+        cb.parentElement.style.borderColor = '#22D3EE';
+        cb.parentElement.style.color = '#22D3EE';
+        cb.parentElement.style.background = 'rgba(34,211,238,0.08)';
+      });
+    }, 10);
+  } else if (type === 'event') {
+    container.innerHTML = `
+      <div class="crm-form-section"><i class="fas fa-calendar-star"></i> Event Details</div>
+      <div class="crm-form-grid">
+        <div class="crm-form-group">
+          <label>Event Type</label>
+          <input type="text" id="crmEvtType" value="${evt.eventType || ''}" placeholder="e.g. Corporate, Birthday, Trade Show">
+        </div>
+        <div class="crm-form-group">
+          <label>Typical Event Size</label>
+          <input type="text" id="crmEvtSize" value="${evt.eventSize || ''}" placeholder="e.g. 50-100 attendees">
+        </div>
+        <div class="crm-form-group">
+          <label>Venue Preference</label>
+          <input type="text" id="crmEvtVenue" value="${evt.venue || ''}" placeholder="e.g. On-site, Their location, Convention center">
+        </div>
+        <div class="crm-form-group">
+          <label>Budget Range</label>
+          <input type="text" id="crmEvtBudget" value="${evt.budget || ''}" placeholder="e.g. $5,000 - $10,000">
+        </div>
+        <div class="crm-form-group full">
+          <label>Special Requirements</label>
+          <textarea id="crmEvtRequirements" placeholder="Branding needs, specific setup requirements, etc.">${evt.requirements || ''}</textarea>
+        </div>
+      </div>
+
+      <div class="crm-form-section"><i class="fas fa-folder-open"></i> Customer Assets</div>
+      <div class="crm-form-grid single">
+        <div class="crm-form-group full">
+          <label>Folder Organization</label>
+          <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">Upload logos, event artwork, and other assets after saving the customer. Files will be organized in customer-specific folders.</p>
+        </div>
+      </div>
+    `;
+  } else if (type === 'support') {
+    container.innerHTML = `
+      <div class="crm-form-section"><i class="fas fa-headset"></i> Support Details</div>
+      <div class="crm-form-grid">
+        <div class="crm-form-group">
+          <label>Product/Service</label>
+          <input type="text" id="crmSuptProduct" value="${c?.supportConfig?.product || ''}" placeholder="e.g. Simulator Build, PC Build, Software">
+        </div>
+        <div class="crm-form-group">
+          <label>Purchase Date</label>
+          <input type="date" id="crmSuptPurchaseDate" value="${c?.supportConfig?.purchaseDate || ''}">
+        </div>
+        <div class="crm-form-group">
+          <label>Warranty Status</label>
+          <select id="crmSuptWarranty">
+            <option value="">— Select —</option>
+            <option value="Active" ${c?.supportConfig?.warranty === 'Active' ? 'selected' : ''}>Active</option>
+            <option value="Expired" ${c?.supportConfig?.warranty === 'Expired' ? 'selected' : ''}>Expired</option>
+            <option value="N/A" ${c?.supportConfig?.warranty === 'N/A' ? 'selected' : ''}>N/A</option>
+          </select>
+        </div>
+        <div class="crm-form-group">
+          <label>Support Priority</label>
+          <select id="crmSuptPriority">
+            <option value="">— Select —</option>
+            <option value="High" ${c?.supportConfig?.priority === 'High' ? 'selected' : ''}>High</option>
+            <option value="Medium" ${c?.supportConfig?.priority === 'Medium' ? 'selected' : ''}>Medium</option>
+            <option value="Low" ${c?.supportConfig?.priority === 'Low' ? 'selected' : ''}>Low</option>
+          </select>
+        </div>
+        <div class="crm-form-group full">
+          <label>Support Notes / Issue History</label>
+          <textarea id="crmSuptNotes" placeholder="Describe past issues, current support needs...">${c?.supportConfig?.supportNotes || ''}</textarea>
+        </div>
+      </div>
+    `;
+  } else {
+    container.innerHTML = '';
+  }
+}
+
+function closeCRMModal() {
+  const m = document.getElementById('crmAddModal');
+  if (m) { m.remove(); }
+  const m2 = document.getElementById('crmDetailModal');
+  if (m2) { m2.remove(); }
+  const m3 = document.getElementById('crmImportModal');
+  if (m3) { m3.remove(); }
+  const m4 = document.getElementById('crmAddTypeModal');
+  if (m4) { m4.remove(); }
+  document.body.style.overflow = '';
+}
+
+async function saveCRMCustomer() {
+  const type = document.getElementById('crmFormType').value;
+  const firstName = document.getElementById('crmFormFirstName').value.trim();
+  const lastName = document.getElementById('crmFormLastName').value.trim();
+  const companyName = document.getElementById('crmFormCompany').value.trim();
+  const email = document.getElementById('crmFormEmail').value.trim();
+  const phone = document.getElementById('crmFormPhone').value.trim();
+  const address = document.getElementById('crmFormAddress').value.trim();
+  const notes = document.getElementById('crmFormNotes').value.trim();
+
+  if (!firstName && !lastName && !companyName) {
+    alert('Please enter at least a name or company.');
+    return;
+  }
+
+  const data = {
+    customerType: type || 'unassigned',
+    firstName, lastName, companyName, email, phone, address, notes,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  };
+
+  // Sim Purchase fields
+  if (type === 'sim-purchase') {
+    const disciplines = [];
+    document.querySelectorAll('#crmDisciplines input[type="checkbox"]:checked').forEach(cb => disciplines.push(cb.value));
+    data.simConfig = {
+      chassis: document.getElementById('crmSimChassis')?.value.trim() || '',
+      steeringMotor: document.getElementById('crmSimSteeringMotor')?.value.trim() || '',
+      wheels: document.getElementById('crmSimWheels')?.value.trim() || '',
+      pedals: document.getElementById('crmSimPedals')?.value.trim() || '',
+      display: document.getElementById('crmSimDisplay')?.value || '',
+      displayDetail: document.getElementById('crmSimDisplayDetail')?.value.trim() || '',
+      hasMotion: document.getElementById('crmSimMotionToggle')?.classList.contains('on') || false,
+      motionBrand: document.getElementById('crmSimMotionBrand')?.value || '',
+      hasButtonBox: document.getElementById('crmSimButtonBoxToggle')?.classList.contains('on') || false,
+      hasStreamDeck: document.getElementById('crmSimStreamDeckToggle')?.classList.contains('on') || false,
+      isVPSBuiltPC: document.getElementById('crmSimVPSPCToggle')?.classList.contains('on') || false,
+      hasTransducers: document.getElementById('crmSimTransducersToggle')?.classList.contains('on') || false,
+      hasWindSim: document.getElementById('crmSimWindSimToggle')?.classList.contains('on') || false,
+      disciplines,
+      mimicCar: document.getElementById('crmSimMimicCar')?.value.trim() || '',
+      goals: document.getElementById('crmSimGoals')?.value.trim() || '',
+    };
+  }
+
+  // Event fields
+  if (type === 'event') {
+    data.eventConfig = {
+      eventType: document.getElementById('crmEvtType')?.value.trim() || '',
+      eventSize: document.getElementById('crmEvtSize')?.value.trim() || '',
+      venue: document.getElementById('crmEvtVenue')?.value.trim() || '',
+      budget: document.getElementById('crmEvtBudget')?.value.trim() || '',
+      requirements: document.getElementById('crmEvtRequirements')?.value.trim() || '',
+    };
+  }
+
+  // Support fields
+  if (type === 'support') {
+    data.supportConfig = {
+      product: document.getElementById('crmSuptProduct')?.value.trim() || '',
+      purchaseDate: document.getElementById('crmSuptPurchaseDate')?.value || '',
+      warranty: document.getElementById('crmSuptWarranty')?.value || '',
+      priority: document.getElementById('crmSuptPriority')?.value || '',
+      supportNotes: document.getElementById('crmSuptNotes')?.value.trim() || '',
+    };
+  }
+
+  try {
+    if (crmEditingId) {
+      await db.collection('crmCustomers').doc(crmEditingId).update(data);
+    } else {
+      data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+      data.files = [];
+      await db.collection('crmCustomers').add(data);
+    }
+    closeCRMModal();
+  } catch (err) {
+    console.error('CRM save error:', err);
+    alert('Error saving customer. Check console for details.');
+  }
+}
+
+async function deleteCRMCustomer(id) {
+  if (!confirm('Are you sure you want to delete this customer? This cannot be undone.')) return;
+  try {
+    await db.collection('crmCustomers').doc(id).delete();
+    closeCRMModal();
+  } catch (err) {
+    console.error('CRM delete error:', err);
+    alert('Error deleting customer.');
+  }
+}
+
+// ── CRM Detail View ──
+function openCRMDetail(id) {
+  const c = crmCustomers.find(x => x.id === id);
+  if (!c) return;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay open';
+  overlay.id = 'crmDetailModal';
+  overlay.onclick = e => { if (e.target === overlay) closeCRMModal(); };
+
+  const name = getCustomerDisplayName(c);
+  const initials = getCustomerInitials(c);
+  const typeLabel = c.customerType ? getCustomerTypeLabel(c.customerType) : 'Unassigned';
+  const typeClass = getCustomerTypeClass(c.customerType);
+
+  let detailSections = '';
+
+  // Contact info section
+  detailSections += `
+    <div class="crm-detail-section">
+      <div class="crm-detail-section-title"><i class="fas fa-user"></i> Contact Information</div>
+      <div class="crm-detail-grid">
+        ${detailField('Email', c.email)}
+        ${detailField('Phone', c.phone)}
+        ${detailField('Company', c.companyName)}
+        ${detailField('Address', c.address)}
+      </div>
+    </div>
+  `;
+
+  // Sim config section
+  if (c.customerType === 'sim-purchase' && c.simConfig) {
+    const s = c.simConfig;
+    detailSections += `
+      <div class="crm-detail-section">
+        <div class="crm-detail-section-title"><i class="fas fa-desktop"></i> Simulator Configuration</div>
+        <div class="crm-detail-grid">
+          ${detailField('Chassis', s.chassis)}
+          ${detailField('Steering Motor', s.steeringMotor)}
+          ${detailField('Steering Wheel(s)', s.wheels)}
+          ${detailField('Pedals', s.pedals)}
+          ${detailField('Display', s.display ? `${s.display}${s.displayDetail ? ' — ' + s.displayDetail : ''}` : '')}
+          ${detailField('Motion', s.hasMotion ? (s.motionBrand || 'Yes') : 'No')}
+          ${detailField('Button Box', s.hasButtonBox ? 'Yes' : 'No')}
+          ${detailField('StreamDeck', s.hasStreamDeck ? 'Yes' : 'No')}
+          ${detailField('VPS Built PC', s.isVPSBuiltPC ? 'Yes' : 'No')}
+          ${detailField('Transducers', s.hasTransducers ? 'Yes' : 'No')}
+          ${detailField('Wind Sim', s.hasWindSim ? 'Yes' : 'No')}
+        </div>
+      </div>
+      <div class="crm-detail-section">
+        <div class="crm-detail-section-title"><i class="fas fa-flag-checkered"></i> Racing Preferences</div>
+        <div class="crm-detail-grid">
+          <div class="crm-detail-field full" style="grid-column:1/-1;">
+            <span class="label">Disciplines</span>
+            ${s.disciplines && s.disciplines.length ? `<div class="crm-detail-tags">${s.disciplines.map(d => `<span class="crm-detail-tag">${d}</span>`).join('')}</div>` : '<span class="value empty">None specified</span>'}
+          </div>
+          ${detailField('Car to Mimic', s.mimicCar)}
+        </div>
+        ${s.goals ? `<div class="crm-detail-field" style="margin-top:12px;"><span class="label">Goals</span><span class="value">${s.goals}</span></div>` : ''}
+      </div>
+    `;
+  }
+
+  // Event config section
+  if (c.customerType === 'event' && c.eventConfig) {
+    const e = c.eventConfig;
+    detailSections += `
+      <div class="crm-detail-section">
+        <div class="crm-detail-section-title"><i class="fas fa-calendar-star"></i> Event Details</div>
+        <div class="crm-detail-grid">
+          ${detailField('Event Type', e.eventType)}
+          ${detailField('Typical Size', e.eventSize)}
+          ${detailField('Venue', e.venue)}
+          ${detailField('Budget', e.budget)}
+        </div>
+        ${e.requirements ? `<div class="crm-detail-field" style="margin-top:12px;"><span class="label">Special Requirements</span><span class="value">${e.requirements}</span></div>` : ''}
+      </div>
+    `;
+  }
+
+  // Support config section
+  if (c.customerType === 'support' && c.supportConfig) {
+    const s = c.supportConfig;
+    detailSections += `
+      <div class="crm-detail-section">
+        <div class="crm-detail-section-title"><i class="fas fa-headset"></i> Support Details</div>
+        <div class="crm-detail-grid">
+          ${detailField('Product/Service', s.product)}
+          ${detailField('Purchase Date', s.purchaseDate)}
+          ${detailField('Warranty', s.warranty)}
+          ${detailField('Priority', s.priority)}
+        </div>
+        ${s.supportNotes ? `<div class="crm-detail-field" style="margin-top:12px;"><span class="label">Support Notes</span><span class="value">${s.supportNotes}</span></div>` : ''}
+      </div>
+    `;
+  }
+
+  // Files section for event customers
+  if (c.customerType === 'event') {
+    const files = c.files || [];
+    detailSections += `
+      <div class="crm-detail-section">
+        <div class="crm-detail-section-title"><i class="fas fa-folder-open"></i> Customer Assets</div>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+          <select id="crmFileFolder" onchange="crmCurrentFolder=this.value;" style="padding:6px 10px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.82rem;">
+            <option value="general">General</option>
+            <option value="logos">Logos</option>
+            <option value="artwork">Event Artwork</option>
+            <option value="contracts">Contracts</option>
+            <option value="photos">Photos</option>
+          </select>
+          <label class="crm-btn-secondary" style="padding:6px 12px;font-size:0.78rem;cursor:pointer;">
+            <i class="fas fa-upload"></i> Upload File
+            <input type="file" multiple style="display:none;" onchange="uploadCRMFiles('${c.id}', this.files)">
+          </label>
+        </div>
+        <div class="crm-files-grid" id="crmFilesGrid">
+          ${files.length ? files.map((f, i) => `
+            <div class="crm-file-card">
+              <button class="crm-file-delete" onclick="event.stopPropagation();deleteCRMFile('${c.id}', ${i})"><i class="fas fa-xmark"></i></button>
+              ${f.type && f.type.startsWith('image/') ? `<img src="${f.url}" style="width:100%;height:60px;object-fit:cover;border-radius:4px;margin-bottom:6px;">` : `<i class="fas ${getFileIcon(f.name)}"></i>`}
+              <div class="fname">${f.name}</div>
+              <div class="fsize">${f.folder || 'general'}</div>
+              <a href="${f.url}" target="_blank" rel="noopener" onclick="event.stopPropagation();" style="font-size:0.72rem;color:#22D3EE;text-decoration:none;margin-top:4px;display:block;">Download</a>
+            </div>
+          `).join('') : '<p style="color:var(--text-muted);font-size:0.82rem;font-style:italic;">No files uploaded yet.</p>'}
+        </div>
+      </div>
+    `;
+  }
+
+  // Notes section
+  if (c.notes) {
+    detailSections += `
+      <div class="crm-detail-section">
+        <div class="crm-detail-section-title"><i class="fas fa-sticky-note"></i> Notes</div>
+        <p style="font-size:0.88rem;color:var(--text-secondary);white-space:pre-wrap;">${c.notes}</p>
+      </div>
+    `;
+  }
+
+  overlay.innerHTML = `
+    <div class="modal crm-modal" style="max-width:800px;">
+      <div class="crm-detail-header">
+        <div class="crm-detail-avatar">${initials}</div>
+        <div style="flex:1;">
+          <div class="crm-detail-name">${name}</div>
+          <span class="crm-card-type ${typeClass}" style="margin-top:4px;display:inline-block;">${typeLabel}</span>
+        </div>
+        <div class="modal-header-actions">
+          <button class="sop-edit-btn" onclick="closeCRMModal();openCRMAddModal('${c.id}');"><i class="fas fa-pen"></i> Edit</button>
+          <button class="modal-close" onclick="closeCRMModal()"><i class="fas fa-xmark"></i></button>
+        </div>
+      </div>
+      <div class="crm-detail-body">
+        ${detailSections}
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+  document.body.style.overflow = 'hidden';
+}
+
+function detailField(label, value) {
+  return `<div class="crm-detail-field"><span class="label">${label}</span><span class="value ${!value ? 'empty' : ''}">${value || '—'}</span></div>`;
+}
+
+function getFileIcon(name) {
+  if (!name) return 'fa-file';
+  const ext = name.split('.').pop().toLowerCase();
+  const map = {
+    pdf: 'fa-file-pdf', doc: 'fa-file-word', docx: 'fa-file-word',
+    xls: 'fa-file-excel', xlsx: 'fa-file-excel', csv: 'fa-file-csv',
+    png: 'fa-file-image', jpg: 'fa-file-image', jpeg: 'fa-file-image',
+    gif: 'fa-file-image', svg: 'fa-file-image', webp: 'fa-file-image',
+    mp4: 'fa-file-video', mov: 'fa-file-video', zip: 'fa-file-zipper',
+    ai: 'fa-file-lines', psd: 'fa-file-image', eps: 'fa-file-lines',
+  };
+  return map[ext] || 'fa-file';
+}
+
+// ── File Upload (Firebase Storage) ──
+async function uploadCRMFiles(customerId, fileList) {
+  if (!fileList || !fileList.length) return;
+  const folder = crmCurrentFolder || 'general';
+  const customer = crmCustomers.find(c => c.id === customerId);
+  if (!customer) return;
+
+  const filesGrid = document.getElementById('crmFilesGrid');
+  if (filesGrid) filesGrid.innerHTML = '<p style="color:#22D3EE;font-size:0.82rem;"><i class="fas fa-spinner fa-spin"></i> Uploading...</p>';
+
+  const existingFiles = customer.files || [];
+  const newFiles = [];
+
+  for (const file of fileList) {
+    try {
+      const path = `crm/${customerId}/${folder}/${Date.now()}_${file.name}`;
+      const ref = storage.ref(path);
+      await ref.put(file);
+      const url = await ref.getDownloadURL();
+      newFiles.push({
+        name: file.name,
+        url: url,
+        path: path,
+        type: file.type,
+        size: file.size,
+        folder: folder,
+        uploadedAt: new Date().toISOString(),
+      });
+    } catch (err) {
+      console.error('Upload failed for', file.name, err);
+    }
+  }
+
+  try {
+    await db.collection('crmCustomers').doc(customerId).update({
+      files: [...existingFiles, ...newFiles],
+    });
+    // Re-open detail to refresh
+    closeCRMModal();
+    setTimeout(() => openCRMDetail(customerId), 100);
+  } catch (err) {
+    console.error('Failed to save file references:', err);
+  }
+}
+
+async function deleteCRMFile(customerId, fileIndex) {
+  if (!confirm('Delete this file?')) return;
+  const customer = crmCustomers.find(c => c.id === customerId);
+  if (!customer) return;
+  const files = [...(customer.files || [])];
+  const file = files[fileIndex];
+
+  // Delete from storage
+  if (file && file.path) {
+    try { await storage.ref(file.path).delete(); } catch (err) { console.warn('Storage delete failed:', err); }
+  }
+
+  files.splice(fileIndex, 1);
+  try {
+    await db.collection('crmCustomers').doc(customerId).update({ files });
+    closeCRMModal();
+    setTimeout(() => openCRMDetail(customerId), 100);
+  } catch (err) {
+    console.error('Failed to update file list:', err);
+  }
+}
+
+// ── CRM Import ──
+function openCRMImportModal() {
+  crmImportData = [];
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay open';
+  overlay.id = 'crmImportModal';
+  overlay.onclick = e => { if (e.target === overlay) closeCRMModal(); };
+
+  overlay.innerHTML = `
+    <div class="modal crm-modal" style="max-width:900px;">
+      <div class="modal-header">
+        <h3>Import Customers</h3>
+        <button class="modal-close" onclick="closeCRMModal()"><i class="fas fa-xmark"></i></button>
+      </div>
+      <div class="crm-modal-body">
+        <div class="crm-import-area" id="crmImportDropzone" onclick="document.getElementById('crmImportFile').click();">
+          <i class="fas fa-cloud-arrow-up"></i>
+          <p>Drag & drop your file here, or click to browse</p>
+          <div class="sub">Supports CSV, TSV, XLS, XLSX (QuickBooks export format)</div>
+          <input type="file" id="crmImportFile" accept=".csv,.tsv,.xls,.xlsx,.txt" style="display:none;" onchange="handleCRMFileImport(this.files[0])">
+        </div>
+        <div id="crmImportPreview"></div>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+  document.body.style.overflow = 'hidden';
+
+  // Drag and drop
+  const dropzone = document.getElementById('crmImportDropzone');
+  dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+  dropzone.addEventListener('dragleave', () => { dropzone.classList.remove('dragover'); });
+  dropzone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropzone.classList.remove('dragover');
+    if (e.dataTransfer.files.length) handleCRMFileImport(e.dataTransfer.files[0]);
+  });
+}
+
+function handleCRMFileImport(file) {
+  if (!file) return;
+  const ext = file.name.split('.').pop().toLowerCase();
+
+  if (ext === 'csv' || ext === 'tsv' || ext === 'txt') {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const delimiter = ext === 'tsv' ? '\t' : ',';
+      parseCRMCSV(e.target.result, delimiter);
+    };
+    reader.readAsText(file);
+  } else if (ext === 'xls' || ext === 'xlsx') {
+    // For Excel files, we'll use a simple CSV extraction approach
+    const reader = new FileReader();
+    reader.onload = e => {
+      // Try to parse as CSV first (some QuickBooks "xlsx" exports are actually CSV)
+      try {
+        const text = new TextDecoder().decode(e.target.result);
+        if (text.includes(',') && !text.includes('\0')) {
+          parseCRMCSV(text, ',');
+          return;
+        }
+      } catch(err) {}
+      alert('For Excel (.xlsx) files, please export as CSV from QuickBooks first. Go to File > Export > CSV in QuickBooks.');
+    };
+    reader.readAsArrayBuffer(file);
+  } else {
+    alert('Unsupported file format. Please use CSV, TSV, or export as CSV from QuickBooks.');
+  }
+}
+
+function parseCRMCSV(text, delimiter) {
+  // Handle quoted fields with commas inside
+  const lines = [];
+  let current = '';
+  let inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (ch === '"') {
+      if (inQuotes && text[i+1] === '"') { current += '"'; i++; }
+      else { inQuotes = !inQuotes; }
+    } else if ((ch === delimiter) && !inQuotes) {
+      lines.length === 0 ? (current += ch) : (current += ch);
+    } else if ((ch === '\n' || ch === '\r') && !inQuotes) {
+      if (current.trim()) lines.push(current);
+      current = '';
+      if (ch === '\r' && text[i+1] === '\n') i++;
+    } else {
+      current += ch;
+    }
+  }
+  if (current.trim()) lines.push(current);
+
+  if (lines.length < 2) {
+    alert('File appears to be empty or has no data rows.');
+    return;
+  }
+
+  // Split each line properly
+  function splitLine(line) {
+    const fields = [];
+    let field = '';
+    let inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') {
+        if (inQ && line[i+1] === '"') { field += '"'; i++; }
+        else { inQ = !inQ; }
+      } else if (ch === delimiter && !inQ) {
+        fields.push(field.trim());
+        field = '';
+      } else {
+        field += ch;
+      }
+    }
+    fields.push(field.trim());
+    return fields;
+  }
+
+  const headers = splitLine(lines[0]);
+  const rows = lines.slice(1).map(l => splitLine(l));
+
+  crmImportData = rows.map(row => {
+    const obj = {};
+    headers.forEach((h, i) => { obj[h] = row[i] || ''; });
+    obj._customerType = ''; // To be assigned manually
+    return obj;
+  });
+
+  renderCRMImportPreview(headers);
+}
+
+function renderCRMImportPreview(headers) {
+  const preview = document.getElementById('crmImportPreview');
+  if (!preview) return;
+
+  // Try to map common QuickBooks fields
+  const nameFields = headers.filter(h => /name|customer|display/i.test(h));
+  const emailFields = headers.filter(h => /email|e-mail/i.test(h));
+  const phoneFields = headers.filter(h => /phone|tel|mobile/i.test(h));
+  const companyFields = headers.filter(h => /company|organization|business/i.test(h));
+  const addressFields = headers.filter(h => /address|street|city|state|zip/i.test(h));
+
+  const typeOptions = crmCustomerTypes.map(t =>
+    `<option value="${t}">${getCustomerTypeLabel(t)}</option>`
+  ).join('');
+
+  preview.innerHTML = `
+    <div class="crm-import-stats">
+      <div class="crm-import-stat"><span class="num">${crmImportData.length}</span><span class="lbl">Contacts Found</span></div>
+      <div class="crm-import-stat"><span class="num">${headers.length}</span><span class="lbl">Fields per Contact</span></div>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px;">
+        <i class="fas fa-info-circle" style="color:#22D3EE;margin-right:6px;"></i>
+        Assign a customer type to each contact, or leave blank to tag them later. Use "Set All" to bulk-assign.
+      </p>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+        <span style="font-size:0.78rem;color:var(--text-muted);font-weight:600;">SET ALL:</span>
+        <select id="crmImportBulkType" style="padding:6px 10px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.82rem;">
+          <option value="">— No Type —</option>
+          ${typeOptions}
+        </select>
+        <button class="crm-btn-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="bulkSetCRMImportType()">Apply</button>
+      </div>
+    </div>
+
+    <div class="crm-import-preview">
+      <table class="crm-import-table">
+        <thead>
+          <tr>
+            <th style="width:40px;">#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th style="min-width:130px;">Customer Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${crmImportData.map((row, i) => {
+            // Find best name match
+            const nameVal = nameFields.map(f => row[f]).filter(Boolean).join(' ') || Object.values(row).filter(v => v && typeof v === 'string')[0] || '';
+            const emailVal = emailFields.map(f => row[f]).filter(Boolean)[0] || '';
+            const phoneVal = phoneFields.map(f => row[f]).filter(Boolean)[0] || '';
+            return `
+              <tr>
+                <td style="color:var(--text-muted);">${i + 1}</td>
+                <td>${nameVal}</td>
+                <td>${emailVal}</td>
+                <td>${phoneVal}</td>
+                <td>
+                  <select onchange="crmImportData[${i}]._customerType=this.value;" id="crmImportType_${i}">
+                    <option value="">Unassigned</option>
+                    ${typeOptions}
+                  </select>
+                </td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="crm-form-actions" style="border-top:1px solid var(--border);padding-top:16px;margin-top:16px;">
+      <span style="font-size:0.78rem;color:var(--text-muted);margin-right:auto;">${crmImportData.length} contacts will be imported</span>
+      <button class="crm-cancel-btn" onclick="closeCRMModal()">Cancel</button>
+      <button class="crm-save-btn" onclick="executeCRMImport()">Import ${crmImportData.length} Contacts</button>
+    </div>
+  `;
+}
+
+function bulkSetCRMImportType() {
+  const type = document.getElementById('crmImportBulkType').value;
+  crmImportData.forEach((row, i) => {
+    row._customerType = type;
+    const sel = document.getElementById(`crmImportType_${i}`);
+    if (sel) sel.value = type;
+  });
+}
+
+async function executeCRMImport() {
+  if (!crmImportData.length) return;
+
+  const btn = document.querySelector('#crmImportModal .crm-save-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Importing...'; }
+
+  // Determine field mappings from headers
+  const sample = crmImportData[0];
+  const keys = Object.keys(sample).filter(k => k !== '_customerType');
+
+  function findField(patterns) {
+    return keys.find(k => patterns.some(p => new RegExp(p, 'i').test(k))) || '';
+  }
+
+  const firstNameKey = findField(['first.*name', '^first$']);
+  const lastNameKey = findField(['last.*name', '^last$']);
+  const fullNameKey = findField(['^name$', 'display.*name', 'customer.*name', 'customer$', 'full.*name']);
+  const emailKey = findField(['email', 'e-mail']);
+  const phoneKey = findField(['phone', 'tel', 'mobile', 'main.*phone']);
+  const companyKey = findField(['company', 'organization', 'business']);
+  const addressKey = findField(['address', 'street', 'billing.*address']);
+  const cityKey = findField(['^city', 'billing.*city']);
+  const stateKey = findField(['^state', 'billing.*state', 'province']);
+  const zipKey = findField(['^zip', 'postal', 'billing.*zip']);
+
+  const batch = db.batch();
+  let count = 0;
+
+  crmImportData.forEach(row => {
+    let firstName = firstNameKey ? row[firstNameKey] : '';
+    let lastName = lastNameKey ? row[lastNameKey] : '';
+
+    // If no separate first/last but there's a full name, split it
+    if (!firstName && !lastName && fullNameKey && row[fullNameKey]) {
+      const parts = row[fullNameKey].trim().split(/\s+/);
+      firstName = parts[0] || '';
+      lastName = parts.slice(1).join(' ') || '';
+    }
+
+    // Build address from components
+    let address = addressKey ? row[addressKey] : '';
+    if (cityKey && row[cityKey]) address += (address ? ', ' : '') + row[cityKey];
+    if (stateKey && row[stateKey]) address += (address ? ', ' : '') + row[stateKey];
+    if (zipKey && row[zipKey]) address += (address ? ' ' : '') + row[zipKey];
+
+    const docRef = db.collection('crmCustomers').doc();
+    batch.set(docRef, {
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      companyName: companyKey ? (row[companyKey] || '').trim() : '',
+      email: emailKey ? (row[emailKey] || '').trim() : '',
+      phone: phoneKey ? (row[phoneKey] || '').trim() : '',
+      address: address.trim(),
+      customerType: row._customerType || 'unassigned',
+      notes: '',
+      files: [],
+      importedFrom: 'quickbooks',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+    count++;
+  });
+
+  try {
+    await batch.commit();
+    closeCRMModal();
+    crmImportData = [];
+  } catch (err) {
+    console.error('Import error:', err);
+    alert('Import failed. If you have more than 500 contacts, try importing in smaller batches.');
+    if (btn) { btn.disabled = false; btn.textContent = `Import ${crmImportData.length} Contacts`; }
+  }
+}
+
+// ── Add Custom Customer Type ──
+function openAddCustomerTypeModal() {
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay open';
+  overlay.id = 'crmAddTypeModal';
+  overlay.style.zIndex = '600';
+  overlay.onclick = e => { if (e.target === overlay) { overlay.remove(); } };
+
+  overlay.innerHTML = `
+    <div class="modal" style="max-width:420px;">
+      <div class="modal-header">
+        <h3>Add Customer Type</h3>
+        <button class="modal-close" onclick="document.getElementById('crmAddTypeModal').remove();"><i class="fas fa-xmark"></i></button>
+      </div>
+      <div style="padding:24px 28px;">
+        <div class="crm-form-group">
+          <label>Type Name</label>
+          <input type="text" id="crmNewTypeName" placeholder="e.g. Rental, Wholesale, Partner">
+        </div>
+        <p style="font-size:0.78rem;color:var(--text-muted);margin-top:8px;">
+          This will be added to the customer type dropdown for all future customers.
+        </p>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;">
+          <button class="crm-cancel-btn" onclick="document.getElementById('crmAddTypeModal').remove();">Cancel</button>
+          <button class="crm-save-btn" onclick="saveNewCustomerType()">Add Type</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+  setTimeout(() => document.getElementById('crmNewTypeName')?.focus(), 100);
+}
+
+async function saveNewCustomerType() {
+  const name = document.getElementById('crmNewTypeName')?.value.trim();
+  if (!name) { alert('Please enter a type name.'); return; }
+
+  const typeId = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  if (crmCustomerTypes.includes(typeId)) { alert('This type already exists.'); return; }
+
+  crmCustomerTypes.push(typeId);
+  crmCustomerTypeLabels[typeId] = name;
+
+  try {
+    await db.collection('crmMeta').doc('customerTypes').set({
+      types: crmCustomerTypes,
+      labels: crmCustomerTypeLabels,
+    });
+    document.getElementById('crmAddTypeModal')?.remove();
+    // Refresh the add form if open
+    const typeSelect = document.getElementById('crmFormType');
+    if (typeSelect) {
+      const currentVal = typeSelect.value;
+      typeSelect.innerHTML = `<option value="">— Select Type —</option>` +
+        crmCustomerTypes.map(t => `<option value="${t}" ${currentVal === t ? 'selected' : ''}>${getCustomerTypeLabel(t)}</option>`).join('');
+      typeSelect.value = typeId;
+      updateCRMFormFields();
+    }
+  } catch (err) {
+    console.error('Failed to save customer type:', err);
+    alert('Failed to save. Check console for details.');
+  }
 }
 
 // ── Service Worker Registration ──

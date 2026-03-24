@@ -4,5 +4,17 @@ service cloud.firestore {
     match /assets/{document=**} {
       allow read, write: if true;
     }
+    match /sops/{document=**} {
+      allow read, write: if true;
+    }
+    match /contacts/{document=**} {
+      allow read, write: if true;
+    }
+    match /dashTasks/{document=**} {
+      allow read, write: if true;
+    }
+    match /meta/{document=**} {
+      allow read, write: if true;
+    }
   }
 }
