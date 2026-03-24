@@ -6778,34 +6778,8 @@ function handleCRMFileImport(file) {
 }
 
 function parseCRMCSV(text, delimiter) {
-  // Handle quoted fields with commas inside
-  const lines = [];
-  let current = '';
-  let inQuotes = false;
-  for (let i = 0; i < text.length; i++) {
-    const ch = text[i];
-    if (ch === '"') {
-      if (inQuotes && text[i+1] === '"') { current += '"'; i++; }
-      else { inQuotes = !inQuotes; }
-    } else if ((ch === delimiter) && !inQuotes) {
-      lines.length === 0 ? (current += ch) : (current += ch);
-    } else if ((ch === '\n' || ch === '\r') && !inQuotes) {
-      if (current.trim()) lines.push(current);
-      current = '';
-      if (ch === '\r' && text[i+1] === '\n') i++;
-    } else {
-      current += ch;
-    }
-  }
-  if (current.trim()) lines.push(current);
-
-  if (lines.length < 2) {
-    alert('File appears to be empty or has no data rows.');
-    return;
-  }
-
-  // Split each line properly
-  function splitLine(line) {
+  // Split into records handling quoted fields with embedded newlines
+  function splitLine(line, delim) {
     const fields = [];
     let field = '';
     let inQ = false;
@@ -6814,7 +6788,7 @@ function parseCRMCSV(text, delimiter) {
       if (ch === '"') {
         if (inQ && line[i+1] === '"') { field += '"'; i++; }
         else { inQ = !inQ; }
-      } else if (ch === delimiter && !inQ) {
+      } else if (ch === delim && !inQ) {
         fields.push(field.trim());
         field = '';
       } else {
@@ -6825,13 +6799,60 @@ function parseCRMCSV(text, delimiter) {
     return fields;
   }
 
-  const headers = splitLine(lines[0]);
-  const rows = lines.slice(1).map(l => splitLine(l));
+  // Parse all records respecting quoted newlines
+  const records = [];
+  let current = '';
+  let inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (ch === '"') {
+      inQuotes = !inQuotes;
+      current += ch;
+    } else if ((ch === '\n' || ch === '\r') && !inQuotes) {
+      if (current.trim()) records.push(current);
+      current = '';
+      if (ch === '\r' && text[i+1] === '\n') i++;
+    } else {
+      current += ch;
+    }
+  }
+  if (current.trim()) records.push(current);
 
-  crmImportData = rows.map(row => {
+  // Auto-detect the header row: find the first row that has 3+ non-empty fields
+  // and looks like headers (contains words like Name, Email, Phone, Customer, Address)
+  let headerIdx = 0;
+  const headerPatterns = /customer|name|email|phone|address|contact|company/i;
+  for (let i = 0; i < Math.min(records.length, 10); i++) {
+    const fields = splitLine(records[i], delimiter);
+    const nonEmpty = fields.filter(f => f.length > 0);
+    if (nonEmpty.length >= 3 && headerPatterns.test(records[i])) {
+      headerIdx = i;
+      break;
+    }
+  }
+
+  const headers = splitLine(records[headerIdx], delimiter).map(h => h.replace(/^=/, '').trim());
+  const rows = records.slice(headerIdx + 1).map(r => splitLine(r, delimiter));
+
+  // Filter out empty rows
+  const validRows = rows.filter(r => r.some(cell => cell.replace(/^=/, '').trim().length > 0));
+
+  if (validRows.length === 0) {
+    alert('File appears to be empty or has no data rows.');
+    return;
+  }
+
+  crmImportData = validRows.map(row => {
     const obj = {};
-    headers.forEach((h, i) => { obj[h] = row[i] || ''; });
-    obj._customerType = ''; // To be assigned manually
+    headers.forEach((h, i) => {
+      let val = (row[i] || '').replace(/^=/, '').trim();
+      // Clean "Phone: " prefix from phone values
+      if (/phone/i.test(h)) val = val.replace(/^Phone:\s*/i, '').trim();
+      // Normalize multi-line addresses to single line
+      if (/address/i.test(h)) val = val.replace(/\n+/g, ', ').replace(/,\s*,/g, ',').trim();
+      obj[h] = val;
+    });
+    obj._customerType = '';
     return obj;
   });
 
@@ -6943,11 +6964,12 @@ async function executeCRMImport() {
 
   const firstNameKey = findField(['first.*name', '^first$']);
   const lastNameKey = findField(['last.*name', '^last$']);
-  const fullNameKey = findField(['^name$', 'display.*name', 'customer.*name', 'customer$', 'full.*name']);
+  const fullNameKey = findField(['full.*name', '^name$', 'display.*name', 'customer.*name', '^customer$']);
   const emailKey = findField(['email', 'e-mail']);
   const phoneKey = findField(['phone', 'tel', 'mobile', 'main.*phone']);
-  const companyKey = findField(['company', 'organization', 'business']);
-  const addressKey = findField(['address', 'street', 'billing.*address']);
+  const companyKey = findField(['company', 'organization', 'business', '^customer$']);
+  const addressKey = findField(['billing.*address', '^address$', 'street']);
+  const shippingKey = findField(['shipping.*address']);
   const cityKey = findField(['^city', 'billing.*city']);
   const stateKey = findField(['^state', 'billing.*state', 'province']);
   const zipKey = findField(['^zip', 'postal', 'billing.*zip']);
@@ -6966,20 +6988,38 @@ async function executeCRMImport() {
       lastName = parts.slice(1).join(' ') || '';
     }
 
+    // Determine company name: if Customer field exists and differs from Full Name, it may be a company
+    let companyName = '';
+    if (companyKey && fullNameKey && companyKey !== fullNameKey) {
+      const custVal = (row[companyKey] || '').trim();
+      const nameVal = (row[fullNameKey] || '').trim();
+      if (custVal && custVal !== nameVal) companyName = custVal;
+    } else if (companyKey && !fullNameKey) {
+      companyName = (row[companyKey] || '').trim();
+    }
+
+    // If we still have no name, fall back to Customer field
+    if (!firstName && !lastName && companyKey && row[companyKey]) {
+      const parts = row[companyKey].trim().split(/\s+/);
+      firstName = parts[0] || '';
+      lastName = parts.slice(1).join(' ') || '';
+    }
+
     // Build address from components
     let address = addressKey ? row[addressKey] : '';
     if (cityKey && row[cityKey]) address += (address ? ', ' : '') + row[cityKey];
     if (stateKey && row[stateKey]) address += (address ? ', ' : '') + row[stateKey];
     if (zipKey && row[zipKey]) address += (address ? ' ' : '') + row[zipKey];
+    address = address.replace(/\n+/g, ', ').replace(/,\s*,/g, ',').trim();
 
     const docRef = db.collection('crmCustomers').doc();
     batch.set(docRef, {
       firstName: firstName.trim(),
       lastName: lastName.trim(),
-      companyName: companyKey ? (row[companyKey] || '').trim() : '',
+      companyName: companyName,
       email: emailKey ? (row[emailKey] || '').trim() : '',
-      phone: phoneKey ? (row[phoneKey] || '').trim() : '',
-      address: address.trim(),
+      phone: phoneKey ? (row[phoneKey] || '').replace(/^Phone:\s*/i, '').trim() : '',
+      address: address,
       customerType: row._customerType || 'unassigned',
       notes: '',
       files: [],
