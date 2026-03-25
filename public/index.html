@@ -2595,6 +2595,11 @@
   .sop-image-preview-strip .sop-img-thumb img { width: 100%; height: 100%; object-fit: cover; }
   .sop-image-preview-strip .sop-img-thumb .sop-img-thumb-remove { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.6); color: #fff; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 0.65rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
+  /* Print Event Overview button */
+  .dash-print-row { display: flex; justify-content: flex-end; padding: 10px 0 4px; border-top: 1px solid var(--border); margin-top: 10px; }
+  .btn-print-overview { background: none; border: 1px solid var(--border); color: var(--text-secondary); padding: 7px 16px; border-radius: 8px; cursor: pointer; font-size: 0.88rem; font-weight: 600; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
+  .btn-print-overview:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
   /* Inline images inside SOP content view */
   #modalBody img.sop-inline-img,
   #modalBody img[src*="firebasestorage"] {
@@ -5267,6 +5272,9 @@ function renderDashboard() {
                 <div class="dash-task-progress-bar"><div class="dash-task-progress-fill" style="width:${pct}%"></div></div>
                 <span class="dash-task-progress-text">${pct}% complete</span>
               </div>` : ''}
+              <div class="dash-print-row">
+                <button class="btn-print-overview" onclick="event.stopPropagation();printEventOverview('${key}')"><i class="fas fa-print"></i> Print Event Overview</button>
+              </div>
             </div>
           </div>
         </div>
@@ -6201,6 +6209,237 @@ function saveSOP() {
       else showCategory(category);
     });
   }
+}
+
+// ── Print Event Overview ──
+function printEventOverview(eventKey) {
+  const allEvents = [...vpsEvents, ...srpEvents];
+  const evt = allEvents.find(e => getEventKey(e) === eventKey);
+  if (!evt) { alert('Event not found'); return; }
+
+  const dashTasks = loadDashTasks();
+  const taskData = dashTasks[eventKey] || { operations: [], accounting: [] };
+  const opsArr = taskData.operations || [];
+  const acctArr = taskData.accounting || [];
+
+  const evtName = evt.name || evt.title || 'Event';
+  const sourceTag = evt._source === 'srp' ? 'Sim Rental Pros' : 'Velocity Pro Sims';
+  const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const monthFull = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  function fmtDate(d) {
+    if (!d) return '—';
+    const dt = new Date(d + 'T00:00:00');
+    return dayNames[dt.getDay()] + ', ' + monthFull[dt.getMonth()] + ' ' + dt.getDate() + ', ' + dt.getFullYear();
+  }
+  function fmtTime(t) {
+    if (!t) return '';
+    const [h, m] = t.split(':');
+    const hr = parseInt(h);
+    const ampm = hr >= 12 ? 'PM' : 'AM';
+    return ((hr % 12) || 12) + ':' + m + ' ' + ampm;
+  }
+
+  /* Build event details section */
+  let detailRows = '';
+  detailRows += `<tr><td class="lbl">Event</td><td>${evtName}</td></tr>`;
+  detailRows += `<tr><td class="lbl">Source</td><td>${sourceTag}</td></tr>`;
+  if (evt.type) detailRows += `<tr><td class="lbl">Type</td><td>${evt.type}</td></tr>`;
+  detailRows += `<tr><td class="lbl">Date</td><td>${fmtDate(evt.date)}${evt.endDate && evt.endDate !== evt.date ? ' — ' + fmtDate(evt.endDate) : ''}</td></tr>`;
+  if (evt.startTime) detailRows += `<tr><td class="lbl">Time</td><td>${fmtTime(evt.startTime)}${evt.endTime ? ' — ' + fmtTime(evt.endTime) : ''}</td></tr>`;
+  if (evt.simulators) detailRows += `<tr><td class="lbl">Simulators</td><td>${evt.simulators}</td></tr>`;
+  if (evt.status) detailRows += `<tr><td class="lbl">Status</td><td>${evt.status.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}</td></tr>`;
+  if (evt.loadInDate) detailRows += `<tr><td class="lbl">Load-In</td><td>${fmtDate(evt.loadInDate)}${evt.loadInTime ? ' at ' + fmtTime(evt.loadInTime) : ''}</td></tr>`;
+  if (evt.loadOutDate) detailRows += `<tr><td class="lbl">Load-Out</td><td>${fmtDate(evt.loadOutDate)}${evt.loadOutTime ? ' at ' + fmtTime(evt.loadOutTime) : ''}</td></tr>`;
+  if (evt.description) detailRows += `<tr><td class="lbl">Notes</td><td>${evt.description}</td></tr>`;
+
+  /* Build operational tasks */
+  function renderPrintTask(t) {
+    let check = t.done ? '&#9745;' : '&#9744;';
+    let detail = '';
+
+    if (t.taskType === 'poc' && t.contactName) detail = ': ' + t.contactName;
+    if (t.taskType === 'hardware' && t.hardware) {
+      const hw = t.hardware;
+      const parts = [];
+      if (hw.wheel) parts.push('Wheel: ' + hw.wheel);
+      if (hw.motor) parts.push('Motor: ' + hw.motor);
+      if (hw.pedals) parts.push('Pedals: ' + hw.pedals);
+      if (hw.monitor) parts.push('Monitor: ' + hw.monitor);
+      if (hw.chassis) parts.push('Chassis: ' + hw.chassis);
+      if (hw.monitorRemote) parts.push('Monitor Remote: Yes');
+      if (hw.pc) parts.push('PC: Confirmed');
+      if (parts.length) detail = '<div class="task-detail">' + parts.join(' &nbsp;|&nbsp; ') + '</div>';
+    }
+    if (t.taskType === 'branding') {
+      detail = t.brandingYes ? ' — Yes' : ' — No';
+      if (t.brandingYes && t.subChecks) {
+        detail += '<div class="sub-list">';
+        Object.keys(t.subChecks).forEach(k => {
+          detail += '<div class="sub-item">' + (t.subChecks[k] ? '&#9745;' : '&#9744;') + ' ' + k + '</div>';
+        });
+        detail += '</div>';
+      }
+    }
+    if (t.taskType === 'pedestal') {
+      if (t.pedestalColor) detail = ' — ' + t.pedestalColor;
+      if (t.subChecks) {
+        detail += '<div class="sub-list">';
+        Object.keys(t.subChecks).forEach(k => {
+          detail += '<div class="sub-item">' + (t.subChecks[k] ? '&#9745;' : '&#9744;') + ' ' + k + '</div>';
+        });
+        detail += '</div>';
+      }
+    }
+    if (t.taskType === 'timing' && t.subChecks) {
+      detail = '<div class="sub-list">';
+      Object.keys(t.subChecks).forEach(k => {
+        detail += '<div class="sub-item">' + (t.subChecks[k] ? '&#9745;' : '&#9744;') + ' ' + k + '</div>';
+      });
+      detail += '</div>';
+    }
+    if (t.taskType === 'uhaul' && t.confirmationNumber) detail = ' — Conf #: ' + t.confirmationNumber;
+    if (t.taskType === 'lodging') {
+      const parts = [];
+      if (t.hotelLocation) parts.push(t.hotelLocation);
+      if (t.booked) parts.push('Booked');
+      if (parts.length) detail = ' — ' + parts.join(', ');
+    }
+    if (t.taskType === 'staff' && t.selectedStaff && t.selectedStaff.length) {
+      detail = ' — ' + t.selectedStaff.join(', ');
+    }
+    if (t.taskType === 'rentalcar') {
+      if (t.rentalCarYes) detail = ' — Yes';
+      if (t.rentalConfirmation) detail += ', Conf #: ' + t.rentalConfirmation;
+    }
+    if (t.taskType === 'confirmedby' && t.confirmedByName) detail = ': ' + t.confirmedByName;
+
+    return '<div class="task-row">' + check + ' <span class="task-text">' + t.text + '</span>' + detail + '</div>';
+  }
+
+  function renderPrintAcctTask(t) {
+    let check = t.done ? '&#9745;' : '&#9744;';
+    let detail = '';
+    if (t.hasDates) {
+      const parts = [];
+      if (t.dateDue) parts.push('Due: ' + fmtDate(t.dateDue));
+      if (t.dateReceived) parts.push('Received: ' + fmtDate(t.dateReceived));
+      if (parts.length) detail = '<div class="task-detail">' + parts.join(' &nbsp;|&nbsp; ') + '</div>';
+    }
+    return '<div class="task-row">' + check + ' <span class="task-text">' + t.text + '</span>' + detail + '</div>';
+  }
+
+  const opsHTML = opsArr.map(renderPrintTask).join('');
+  const acctHTML = acctArr.map(renderPrintAcctTask).join('');
+  const doneCount = [...opsArr, ...acctArr].filter(t => t.done).length;
+  const totalCount = opsArr.length + acctArr.length;
+  const pct = totalCount ? Math.round((doneCount / totalCount) * 100) : 0;
+
+  const today = new Date();
+  const printDate = monthFull[today.getMonth()] + ' ' + today.getDate() + ', ' + today.getFullYear();
+
+  /* Convert logo.png to base64 for the print window */
+  const logoUrl = window.location.origin + '/logo.png';
+
+  const printHTML = `<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>${evtName} — Event Overview</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, sans-serif; color: #1a1a2e; padding: 0; background: #fff; font-size: 11pt; line-height: 1.5; }
+  .page { max-width: 8.5in; margin: 0 auto; padding: 0.5in 0.6in; }
+
+  /* Header */
+  .header { display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid #1a1a2e; padding-bottom: 14px; margin-bottom: 20px; }
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .header img { height: 52px; }
+  .header-title { font-size: 20pt; font-weight: 800; letter-spacing: -0.5px; }
+  .header-sub { font-size: 9pt; color: #666; font-weight: 500; }
+  .header-right { text-align: right; }
+  .header-right .print-date { font-size: 8.5pt; color: #888; }
+  .header-right .source-badge { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 8pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #fff; background: ${evt._source === 'srp' ? '#3b82f6' : '#5CBF2A'}; }
+
+  /* Event Details Table */
+  .section-label { font-size: 11pt; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #5CBF2A; border-bottom: 2px solid #e5e7eb; padding-bottom: 5px; margin: 18px 0 10px; }
+  .details-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+  .details-table td { padding: 5px 10px; font-size: 10pt; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+  .details-table .lbl { font-weight: 700; color: #555; width: 120px; white-space: nowrap; }
+
+  /* Progress */
+  .progress-row { display: flex; align-items: center; gap: 12px; margin: 16px 0 6px; }
+  .progress-bar { flex: 1; height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: #5CBF2A; border-radius: 4px; }
+  .progress-text { font-size: 9pt; font-weight: 700; color: #555; white-space: nowrap; }
+
+  /* Tasks */
+  .task-row { padding: 4px 0; font-size: 10pt; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 4px; border-bottom: 1px solid #f8f8f8; }
+  .task-text { font-weight: 600; }
+  .task-detail { font-size: 9pt; color: #555; width: 100%; padding-left: 22px; margin-top: 1px; }
+  .sub-list { padding-left: 22px; margin-top: 2px; width: 100%; }
+  .sub-item { font-size: 9pt; color: #444; padding: 1px 0; }
+
+  /* Two-column for ops/acct */
+  .tasks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .tasks-col { min-width: 0; }
+  @media print {
+    .tasks-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* Footer */
+  .footer { margin-top: 28px; padding-top: 10px; border-top: 2px solid #e5e7eb; display: flex; justify-content: space-between; font-size: 8pt; color: #aaa; }
+
+  @media print {
+    body { padding: 0; }
+    .page { padding: 0.4in 0.5in; }
+    @page { margin: 0.3in; size: letter; }
+  }
+</style></head><body>
+<div class="page">
+  <div class="header">
+    <div class="header-left">
+      <img src="${logoUrl}" alt="Velocity Pro Sims" onerror="this.style.display='none'">
+      <div>
+        <div class="header-title">Event Overview</div>
+        <div class="header-sub">Staff Briefing Document</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="source-badge">${sourceTag}</div>
+      <div class="print-date" style="margin-top:6px;">Printed ${printDate}</div>
+    </div>
+  </div>
+
+  <div class="section-label">Event Details</div>
+  <table class="details-table">${detailRows}</table>
+
+  ${totalCount > 0 ? `
+  <div class="progress-row">
+    <span class="progress-text">${doneCount} of ${totalCount} tasks complete (${pct}%)</span>
+    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+  </div>` : ''}
+
+  <div class="tasks-grid">
+    <div class="tasks-col">
+      <div class="section-label" style="color:#3b82f6;border-color:#dbeafe;">Operations</div>
+      ${opsHTML || '<div style="color:#999;font-size:9pt;padding:6px 0;">No operations tasks</div>'}
+    </div>
+    <div class="tasks-col">
+      <div class="section-label" style="color:#10b981;border-color:#d1fae5;">Accounting</div>
+      ${acctHTML || '<div style="color:#999;font-size:9pt;padding:6px 0;">No accounting tasks</div>'}
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Velocity Pro Sims &mdash; velocityprosims.com</span>
+    <span>${evtName} &mdash; ${fmtDate(evt.date)}</span>
+  </div>
+</div>
+<script>window.onload=function(){window.print();}<\/script>
+</body></html>`;
+
+  const printWin = window.open('', '_blank', 'width=900,height=700');
+  printWin.document.write(printHTML);
+  printWin.document.close();
 }
 
 // ── SOP Image Upload ──
