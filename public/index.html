@@ -4891,11 +4891,26 @@ function renderDashboard() {
           dashTasks[key].accounting = JSON.parse(JSON.stringify(defaultAccounting));
           newTasksGenerated = true;
         }
-        /* Backfill new operational tasks for existing events */
+        /* Backfill new operational tasks individually (skip any already present by text) */
         ops = dashTasks[key].operations || [];
-        const hasNewOps = ops.some(t => t.taskType === 'poc');
-        if (!hasNewOps) {
-          dashTasks[key].operations = [...ops, ...JSON.parse(JSON.stringify(newOpsTasks))];
+        const existingTexts = new Set(ops.map(t => t.text));
+        const toAdd = newOpsTasks.filter(t => !existingTexts.has(t.text));
+        if (toAdd.length > 0) {
+          dashTasks[key].operations = [...ops, ...JSON.parse(JSON.stringify(toAdd))];
+          newTasksGenerated = true;
+        }
+
+        /* Deduplicate operations by task text (keep first occurrence) */
+        const seenTexts = new Set();
+        const deduped = [];
+        for (const t of dashTasks[key].operations) {
+          if (!seenTexts.has(t.text)) {
+            seenTexts.add(t.text);
+            deduped.push(t);
+          }
+        }
+        if (deduped.length !== dashTasks[key].operations.length) {
+          dashTasks[key].operations = deduped;
           newTasksGenerated = true;
         }
       }
