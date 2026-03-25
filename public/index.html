@@ -3357,9 +3357,6 @@ const categories = [
   { id: 'facility', name: 'Facility Management', icon: 'fa-building', color: '#F59E0B' },
   { id: 'websites', name: 'Key Websites', icon: 'fa-link', color: '#6366F1' },
   { id: 'assets', name: 'Marketing Assets', icon: 'fa-palette', color: '#E879F9' },
-  { id: 'safety', name: 'Safety & Emergency', icon: 'fa-shield-halved', color: '#EF4444' },
-  { id: 'staff', name: 'Staff & Training', icon: 'fa-users', color: '#F97316' },
-  { id: 'tech', name: 'Technical Support', icon: 'fa-wrench', color: '#06B6D4' },
   { id: 'techresources', name: 'Tech Resources', icon: 'fa-microchip', color: '#38BDF8' },
   { id: 'vendors', name: 'Vendor Contacts', icon: 'fa-handshake', color: '#F472B6' },
 ];
@@ -3516,55 +3513,6 @@ const defaultSOPs = [
 </ul>`
   },
   {
-    id: 8, category: 'safety', title: 'Emergency Evacuation Procedure',
-    description: 'Step-by-step evacuation procedure for fire, natural disaster, or other emergencies.',
-    priority: 'critical', updatedBy: 'Jose', updatedAt: '2026-03-20',
-    content: `<h4>Purpose</h4><p>Ensure the safety of all customers and staff in the event of an emergency requiring building evacuation.</p>
-<h4>Immediate Actions</h4><ol>
-<li>Activate the fire alarm if not already triggered</li>
-<li>Announce calmly over the PA: "Attention — please evacuate the building immediately via the nearest marked exit"</li>
-<li>Cut power to all simulator rigs using the master power switch (located behind the front desk)</li>
-<li>If VR headsets are in use, assist customers in removing them quickly</li>
-</ol>
-<h4>Evacuation Flow</h4><ol>
-<li>Staff nearest to the exit doors — open and hold them</li>
-<li>Guide customers to the designated assembly point (parking lot, NE corner)</li>
-<li>Shift lead conducts a headcount using the active session roster</li>
-<li>Do NOT allow re-entry until cleared by emergency services</li>
-</ol>
-<h4>Post-Emergency</h4><ul>
-<li>Document the incident in the Safety Log</li>
-<li>Notify the business owner/manager immediately</li>
-<li>Inspect all equipment before resuming operations</li>
-</ul>
-<h4>Emergency Contacts</h4><p>Fire / Police / EMS: 911 &nbsp;|&nbsp; Building Management: Posted at front desk &nbsp;|&nbsp; Owner: Posted at front desk</p>`
-  },
-  {
-    id: 9, category: 'safety', title: 'Health & Hygiene Standards',
-    description: 'Cleaning and sanitization protocols for all customer-facing equipment and surfaces.',
-    priority: 'important', updatedBy: 'Jose', updatedAt: '2026-03-12',
-    content: `<h4>Purpose</h4><p>Maintain a clean and hygienic environment for every customer. This is essential for customer confidence, health safety, and equipment longevity.</p>
-<h4>Between Every Session</h4><ol>
-<li>Wipe down the steering wheel rim and buttons with disinfectant wipes</li>
-<li>Clean the seat surface and headrest</li>
-<li>Wipe pedal faces</li>
-<li>If VR headset was used — clean face gasket with VR-safe sanitizer and replace if disposable</li>
-<li>Replace disposable VR covers if applicable</li>
-</ol>
-<h4>Daily (End of Business)</h4><ol>
-<li>Vacuum or sweep all rig areas and walkways</li>
-<li>Mop hard floor surfaces</li>
-<li>Empty all trash cans</li>
-<li>Wipe down the front desk, counters, and any lounge furniture</li>
-<li>Clean restrooms thoroughly</li>
-</ol>
-<h4>Weekly</h4><ul>
-<li>Deep clean all VR headsets with UV sanitizer</li>
-<li>Launder any fabric seat covers or cushions</li>
-<li>Clean display screens with appropriate screen cleaner (no ammonia)</li>
-</ul>`
-  },
-  {
     id: 10, category: 'facility', title: 'Opening & Closing Procedures',
     description: 'Daily checklist for staff responsible for opening and closing the facility.',
     priority: 'critical', updatedBy: 'Jose', updatedAt: '2026-03-19',
@@ -3634,86 +3582,6 @@ const defaultSOPs = [
     description: 'The importance of planting seeds and building leads at every event.',
     priority: 'critical', updatedBy: 'Jose', updatedAt: '2026-03-25',
     content: `<h4>Lead Generation</h4><p>Building leads for us is just as important as building leads is for the people that use our services. Every event is an opportunity. The more seeds we plant, the more chances we have of something growing.</p><p>Case in point — <strong>Brett Oakley</strong>. This was a simple question that was asked at an event that turned into the sale of a <strong>$60,000 rig</strong>. That's the power of being present, being approachable, and being ready to have a conversation about what we do.</p><p>You never know who is standing next to the simulator watching. It could be someone who has been thinking about getting one for their home, their office, or their business. Be friendly, strike up conversations, and when the moment is right, let them know what Velocity Pro Sims can do for them.</p><p>Every lead counts. Log any promising contacts or conversations in the CRM so we can follow up.</p>`
-  },
-  {
-    id: 14, category: 'tech', title: 'Network & Connectivity Troubleshooting',
-    description: 'Resolving common network issues affecting multiplayer, online sim titles, and booking systems.',
-    priority: 'important', updatedBy: 'Jose', updatedAt: '2026-03-13',
-    content: `<h4>Purpose</h4><p>Reliable network connectivity is critical for online racing, league servers, and the booking/POS system.</p>
-<h4>Common Issues & Solutions</h4><ol>
-<li><strong>Single PC can't connect</strong>: Check Ethernet cable, restart network adapter, verify IP assignment via DHCP</li>
-<li><strong>All PCs losing connection</strong>: Restart the main router/switch. Check if the ISP is experiencing an outage.</li>
-<li><strong>High latency / lag</strong>: Run a speed test. Check for bandwidth-hogging processes (e.g., Windows updates). Prioritize sim traffic on the router QoS settings.</li>
-<li><strong>Server browser not loading</strong>: Verify DNS settings, try switching to 8.8.8.8 / 1.1.1.1</li>
-<li><strong>Booking system offline</strong>: Check if the cloud service is up (visit the provider status page). Contact support if the issue persists beyond 15 minutes.</li>
-</ol>
-<h4>Escalation</h4><p>If a network issue cannot be resolved within 15 minutes, contact the IT provider. Keep a printed copy of their contact info at the front desk.</p>`
-  },
-  {
-    id: 15, category: 'tech', title: 'VR Headset Setup & Troubleshooting',
-    description: 'Setting up, maintaining, and troubleshooting VR headsets for sim racing use.',
-    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-09',
-    content: `<h4>Purpose</h4><p>VR provides an immersive experience but requires careful setup and maintenance to avoid issues during customer sessions.</p>
-<h4>Setup for Each Session</h4><ol>
-<li>Check the headset lenses for smudges — clean with a microfiber cloth only</li>
-<li>Verify the cable is securely connected (USB and DisplayPort/USB-C)</li>
-<li>Launch SteamVR (or Oculus software) and confirm tracking is active</li>
-<li>Adjust the IPD (interpupillary distance) based on the customer's preference</li>
-<li>Help the customer put on the headset and adjust the head strap for comfort</li>
-</ol>
-<h4>Troubleshooting</h4><ul>
-<li><strong>Black screen</strong>: Reseat the cable, restart SteamVR, check GPU output</li>
-<li><strong>Tracking lost</strong>: Check base station visibility (if applicable), restart tracking</li>
-<li><strong>Blurry image</strong>: Adjust IPD, clean lenses, check per-app supersampling settings</li>
-<li><strong>Motion sickness reported</strong>: Reduce FOV vignette, ensure framerate is locked at 90 Hz+, suggest a short break</li>
-</ul>`
-  },
-  {
-    id: 16, category: 'staff', title: 'New Hire Onboarding Checklist',
-    description: 'Complete onboarding process for new staff members at Velocity Pro Sims.',
-    priority: 'critical', updatedBy: 'Jose', updatedAt: '2026-03-21',
-    content: `<h4>Purpose</h4><p>Ensure every new team member is fully prepared to represent Velocity Pro Sims and deliver the experience our customers expect.</p>
-<h4>Day 1</h4><ol>
-<li>Facility tour — show all areas including back-of-house, server room, storage</li>
-<li>Introduce to all on-duty staff members</li>
-<li>Issue uniform/branded gear and name badge</li>
-<li>Review and sign: employment agreement, safety policy, NDA (if applicable)</li>
-<li>Set up accounts: POS system, booking system, team chat, email</li>
-</ol>
-<h4>Week 1 Training</h4><ol>
-<li>Shadow an experienced staff member for at least 3 full shifts</li>
-<li>Complete all SOP readings in this portal (quiz to follow)</li>
-<li>Practice: customer check-in flow, rig setup, basic troubleshooting</li>
-<li>Learn the opening and closing procedures</li>
-</ol>
-<h4>Week 2</h4><ol>
-<li>Supervised solo shifts with a senior team member on standby</li>
-<li>Complete the equipment calibration training</li>
-<li>Review performance and address any gaps</li>
-</ol>
-<h4>Sign-Off</h4><p>Manager signs off the onboarding checklist when the new hire can independently perform all core duties. Target: end of Week 2.</p>`
-  },
-  {
-    id: 17, category: 'staff', title: 'Staff Scheduling & Shift Policies',
-    description: 'Policies for shift scheduling, swaps, call-outs, and overtime.',
-    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-08',
-    content: `<h4>Purpose</h4><p>Fair, consistent scheduling ensures proper staffing coverage while respecting team members' time and availability.</p>
-<h4>Schedule Publication</h4><ul>
-<li>Schedules are published every Friday for the following week</li>
-<li>All staff must submit availability preferences by Wednesday</li>
-<li>Schedules are posted in the team chat and on the break room board</li>
-</ul>
-<h4>Shift Swaps</h4><ul>
-<li>Swaps must be arranged directly between staff members</li>
-<li>Both parties must confirm the swap with the shift lead or manager via team chat</li>
-<li>Swaps must be confirmed at least 24 hours before the shift</li>
-</ul>
-<h4>Call-Outs</h4><ul>
-<li>Must notify the shift lead at least 4 hours before the shift starts</li>
-<li>Text and call — a text alone is not sufficient</li>
-<li>Repeated no-call/no-shows will result in disciplinary action per the employee handbook</li>
-</ul>
-<h4>Overtime</h4><p>Overtime must be approved in advance by a manager. Overtime is paid at 1.5x the regular rate per local labor laws.</p>`
   },
   {
     id: 18, category: 'operations', title: 'Cash Handling & POS Procedures',
@@ -4125,6 +3993,14 @@ function loadSOPs() {
           ...n, category: 'events',
           updatedBy: 'Jose', updatedAt: new Date().toISOString().split('T')[0]
         }).catch(err => console.error('Error seeding event SOP:', err));
+      });
+
+      // ── Remove Safety, Tech, and Staff SOPs from Firestore ──
+      const removedCategories = ['safety', 'tech', 'staff'];
+      sopData.filter(s => removedCategories.includes(s.category)).forEach(s => {
+        if (s._firestoreId) {
+          db.collection('sops').doc(s._firestoreId).delete().catch(err => console.error('Error deleting removed-category SOP:', err));
+        }
       });
     }
     sopsLoaded = true;
