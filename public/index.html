@@ -4100,6 +4100,32 @@ function loadSOPs() {
           }).catch(err => console.error('Error seeding TR product:', err));
         });
       }
+      // ── Migrate Event SOPs: remove old, seed new ──
+      const oldEventTitles = ['Corporate Event Hosting', 'Social Media & Live Streaming', 'Pre-Event Checklist'];
+      const newEventSOPs = [
+        { title: 'Uniforms', description: 'Dress code policy for all Velocity Pro Sims events.', priority: 'standard',
+          content: '<h4>Dress Code</h4><p>Preferably wear a Velocity Pro Sims t-shirt with jeans or black shorts. This keeps us looking clean, professional, and on-brand at every event.</p><p>The only exception is when a customer specifically requests that we wear their own branded shirts for the event. In that case, follow their dress code for the duration of the event.</p><p>Always make sure your shirt is clean, wrinkle-free, and presentable. You are representing Velocity Pro Sims.</p>' },
+        { title: 'Smoking', description: 'Smoking policy during events to maintain professionalism.', priority: 'important',
+          content: '<h4>Smoking Policy</h4><p>Please do not smoke cigarettes and bring the smell close to customers or guests. If you need to smoke, step far enough away from the event area so that neither the smoke nor the smell can reach anyone attending the event.</p><p>This applies to cigarettes, cigars, and vapes. We want every guest to have a comfortable experience, and lingering smoke odor on clothing or near the event space reflects poorly on the company.</p>' },
+        { title: 'Sales Questions', description: 'How to handle sales inquiries from guests at events.', priority: 'important',
+          content: '<h4>Handling Sales Questions</h4><p>When a guest or anyone at the event asks about our services, always make sure to tell them about our website <strong>www.velocityprosims.com</strong> and our turn-key simulator services. This is our bread and butter — custom-built, ready-to-go racing simulators delivered and set up for the customer.</p><p>If you are unsure of pricing or specific package details, do not guess or make up numbers. Instead, refer them directly to <strong>Jose</strong> or <strong>Rey</strong> who can provide accurate quotes and answer detailed questions.</p><p>The goal is to be helpful, confident, and point them in the right direction — even if that means saying "Let me connect you with someone who can give you exact pricing."</p>' },
+        { title: 'Business Card Distribution', description: 'Guidelines for distributing business cards at events.', priority: 'standard',
+          content: '<h4>Business Card Distribution</h4><p>Always make sure that we have business cards on hand at every event. Before you leave for an event, verify that you have a stack ready to go.</p><p>Depending on the event, you may need to be more subtle when distributing cards. At a corporate event where we are the hired service, you don\'t want to be aggressively handing out cards to every guest — read the room. However, if someone expresses interest in what we do or asks questions, absolutely give them a card.</p><p>Remember that we are there to provide a service, but we also need to capitalize on our time there and capture leads. Don\'t expect to capture many leads at events, but always be ready when the opportunity comes. Focus conversations around building interest in our turn-key simulators.</p>' },
+        { title: 'Lead Generation', description: 'The importance of planting seeds and building leads at every event.', priority: 'critical',
+          content: '<h4>Lead Generation</h4><p>Building leads for us is just as important as building leads is for the people that use our services. Every event is an opportunity. The more seeds we plant, the more chances we have of something growing.</p><p>Case in point — <strong>Brett Oakley</strong>. This was a simple question that was asked at an event that turned into the sale of a <strong>$60,000 rig</strong>. That\'s the power of being present, being approachable, and being ready to have a conversation about what we do.</p><p>You never know who is standing next to the simulator watching. It could be someone who has been thinking about getting one for their home, their office, or their business. Be friendly, strike up conversations, and when the moment is right, let them know what Velocity Pro Sims can do for them.</p><p>Every lead counts. Log any promising contacts or conversations in the CRM so we can follow up.</p>' },
+      ];
+      const existingEventTitles = new Set(sopData.filter(s => s.category === 'events').map(s => s.title));
+      // Delete old event SOPs
+      sopData.filter(s => s.category === 'events' && oldEventTitles.includes(s.title)).forEach(s => {
+        if (s._firestoreId) db.collection('sops').doc(s._firestoreId).delete().catch(err => console.error('Error deleting old event SOP:', err));
+      });
+      // Seed new event SOPs that don't already exist
+      newEventSOPs.filter(n => !existingEventTitles.has(n.title)).forEach(n => {
+        db.collection('sops').add({
+          ...n, category: 'events',
+          updatedBy: 'Jose', updatedAt: new Date().toISOString().split('T')[0]
+        }).catch(err => console.error('Error seeding event SOP:', err));
+      });
     }
     sopsLoaded = true;
     buildSidebar();
