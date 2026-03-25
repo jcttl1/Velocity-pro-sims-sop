@@ -2632,7 +2632,7 @@
   .quote-contact-grid .form-group label { font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; display: block; color: var(--text-secondary); }
   .quote-contact-grid .form-group input { width: 100%; padding: 9px 12px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.95rem; }
   .quote-items-list { display: flex; flex-direction: column; gap: 6px; }
-  .quote-line-item { display: grid; grid-template-columns: 28px 1fr auto; align-items: center; gap: 10px; padding: 10px 12px; background: var(--bg-secondary); border-radius: var(--radius-sm); border: 1px solid transparent; transition: border-color 0.2s; }
+  .quote-line-item { display: grid; grid-template-columns: 28px 1fr auto 120px; align-items: center; gap: 10px; padding: 10px 12px; background: var(--bg-secondary); border-radius: var(--radius-sm); border: 1px solid transparent; transition: border-color 0.2s; }
   .quote-line-item:hover { border-color: var(--border); }
   .quote-line-item .item-check { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; background: var(--bg-input); }
   .quote-line-item .item-check.checked { background: var(--green); border-color: var(--green); color: #fff; }
@@ -2643,7 +2643,43 @@
   .quote-line-item .item-fields select, .quote-line-item .item-fields input { padding: 6px 10px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.88rem; }
   .quote-line-item .item-fields select { min-width: 180px; }
   .quote-line-item .item-fields input[type="text"] { min-width: 160px; }
+  .quote-line-item .item-price { position: relative; }
+  .quote-line-item .item-price input { width: 100%; padding: 6px 10px 6px 22px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.88rem; text-align: right; }
+  .quote-line-item .item-price::before { content: '$'; position: absolute; left: 8px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.85rem; font-weight: 600; pointer-events: none; z-index: 1; }
   .quote-line-sub { margin-left: 38px; padding: 6px 12px; background: var(--bg-tertiary, var(--bg-secondary)); border-radius: var(--radius-sm); font-size: 0.88rem; display: flex; align-items: center; gap: 8px; }
+
+  /* Quote Total & Build Services */
+  .quote-totals-bar { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; margin-top: 16px; }
+  .quote-totals-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 0.95rem; }
+  .quote-totals-row.subtotal { color: var(--text-secondary); }
+  .quote-totals-row.grand-total { font-size: 1.15rem; font-weight: 800; color: var(--text-primary); padding-top: 12px; margin-top: 8px; border-top: 2px solid var(--border); }
+  .quote-totals-row .totals-label { font-weight: 600; }
+  .quote-totals-row .totals-value { font-weight: 700; font-family: 'Inter', sans-serif; }
+  .quote-tax-note { font-size: 0.8rem; color: var(--text-muted); margin-top: 8px; font-style: italic; text-align: right; }
+
+  .quote-build-svc { background: var(--bg-secondary); border: 2px solid var(--accent); border-radius: var(--radius); padding: 16px 20px; margin-top: 16px; }
+  .quote-build-svc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .quote-build-svc-header i { color: var(--accent); font-size: 1.1rem; }
+  .quote-build-svc-header span { font-weight: 700; font-size: 1rem; color: var(--text-primary); }
+  .quote-build-svc-row { display: flex; align-items: center; gap: 12px; }
+  .quote-build-svc-row .item-check { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; background: var(--bg-input); }
+  .quote-build-svc-row .item-check.checked { background: var(--green); border-color: var(--green); color: #fff; }
+  .quote-build-svc-row .item-check i { font-size: 0.7rem; opacity: 0; transition: opacity 0.2s; }
+  .quote-build-svc-row .item-check.checked i { opacity: 1; }
+  .quote-build-svc-row .svc-label { flex: 1; font-weight: 600; font-size: 0.95rem; }
+  .quote-build-svc-row .svc-price { position: relative; width: 140px; }
+  .quote-build-svc-row .svc-price input { width: 100%; padding: 8px 10px 8px 22px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.95rem; text-align: right; }
+  .quote-build-svc-row .svc-price::before { content: '$'; position: absolute; left: 8px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.9rem; font-weight: 600; pointer-events: none; z-index: 1; }
+
+  /* Public quote pricing */
+  .pq-price-col { font-weight: 700; color: #1a1a2e; text-align: right; white-space: nowrap; }
+  .pq-totals-card { background: #fff; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.08); padding: 24px 32px; margin-bottom: 20px; }
+  .pq-totals-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 0.95rem; color: #475569; }
+  .pq-totals-row.grand { font-size: 1.25rem; font-weight: 800; color: #1a1a2e; padding-top: 14px; margin-top: 8px; border-top: 2px solid #e2e8f0; }
+  .pq-tax-note { font-size: 0.8rem; color: #94a3b8; margin-top: 10px; text-align: right; font-style: italic; }
+
+  @media (max-width: 600px) { .quote-line-item { grid-template-columns: 28px 1fr; } .quote-line-item .item-fields, .quote-line-item .item-price { grid-column: 1 / -1; margin-left: 38px; } }
+
   .quote-actions-bar { display: flex; gap: 10px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); justify-content: flex-end; }
   .quote-actions-bar button { padding: 10px 22px; border-radius: var(--radius-sm); font-size: 0.95rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
   .quote-btn-save { background: var(--accent); color: #fff; }
@@ -2716,7 +2752,7 @@
   .pq-detail-item .pq-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; }
   .pq-detail-item .pq-value { font-size: 0.95rem; color: #1a1a2e; font-weight: 500; }
   .pq-section-title { font-size: 0.88rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #5CBF2A; padding-bottom: 6px; border-bottom: 2px solid #e2e8f0; margin: 20px 0 10px; display: flex; align-items: center; gap: 8px; }
-  .pq-item-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.95rem; }
+  .pq-item-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.95rem; flex-wrap: nowrap; }
   .pq-item-check { color: #10b981; font-size: 0.85rem; width: 20px; }
   .pq-item-check.empty { color: #cbd5e1; }
   .pq-item-label { font-weight: 600; color: #334155; flex: 1; }
@@ -8000,6 +8036,12 @@ function renderQuotingCategory() {
     const status = q.status || 'draft';
     const statusLabel = { draft: 'Draft', sent: 'Sent', viewed: 'Viewed', accepted: 'Accepted', declined: 'Declined', withdrawn: 'Withdrawn' }[status] || status;
 
+    /* Calculate total for card */
+    let cardTotal = 0;
+    quoteLineItems.forEach(li => { const it = items[li.key]; if (it?.included && it.price) cardTotal += it.price; });
+    if (q.buildService?.included && q.buildService.price) cardTotal += q.buildService.price;
+    const cardTotalStr = cardTotal > 0 ? cardTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
+
     return `<div class="quote-card" onclick="openQuoteForEdit('${q._id}')">
       <div class="quote-card-top">
         <div class="quote-card-avatar">${initials.toUpperCase()}</div>
@@ -8009,6 +8051,7 @@ function renderQuotingCategory() {
         </div>
         <div style="margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
           <span class="quote-status-badge ${status}">${statusLabel}</span>
+          ${cardTotalStr ? `<span style="font-size:0.95rem;font-weight:800;color:var(--text-primary);">${cardTotalStr}</span>` : ''}
           <span style="font-size:0.8rem;color:var(--text-muted);">${dateStr}</span>
         </div>
       </div>
@@ -8099,11 +8142,14 @@ function renderQuoteBuilder() {
       </div>`;
     }
 
+    const priceVal = item.price != null ? item.price : '';
+
     return `
       <div class="quote-line-item">
         <div class="item-check ${checked}" onclick="event.stopPropagation();this.classList.toggle('checked');" id="qli_chk_${li.key}"><i class="fas fa-check"></i></div>
         <span class="item-label">${li.label}</span>
         <div class="item-fields">${fieldsHTML}</div>
+        <div class="item-price"><input type="number" id="qli_price_${li.key}" placeholder="0.00" step="0.01" min="0" value="${priceVal}" oninput="recalcQuoteTotal()"></div>
       </div>${subHTML}`;
   }
 
@@ -8144,6 +8190,22 @@ function renderQuoteBuilder() {
       <div class="quote-section-label">Build Configuration</div>
       ${lineItemsHTML}
 
+      <div class="quote-build-svc">
+        <div class="quote-build-svc-header"><i class="fas fa-tools"></i><span>Build Services</span></div>
+        <div class="quote-build-svc-row">
+          <div class="item-check ${(q.buildService || {}).included ? 'checked' : ''}" onclick="event.stopPropagation();this.classList.toggle('checked');recalcQuoteTotal();" id="qli_chk_buildService"><i class="fas fa-check"></i></div>
+          <span class="svc-label">Customer requires professional build &amp; assembly services</span>
+          <div class="svc-price"><input type="number" id="qli_price_buildService" placeholder="0.00" step="0.01" min="0" value="${(q.buildService || {}).price != null ? (q.buildService || {}).price : ''}" oninput="recalcQuoteTotal()"></div>
+        </div>
+      </div>
+
+      <div class="quote-totals-bar" id="quoteTotalsBar">
+        <div class="quote-totals-row subtotal"><span class="totals-label">Subtotal (Parts &amp; Equipment)</span><span class="totals-value" id="quoteSubtotal">$0.00</span></div>
+        <div class="quote-totals-row subtotal" id="quoteBuildRow" style="display:none;"><span class="totals-label">Build Services</span><span class="totals-value" id="quoteBuildTotal">$0.00</span></div>
+        <div class="quote-totals-row grand-total"><span class="totals-label">Total</span><span class="totals-value" id="quoteGrandTotal">$0.00</span></div>
+        <div class="quote-tax-note">* Sales tax and shipping charges not included</div>
+      </div>
+
       <div class="quote-section-label">Notes</div>
       <textarea id="q_notes" style="width:100%;min-height:80px;padding:10px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.95rem;font-family:'Inter',sans-serif;resize:vertical;" placeholder="Additional notes, special requests, etc...">${notesVal}</textarea>
 
@@ -8179,6 +8241,41 @@ function renderQuoteBuilder() {
     /* Start real-time message listener for admin Q&A */
     setupAdminMessageListener(editingQuoteId);
   }
+
+  /* Calculate initial totals */
+  recalcQuoteTotal();
+}
+
+/* ── Recalculate quote total ── */
+function recalcQuoteTotal() {
+  let subtotal = 0;
+  quoteLineItems.forEach(li => {
+    const chkEl = document.getElementById('qli_chk_' + li.key);
+    const priceEl = document.getElementById('qli_price_' + li.key);
+    if (chkEl && chkEl.classList.contains('checked') && priceEl && priceEl.value) {
+      subtotal += parseFloat(priceEl.value) || 0;
+    }
+  });
+
+  const buildChk = document.getElementById('qli_chk_buildService');
+  const buildPriceEl = document.getElementById('qli_price_buildService');
+  let buildTotal = 0;
+  const buildIncluded = buildChk && buildChk.classList.contains('checked');
+  if (buildIncluded && buildPriceEl && buildPriceEl.value) {
+    buildTotal = parseFloat(buildPriceEl.value) || 0;
+  }
+
+  const fmt = n => n.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+
+  const subEl = document.getElementById('quoteSubtotal');
+  const buildRowEl = document.getElementById('quoteBuildRow');
+  const buildTotalEl = document.getElementById('quoteBuildTotal');
+  const grandEl = document.getElementById('quoteGrandTotal');
+
+  if (subEl) subEl.textContent = fmt(subtotal);
+  if (buildRowEl) buildRowEl.style.display = buildIncluded ? 'flex' : 'none';
+  if (buildTotalEl) buildTotalEl.textContent = fmt(buildTotal);
+  if (grandEl) grandEl.textContent = fmt(subtotal + buildTotal);
 }
 
 /* ── Save quote ── */
@@ -8213,13 +8310,23 @@ function saveQuote() {
       if (yesEl && yesEl.classList.contains('checked')) value = 'yes';
       else if (noEl && noEl.classList.contains('checked')) value = 'no';
     }
-    const entry = { included, value };
+    const priceEl = document.getElementById('qli_price_' + li.key);
+    const price = priceEl && priceEl.value ? parseFloat(priceEl.value) : null;
+    const entry = { included, value, price };
     if (li.sub) {
       const subEl = document.getElementById('qli_sub_' + li.sub.key);
       entry.subValues = { [li.sub.key]: subEl ? subEl.classList.contains('checked') : false };
     }
     payload.items[li.key] = entry;
   });
+
+  /* Build service */
+  const buildChk = document.getElementById('qli_chk_buildService');
+  const buildPriceEl = document.getElementById('qli_price_buildService');
+  payload.buildService = {
+    included: buildChk ? buildChk.classList.contains('checked') : false,
+    price: buildPriceEl && buildPriceEl.value ? parseFloat(buildPriceEl.value) : null
+  };
 
   if (editingQuoteId === 'new') {
     payload.createdAt = new Date().toISOString();
@@ -8570,7 +8677,9 @@ function renderPublicQuote(container, q) {
   else if (q.status === 'withdrawn') statusBanner = '<div class="pq-status-banner withdrawn"><i class="fas fa-ban"></i> This quote has been withdrawn</div>';
 
   /* Build grouped items */
+  const fmtPrice = n => n != null && n > 0 ? n.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
   let groupsHTML = '';
+  let pqSubtotal = 0;
   quoteItemGroups.forEach(g => {
     const groupItems = g.items.map(li => {
       const item = items[li.key] || {};
@@ -8581,6 +8690,9 @@ function renderPublicQuote(container, q) {
       if (li.type === 'dropdown' || li.type === 'text') valueStr = item.value || '';
       else if (li.type === 'yesno') valueStr = item.value === 'yes' ? 'Yes' : item.value === 'no' ? 'No' : '';
 
+      const priceStr = included && item.price ? fmtPrice(item.price) : '';
+      if (included && item.price) pqSubtotal += item.price;
+
       let subStr = '';
       if (li.sub && item.subValues?.[li.sub.key]) {
         subStr = `<div class="pq-item-sub"><i class="fas fa-check" style="color:#10b981;margin-right:6px;"></i>${li.sub.label}</div>`;
@@ -8589,6 +8701,7 @@ function renderPublicQuote(container, q) {
         <span class="pq-item-check${checkClass}">${checkIcon}</span>
         <span class="pq-item-label">${li.label}</span>
         <span class="pq-item-value">${valueStr}</span>
+        ${priceStr ? `<span class="pq-price-col">${priceStr}</span>` : ''}
       </div>${subStr}`;
     }).join('');
 
@@ -8608,11 +8721,36 @@ function renderPublicQuote(container, q) {
         let valueStr = '';
         if (li.type === 'dropdown' || li.type === 'text') valueStr = item.value || '';
         else if (li.type === 'yesno') valueStr = item.value === 'yes' ? 'Yes' : item.value === 'no' ? 'No' : '';
-        return `<div class="pq-item-row"><span class="pq-item-check${checkClass}">${checkIcon}</span><span class="pq-item-label">${li.label}</span><span class="pq-item-value">${valueStr}</span></div>`;
+        const priceStr = item.included && item.price ? fmtPrice(item.price) : '';
+        return `<div class="pq-item-row"><span class="pq-item-check${checkClass}">${checkIcon}</span><span class="pq-item-label">${li.label}</span><span class="pq-item-value">${valueStr}</span>${priceStr ? `<span class="pq-price-col">${priceStr}</span>` : ''}</div>`;
       }).join('');
       groupsHTML += `<div class="pq-section-title"><i class="fas ${g.icon}"></i> ${g.group}</div>${groupItems}`;
     });
   }
+
+  /* Build service & totals */
+  const buildSvc = q.buildService || {};
+  const buildIncluded = buildSvc.included;
+  const buildPrice = buildSvc.price || 0;
+  if (buildIncluded) {
+    groupsHTML += `<div class="pq-section-title"><i class="fas fa-tools"></i> Build Services</div>
+      <div class="pq-item-row">
+        <span class="pq-item-check"><i class="fas fa-check-circle"></i></span>
+        <span class="pq-item-label">Professional Build &amp; Assembly</span>
+        <span class="pq-item-value"></span>
+        ${buildPrice ? `<span class="pq-price-col">${fmtPrice(buildPrice)}</span>` : ''}
+      </div>`;
+  }
+
+  const grandTotal = pqSubtotal + (buildIncluded ? buildPrice : 0);
+  const hasAnyPrice = pqSubtotal > 0 || (buildIncluded && buildPrice > 0);
+  const totalsHTML = hasAnyPrice ? `
+    <div class="pq-totals-card">
+      <div class="pq-totals-row"><span>Parts &amp; Equipment</span><span style="font-weight:700;">${fmtPrice(pqSubtotal)}</span></div>
+      ${buildIncluded && buildPrice ? `<div class="pq-totals-row"><span>Build Services</span><span style="font-weight:700;">${fmtPrice(buildPrice)}</span></div>` : ''}
+      <div class="pq-totals-row grand"><span>Total</span><span>${fmtPrice(grandTotal)}</span></div>
+      <div class="pq-tax-note">* Sales tax and shipping charges not included</div>
+    </div>` : '';
 
   const actions = isActionable ? `
     <div class="pq-actions" id="pqActions">
@@ -8649,6 +8787,7 @@ function renderPublicQuote(container, q) {
         ${groupsHTML}
         ${q.notes ? `<div class="pq-section-title"><i class="fas fa-sticky-note"></i> Notes</div><p style="font-size:0.95rem;color:#475569;line-height:1.6;">${q.notes}</p>` : ''}
       </div>
+      ${totalsHTML}
       ${actions}
       <div class="pq-qa-card">
         <div class="pq-qa-title"><i class="fas fa-comments"></i> Questions &amp; Messages</div>
