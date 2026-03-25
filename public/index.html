@@ -2729,13 +2729,32 @@
   /* Send Quote Modal */
   .send-quote-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; }
   .send-quote-overlay.open { display: flex; }
-  .send-quote-modal { background: var(--bg-card); border-radius: var(--radius); padding: 28px; max-width: 540px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 40px rgba(0,0,0,0.3); }
-  .send-quote-modal h3 { margin-bottom: 16px; font-size: 1.2rem; }
-  .send-quote-link-box { display: flex; gap: 8px; margin: 12px 0; }
-  .send-quote-link-box input { flex: 1; padding: 10px 12px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.88rem; font-family: monospace; }
-  .send-quote-link-box button { padding: 10px 16px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm); cursor: pointer; font-weight: 600; white-space: nowrap; }
-  .send-quote-actions { display: flex; gap: 10px; margin-top: 18px; justify-content: flex-end; }
-  .send-quote-actions button { padding: 10px 22px; border-radius: var(--radius-sm); font-weight: 600; cursor: pointer; border: none; display: flex; align-items: center; gap: 6px; font-size: 0.95rem; }
+  .send-quote-modal { background: var(--bg-card); border-radius: var(--radius); padding: 0; max-width: 620px; width: 92%; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 40px rgba(0,0,0,0.3); }
+  .sqm-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .sqm-header h3 { font-size: 1.15rem; margin: 0; display: flex; align-items: center; gap: 8px; }
+  .sqm-header .close-btn { background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+  .sqm-header .close-btn:hover { background: var(--bg-secondary); color: var(--text-primary); }
+  .sqm-body { padding: 20px 24px; }
+  .sqm-field { margin-bottom: 14px; }
+  .sqm-field label { font-size: 0.82rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.3px; display: block; margin-bottom: 5px; }
+  .sqm-field input, .sqm-field textarea { width: 100%; padding: 10px 12px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.93rem; font-family: 'Inter', sans-serif; }
+  .sqm-field textarea { min-height: 160px; resize: vertical; line-height: 1.6; }
+  .sqm-field input:focus, .sqm-field textarea:focus { border-color: var(--accent); outline: none; }
+  .sqm-link-row { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; background: var(--bg-secondary); padding: 10px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+  .sqm-link-row input { flex: 1; background: transparent; border: none; color: var(--text-primary); font-size: 0.85rem; font-family: monospace; padding: 0; }
+  .sqm-link-row input:focus { outline: none; }
+  .sqm-link-row button { padding: 6px 14px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm); cursor: pointer; font-weight: 600; font-size: 0.82rem; white-space: nowrap; }
+  .sqm-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; align-items: center; }
+  .sqm-footer button { padding: 10px 24px; border-radius: var(--radius-sm); font-weight: 600; cursor: pointer; border: none; display: flex; align-items: center; gap: 6px; font-size: 0.95rem; transition: all 0.2s; }
+  .sqm-footer .btn-cancel { background: var(--bg-secondary); color: var(--text-secondary); border: 1px solid var(--border) !important; }
+  .sqm-footer .btn-send { background: #3b82f6; color: #fff; }
+  .sqm-footer .btn-send:hover { background: #2563eb; }
+  .sqm-footer .btn-send:disabled { opacity: 0.5; cursor: not-allowed; }
+  .sqm-status { font-size: 0.85rem; margin-right: auto; display: flex; align-items: center; gap: 6px; }
+  .sqm-status.success { color: #10b981; }
+  .sqm-status.error { color: #ef4444; }
+  .sqm-status.sending { color: var(--text-muted); }
+  .sqm-divider { border: none; border-top: 1px dashed var(--border); margin: 14px 0; }
 
   /* ── Public Quote View ── */
   .pq-page { min-height: 100vh; background: #f8fafc; font-family: 'Inter', -apple-system, sans-serif; }
@@ -2826,6 +2845,8 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     // VPS SOP Portal — Firestore (for assets)
     const firebaseConfig = {
@@ -2839,6 +2860,15 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     const storage = firebase.storage();
+
+    /* ── EmailJS Configuration ── */
+    const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';     // Replace with your EmailJS public key
+    const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';     // Replace with your EmailJS service ID
+    const EMAILJS_QUOTE_TEMPLATE = 'YOUR_TEMPLATE_ID'; // Template for sending quotes
+    const EMAILJS_NOTIFY_TEMPLATE = 'YOUR_NOTIFY_TEMPLATE_ID'; // Template for question notifications
+    if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+    }
 
     // SRP Event Calendar — Realtime Database (for shared calendar)
     const srpFirebaseConfig = {
@@ -2976,19 +3006,36 @@
 <!-- ═══ Send Quote Modal ═══ -->
 <div class="send-quote-overlay" id="sendQuoteOverlay" onclick="if(event.target===this)closeSendQuoteModal()">
   <div class="send-quote-modal">
-    <h3><i class="fas fa-paper-plane" style="margin-right:8px;color:var(--accent);"></i>Send Quote</h3>
-    <div class="form-group" style="margin-bottom:12px;">
-      <label style="font-size:0.85rem;font-weight:600;color:var(--text-secondary);margin-bottom:4px;display:block;">Recipient Email</label>
-      <input type="email" id="sendQuoteEmail" placeholder="customer@example.com" style="width:100%;padding:10px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.95rem;">
+    <div class="sqm-header">
+      <h3><i class="fas fa-paper-plane" style="color:#3b82f6;"></i> Send Quote</h3>
+      <button class="close-btn" onclick="closeSendQuoteModal()"><i class="fas fa-times"></i></button>
     </div>
-    <label style="font-size:0.85rem;font-weight:600;color:var(--text-secondary);margin-bottom:4px;display:block;">Share Link</label>
-    <div class="send-quote-link-box">
-      <input type="text" id="sendQuoteLinkDisplay" readonly>
-      <button onclick="copyQuoteLink()"><i class="fas fa-copy"></i> Copy</button>
+    <div class="sqm-body">
+      <div class="sqm-field">
+        <label>To</label>
+        <input type="email" id="sendQuoteEmail" placeholder="customer@example.com">
+      </div>
+      <div class="sqm-field">
+        <label>Subject</label>
+        <input type="text" id="sendQuoteSubject" value="Your Simulator Build Quote from Velocity Pro Sims">
+      </div>
+      <div class="sqm-field">
+        <label>Message</label>
+        <textarea id="sendQuoteBody"></textarea>
+      </div>
+      <hr class="sqm-divider">
+      <div class="sqm-field">
+        <label>Quote Link (auto-included in email)</label>
+      </div>
+      <div class="sqm-link-row">
+        <input type="text" id="sendQuoteLinkDisplay" readonly>
+        <button onclick="copyQuoteLink()"><i class="fas fa-copy"></i> Copy</button>
+      </div>
     </div>
-    <div class="send-quote-actions">
-      <button style="background:var(--bg-secondary);color:var(--text-secondary);border:1px solid var(--border) !important;" onclick="closeSendQuoteModal()">Cancel</button>
-      <button style="background:var(--accent);color:#fff;" onclick="executeSendQuote()"><i class="fas fa-paper-plane"></i> Open Email Client</button>
+    <div class="sqm-footer">
+      <div class="sqm-status" id="sendQuoteStatus"></div>
+      <button class="btn-cancel" onclick="closeSendQuoteModal()">Cancel</button>
+      <button class="btn-send" id="sendQuoteBtn" onclick="executeSendQuote()"><i class="fas fa-paper-plane"></i> Send Email</button>
     </div>
   </div>
 </div>
@@ -8388,8 +8435,15 @@ function openSendQuoteModal(quoteId) {
   }
 
   const url = getQuotePublicURL(quoteId, token);
+  const name = q.firstName || 'there';
+
   document.getElementById('sendQuoteEmail').value = q.email || '';
   document.getElementById('sendQuoteLinkDisplay').value = url;
+  document.getElementById('sendQuoteSubject').value = 'Your Simulator Build Quote from Velocity Pro Sims';
+  document.getElementById('sendQuoteBody').value =
+    `Hi ${name},\n\nThank you for your interest in a custom simulator build from Velocity Pro Sims!\n\nWe've put together a quote for you. Click the link below to review your build configuration:\n\n${url}\n\nFrom there you can accept or decline the quote directly. If you have any questions, don't hesitate to reach out.\n\nBest regards,\nVelocity Pro Sims\nwww.velocityprosims.com`;
+  document.getElementById('sendQuoteStatus').innerHTML = '';
+  document.getElementById('sendQuoteBtn').disabled = false;
   document.getElementById('sendQuoteOverlay').classList.add('open');
 }
 
@@ -8407,41 +8461,102 @@ function copyQuoteLink() {
   });
 }
 
-function executeSendQuote() {
+async function executeSendQuote() {
   if (!sendingQuoteId) return;
   const q = quotesData.find(x => x._id === sendingQuoteId);
   if (!q) return;
 
   const email = document.getElementById('sendQuoteEmail').value.trim();
-  const url = document.getElementById('sendQuoteLinkDisplay').value;
-  const name = q.firstName || 'there';
+  const subject = document.getElementById('sendQuoteSubject').value.trim();
+  const message = document.getElementById('sendQuoteBody').value.trim();
+  const statusEl = document.getElementById('sendQuoteStatus');
+  const sendBtn = document.getElementById('sendQuoteBtn');
 
-  // Update status to sent
+  if (!email) { alert('Please enter a recipient email address.'); return; }
+
+  // Show sending state
+  sendBtn.disabled = true;
+  sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+  statusEl.className = 'sqm-status sending';
+  statusEl.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Sending email...';
+
+  // Update Firestore status first
   const updates = { status: 'sent', sentAt: new Date().toISOString() };
   if (!q.publicToken) updates.publicToken = generatePublicToken();
-  db.collection('quotes').doc(sendingQuoteId).update(updates);
+  await db.collection('quotes').doc(sendingQuoteId).update(updates);
+  addQuoteActivity(sendingQuoteId, { type: 'sent', email });
 
-  // Log activity
-  addQuoteActivity(sendingQuoteId, { type: 'sent', email: email || 'N/A' });
+  // Update local data
+  q.status = 'sent';
+  q.sentAt = updates.sentAt;
 
-  // Build mailto
-  const subject = encodeURIComponent('Your Simulator Build Quote from Velocity Pro Sims');
-  const body = encodeURIComponent(
-    `Hi ${name},\n\nThank you for your interest in a custom simulator build from Velocity Pro Sims!\n\nWe've put together a quote for you. Click the link below to review your build configuration:\n\n${url}\n\nFrom there you can accept or decline the quote directly. If you have any questions, don't hesitate to reach out.\n\nBest regards,\nVelocity Pro Sims\nwww.velocityprosims.com`
-  );
+  // Try EmailJS first
+  const emailjsConfigured = typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY';
+  let emailSent = false;
 
-  window.open(`mailto:${email}?subject=${subject}&body=${body}`, '_blank');
-  closeSendQuoteModal();
+  if (emailjsConfigured) {
+    try {
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_QUOTE_TEMPLATE, {
+        to_email: email,
+        subject: subject,
+        message: message,
+        from_name: 'Velocity Pro Sims',
+        reply_to: 'sales@velocityprosims.com',
+      });
+      emailSent = true;
+    } catch (err) {
+      console.error('EmailJS error:', err);
+    }
+  }
 
-  // Update local data immediately so UI reflects changes
-  if (q) { q.status = 'sent'; q.sentAt = updates.sentAt; }
+  if (emailSent) {
+    statusEl.className = 'sqm-status success';
+    statusEl.innerHTML = '<i class="fas fa-check-circle"></i> Email sent successfully!';
+    sendBtn.innerHTML = '<i class="fas fa-check"></i> Sent!';
 
-  // Refresh view after a short delay to let Firestore sync
-  const refreshId = sendingQuoteId;
-  setTimeout(() => {
-    if (editingQuoteId === refreshId || editingQuoteId) renderQuoteBuilder();
-    else renderQuotingCategory();
-  }, 600);
+    // Auto-close after 2 seconds
+    setTimeout(() => {
+      closeSendQuoteModal();
+      if (editingQuoteId) renderQuoteBuilder();
+      else renderQuotingCategory();
+    }, 2000);
+  } else {
+    // Fallback: save email to Firestore for manual sending, and log it as sent
+    await db.collection('quotes').doc(sendingQuoteId).collection('emails').add({
+      to: email,
+      subject: subject,
+      body: message,
+      timestamp: new Date().toISOString(),
+      status: emailjsConfigured ? 'emailjs_failed' : 'pending_setup'
+    });
+
+    statusEl.className = 'sqm-status success';
+    statusEl.innerHTML = '<i class="fas fa-check-circle"></i> Quote marked as sent! Link is ready to share.';
+    sendBtn.innerHTML = '<i class="fas fa-check"></i> Done';
+
+    if (!emailjsConfigured) {
+      statusEl.innerHTML += '<br><span style="font-size:0.78rem;color:var(--text-muted);">Set up EmailJS for automatic email delivery.</span>';
+    }
+
+    setTimeout(() => {
+      closeSendQuoteModal();
+      if (editingQuoteId) renderQuoteBuilder();
+      else renderQuotingCategory();
+    }, 2500);
+  }
+}
+
+/* ── Send email notification (used by Q&A and other features) ── */
+async function sendEmailNotification(templateId, templateParams) {
+  const emailjsConfigured = typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY';
+  if (!emailjsConfigured) return false;
+  try {
+    await emailjs.send(EMAILJS_SERVICE_ID, templateId, templateParams);
+    return true;
+  } catch (err) {
+    console.error('EmailJS notification error:', err);
+    return false;
+  }
 }
 
 /* ── Withdraw Quote ── */
@@ -8539,18 +8654,14 @@ async function sendPublicMessage(quoteId, customerName) {
     addQuoteActivity(quoteId, { type: 'question', text: text.substring(0, 80) });
     textarea.value = '';
 
-    /* Send email notification via mailto fallback — open hidden iframe to trigger */
-    try {
-      const subject = encodeURIComponent('New Question on Quote — ' + customerName);
-      const body = encodeURIComponent('A customer has posted a question on their quote.\n\nFrom: ' + customerName + '\nMessage: ' + text + '\n\nView and reply in your portal.');
-      const mailLink = 'mailto:sales@velocityprosims.com?subject=' + subject + '&body=' + body;
-      const a = document.createElement('a');
-      a.href = mailLink;
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(() => a.remove(), 100);
-    } catch (mailErr) { /* silent */ }
+    /* Send email notification via EmailJS */
+    sendEmailNotification(EMAILJS_NOTIFY_TEMPLATE, {
+      to_email: 'sales@velocityprosims.com',
+      subject: 'New Question on Quote — ' + customerName,
+      message: 'A customer has posted a question on their quote.\n\nFrom: ' + customerName + '\nMessage: ' + text + '\n\nView and reply in your portal.',
+      from_name: customerName,
+      reply_to: 'sales@velocityprosims.com',
+    });
   } catch (err) {
     console.error('Error sending message:', err);
     alert('Failed to send message. Please try again.');

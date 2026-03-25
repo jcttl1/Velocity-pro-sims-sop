@@ -30,6 +30,9 @@ service cloud.firestore {
       match /messages/{messageId} {
         allow read, write: if true;
       }
+      match /emails/{emailId} {
+        allow read, write: if true;
+      }
     }
   }
 }
