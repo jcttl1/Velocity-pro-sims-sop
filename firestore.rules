@@ -22,5 +22,14 @@ service cloud.firestore {
     match /crmMeta/{document=**} {
       allow read, write: if true;
     }
+    match /quotes/{quoteId} {
+      allow read, write: if true;
+      match /activity/{activityId} {
+        allow read, write: if true;
+      }
+      match /messages/{messageId} {
+        allow read, write: if true;
+      }
+    }
   }
 }

@@ -2610,6 +2610,180 @@
   #modalBody .sop-img-row img { flex: 1 1 45%; min-width: 200px; max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,0.12); }
   #modalBody .sop-img-caption { text-align: center; font-size: 0.88rem; color: var(--text-muted); margin-top: -8px; margin-bottom: 12px; font-style: italic; }
 
+  /* ── Quoting Module ── */
+  .quote-list-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; margin-top: 14px; }
+  .quote-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s; }
+  .quote-card:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+  .quote-card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .quote-card-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.95rem; flex-shrink: 0; }
+  .quote-card-name { font-weight: 700; font-size: 1rem; }
+  .quote-card-company { font-size: 0.85rem; color: var(--text-muted); }
+  .quote-card-date { margin-left: auto; font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; }
+  .quote-card-items { font-size: 0.88rem; color: var(--text-secondary); display: flex; flex-wrap: wrap; gap: 6px; }
+  .quote-card-chip { background: var(--bg-secondary); padding: 3px 10px; border-radius: 20px; font-size: 0.8rem; white-space: nowrap; }
+  .quote-card-chip.included { background: rgba(92,191,42,0.15); color: #5CBF2A; }
+
+  /* Quote Builder Form */
+  .quote-builder { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-top: 14px; }
+  .quote-section-label { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--accent); padding-bottom: 6px; border-bottom: 2px solid var(--border); margin: 20px 0 12px; }
+  .quote-section-label:first-child { margin-top: 0; }
+  .quote-contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .quote-contact-grid .form-group { margin-bottom: 0; }
+  .quote-contact-grid .form-group label { font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; display: block; color: var(--text-secondary); }
+  .quote-contact-grid .form-group input { width: 100%; padding: 9px 12px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.95rem; }
+  .quote-items-list { display: flex; flex-direction: column; gap: 6px; }
+  .quote-line-item { display: grid; grid-template-columns: 28px 1fr auto; align-items: center; gap: 10px; padding: 10px 12px; background: var(--bg-secondary); border-radius: var(--radius-sm); border: 1px solid transparent; transition: border-color 0.2s; }
+  .quote-line-item:hover { border-color: var(--border); }
+  .quote-line-item .item-check { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; background: var(--bg-input); }
+  .quote-line-item .item-check.checked { background: var(--green); border-color: var(--green); color: #fff; }
+  .quote-line-item .item-check i { font-size: 0.7rem; opacity: 0; transition: opacity 0.2s; }
+  .quote-line-item .item-check.checked i { opacity: 1; }
+  .quote-line-item .item-label { font-weight: 600; font-size: 0.95rem; }
+  .quote-line-item .item-fields { display: flex; gap: 8px; align-items: center; }
+  .quote-line-item .item-fields select, .quote-line-item .item-fields input { padding: 6px 10px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.88rem; }
+  .quote-line-item .item-fields select { min-width: 180px; }
+  .quote-line-item .item-fields input[type="text"] { min-width: 160px; }
+  .quote-line-sub { margin-left: 38px; padding: 6px 12px; background: var(--bg-tertiary, var(--bg-secondary)); border-radius: var(--radius-sm); font-size: 0.88rem; display: flex; align-items: center; gap: 8px; }
+  .quote-actions-bar { display: flex; gap: 10px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); justify-content: flex-end; }
+  .quote-actions-bar button { padding: 10px 22px; border-radius: var(--radius-sm); font-size: 0.95rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+  .quote-btn-save { background: var(--accent); color: #fff; }
+  .quote-btn-save:hover { background: #4f8cff; }
+  .quote-btn-cancel { background: var(--bg-secondary); color: var(--text-secondary); border: 1px solid var(--border) !important; }
+  .quote-btn-cancel:hover { background: var(--bg-input); }
+  .quote-btn-delete { background: var(--danger); color: #fff; }
+  .quote-btn-delete:hover { opacity: 0.9; }
+  .quote-empty { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+  .quote-empty i { font-size: 3rem; margin-bottom: 16px; opacity: 0.3; }
+  .quote-empty p { font-size: 1.1rem; font-weight: 600; margin-bottom: 6px; }
+  .quote-empty .sub { font-size: 0.9rem; }
+  .quote-group { margin-bottom: 16px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .quote-group-header { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: var(--bg-secondary); font-weight: 700; font-size: 0.92rem; color: var(--text-primary); border-bottom: 1px solid var(--border); }
+  .quote-group-header i { color: var(--accent); width: 18px; text-align: center; }
+  .quote-group-badge { margin-left: auto; background: var(--green); color: #fff; font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+  .quote-group-items { padding: 4px 6px; }
+  .quote-group-items .quote-line-item { border-radius: 6px; }
+  .quote-group-items .quote-line-sub { margin-left: 38px; }
+  @media (max-width: 600px) { .quote-contact-grid { grid-template-columns: 1fr; } }
+
+  /* Quote Status Badges */
+  .quote-status-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }
+  .quote-status-badge.draft { background: rgba(100,116,139,0.15); color: #64748b; }
+  .quote-status-badge.sent { background: rgba(59,130,246,0.15); color: #3b82f6; }
+  .quote-status-badge.viewed { background: rgba(139,92,246,0.15); color: #8b5cf6; }
+  .quote-status-badge.accepted { background: rgba(16,185,129,0.15); color: #10b981; }
+  .quote-status-badge.declined { background: rgba(239,68,68,0.15); color: #ef4444; }
+  .quote-status-badge.withdrawn { background: rgba(245,158,11,0.15); color: #f59e0b; }
+
+  /* Activity Timeline */
+  .quote-timeline { padding: 12px 0; }
+  .quote-timeline-item { display: flex; gap: 12px; padding: 8px 0; position: relative; }
+  .quote-timeline-item::before { content: ''; position: absolute; left: 15px; top: 32px; bottom: -8px; width: 2px; background: var(--border); }
+  .quote-timeline-item:last-child::before { display: none; }
+  .quote-timeline-dot { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; z-index: 1; }
+  .quote-timeline-dot.sent { background: rgba(59,130,246,0.15); color: #3b82f6; }
+  .quote-timeline-dot.viewed { background: rgba(139,92,246,0.15); color: #8b5cf6; }
+  .quote-timeline-dot.accepted { background: rgba(16,185,129,0.15); color: #10b981; }
+  .quote-timeline-dot.declined { background: rgba(239,68,68,0.15); color: #ef4444; }
+  .quote-timeline-dot.withdrawn { background: rgba(245,158,11,0.15); color: #f59e0b; }
+  .quote-timeline-content { flex: 1; }
+  .quote-timeline-title { font-weight: 600; font-size: 0.92rem; }
+  .quote-timeline-time { font-size: 0.82rem; color: var(--text-muted); }
+  .quote-timeline-feedback { font-size: 0.88rem; color: var(--text-secondary); font-style: italic; margin-top: 4px; padding: 6px 10px; background: var(--bg-secondary); border-radius: 6px; }
+
+  /* Send Quote Modal */
+  .send-quote-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; }
+  .send-quote-overlay.open { display: flex; }
+  .send-quote-modal { background: var(--bg-card); border-radius: var(--radius); padding: 28px; max-width: 540px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 40px rgba(0,0,0,0.3); }
+  .send-quote-modal h3 { margin-bottom: 16px; font-size: 1.2rem; }
+  .send-quote-link-box { display: flex; gap: 8px; margin: 12px 0; }
+  .send-quote-link-box input { flex: 1; padding: 10px 12px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.88rem; font-family: monospace; }
+  .send-quote-link-box button { padding: 10px 16px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm); cursor: pointer; font-weight: 600; white-space: nowrap; }
+  .send-quote-actions { display: flex; gap: 10px; margin-top: 18px; justify-content: flex-end; }
+  .send-quote-actions button { padding: 10px 22px; border-radius: var(--radius-sm); font-weight: 600; cursor: pointer; border: none; display: flex; align-items: center; gap: 6px; font-size: 0.95rem; }
+
+  /* ── Public Quote View ── */
+  .pq-page { min-height: 100vh; background: #f8fafc; font-family: 'Inter', -apple-system, sans-serif; }
+  .pq-header { background: #1a1a2e; padding: 20px 0; }
+  .pq-header-inner { max-width: 720px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
+  .pq-header img { height: 44px; }
+  .pq-header-contact { color: rgba(255,255,255,0.7); font-size: 0.85rem; }
+  .pq-header-contact a { color: #5CBF2A; text-decoration: none; }
+  .pq-body { max-width: 720px; margin: 0 auto; padding: 24px; }
+  .pq-card { background: #fff; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.08); padding: 32px; margin-bottom: 20px; }
+  .pq-title { font-size: 1.6rem; font-weight: 800; color: #1a1a2e; margin-bottom: 4px; }
+  .pq-subtitle { font-size: 0.95rem; color: #64748b; margin-bottom: 20px; }
+  .pq-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; margin-bottom: 20px; }
+  .pq-detail-item .pq-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; }
+  .pq-detail-item .pq-value { font-size: 0.95rem; color: #1a1a2e; font-weight: 500; }
+  .pq-section-title { font-size: 0.88rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #5CBF2A; padding-bottom: 6px; border-bottom: 2px solid #e2e8f0; margin: 20px 0 10px; display: flex; align-items: center; gap: 8px; }
+  .pq-item-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.95rem; }
+  .pq-item-check { color: #10b981; font-size: 0.85rem; width: 20px; }
+  .pq-item-check.empty { color: #cbd5e1; }
+  .pq-item-label { font-weight: 600; color: #334155; flex: 1; }
+  .pq-item-value { color: #64748b; }
+  .pq-item-sub { margin-left: 30px; font-size: 0.88rem; color: #64748b; padding: 4px 0; }
+  .pq-actions { display: flex; gap: 12px; justify-content: center; margin: 28px 0 8px; flex-wrap: wrap; }
+  .pq-btn { padding: 14px 36px; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; border: none; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+  .pq-btn-accept { background: #10b981; color: #fff; }
+  .pq-btn-accept:hover { background: #059669; }
+  .pq-btn-decline { background: #fff; color: #ef4444; border: 2px solid #fecaca; }
+  .pq-btn-decline:hover { background: #fef2f2; }
+  .pq-btn-contact { background: #fff; color: #3b82f6; border: 2px solid #bfdbfe; }
+  .pq-btn-contact:hover { background: #eff6ff; }
+  .pq-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .pq-status-banner { padding: 16px 24px; border-radius: 10px; text-align: center; font-weight: 600; font-size: 1rem; margin-bottom: 20px; }
+  .pq-status-banner.accepted { background: #d1fae5; color: #065f46; }
+  .pq-status-banner.declined { background: #fee2e2; color: #991b1b; }
+  .pq-status-banner.withdrawn { background: #fef3c7; color: #92400e; }
+  .pq-decline-form { margin-top: 16px; }
+  .pq-decline-form textarea { width: 100%; min-height: 80px; padding: 12px; border: 2px solid #fecaca; border-radius: 8px; font-size: 0.95rem; font-family: 'Inter', sans-serif; resize: vertical; }
+  .pq-decline-form button { margin-top: 8px; padding: 10px 24px; background: #ef4444; color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+  .pq-footer { text-align: center; padding: 20px; color: #94a3b8; font-size: 0.82rem; }
+  .pq-footer a { color: #5CBF2A; text-decoration: none; }
+  .pq-loading { text-align: center; padding: 80px 20px; color: #64748b; }
+  .pq-loading i { font-size: 2.5rem; margin-bottom: 16px; opacity: 0.3; }
+  @media (max-width: 600px) { .pq-detail-grid { grid-template-columns: 1fr; } .pq-card { padding: 20px; } .pq-actions { flex-direction: column; } .pq-btn { justify-content: center; } }
+
+  /* ── Quote Q&A / Messages (Public) ── */
+  .pq-qa-card { background: #fff; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.08); padding: 28px 32px; margin-bottom: 20px; }
+  .pq-qa-title { font-size: 1.1rem; font-weight: 700; color: #1a1a2e; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .pq-qa-thread { max-height: 420px; overflow-y: auto; margin-bottom: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .pq-qa-empty { color: #94a3b8; font-size: 0.9rem; text-align: center; padding: 24px 0; }
+  .pq-msg { max-width: 82%; padding: 12px 16px; border-radius: 12px; font-size: 0.93rem; line-height: 1.5; position: relative; }
+  .pq-msg.customer { align-self: flex-end; background: #eff6ff; color: #1e40af; border-bottom-right-radius: 4px; }
+  .pq-msg.admin { align-self: flex-start; background: #f0fdf4; color: #166534; border-bottom-left-radius: 4px; }
+  .pq-msg-meta { font-size: 0.75rem; color: #94a3b8; margin-top: 4px; }
+  .pq-msg-sender { font-weight: 700; font-size: 0.78rem; margin-bottom: 2px; }
+  .pq-msg.customer .pq-msg-sender { color: #3b82f6; }
+  .pq-msg.admin .pq-msg-sender { color: #16a34a; }
+  .pq-qa-input-row { display: flex; gap: 8px; }
+  .pq-qa-input-row textarea { flex: 1; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 0.93rem; font-family: 'Inter', sans-serif; resize: none; min-height: 48px; max-height: 120px; transition: border-color 0.2s; }
+  .pq-qa-input-row textarea:focus { border-color: #5CBF2A; outline: none; }
+  .pq-qa-input-row button { padding: 0 20px; background: #5CBF2A; color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 0.93rem; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .pq-qa-input-row button:hover { background: #4da623; }
+  .pq-qa-input-row button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .pq-msg-new-badge { display: inline-block; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 700; padding: 1px 6px; border-radius: 8px; margin-left: 6px; vertical-align: middle; }
+
+  /* ── Quote Q&A / Messages (Admin) ── */
+  .qa-admin-panel { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; margin-top: 16px; }
+  .qa-admin-title { font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .qa-admin-thread { max-height: 360px; overflow-y: auto; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .qa-admin-empty { color: var(--text-muted); font-size: 0.85rem; text-align: center; padding: 16px 0; }
+  .qa-msg { max-width: 85%; padding: 10px 14px; border-radius: 10px; font-size: 0.9rem; line-height: 1.5; }
+  .qa-msg.customer { align-self: flex-start; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2); }
+  .qa-msg.admin { align-self: flex-end; background: rgba(92,191,42,0.1); border: 1px solid rgba(92,191,42,0.2); }
+  .qa-msg-sender { font-weight: 700; font-size: 0.78rem; margin-bottom: 2px; }
+  .qa-msg.customer .qa-msg-sender { color: #3b82f6; }
+  .qa-msg.admin .qa-msg-sender { color: #5CBF2A; }
+  .qa-msg-body { color: var(--text-primary); }
+  .qa-msg-time { font-size: 0.72rem; color: var(--text-muted); margin-top: 3px; }
+  .qa-reply-row { display: flex; gap: 8px; }
+  .qa-reply-row textarea { flex: 1; padding: 10px 12px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.9rem; font-family: 'Inter', sans-serif; resize: none; min-height: 42px; }
+  .qa-reply-row button { padding: 0 18px; background: #5CBF2A; color: #fff; border: none; border-radius: var(--radius-sm); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .qa-unread-badge { display: inline-block; background: #ef4444; color: #fff; font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 10px; margin-left: 8px; }
+
+  @media (max-width: 600px) { .pq-qa-input-row { flex-direction: column; } .pq-qa-input-row button { justify-content: center; padding: 12px; } }
+
   </style>
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -2759,6 +2933,40 @@
     <div class="contacts-pin-buttons">
       <button class="btn-submit" onclick="submitContactsPin()">Unlock</button>
       <button class="btn-cancel" onclick="closeContactsPin()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Send Quote Modal ═══ -->
+<div class="send-quote-overlay" id="sendQuoteOverlay" onclick="if(event.target===this)closeSendQuoteModal()">
+  <div class="send-quote-modal">
+    <h3><i class="fas fa-paper-plane" style="margin-right:8px;color:var(--accent);"></i>Send Quote</h3>
+    <div class="form-group" style="margin-bottom:12px;">
+      <label style="font-size:0.85rem;font-weight:600;color:var(--text-secondary);margin-bottom:4px;display:block;">Recipient Email</label>
+      <input type="email" id="sendQuoteEmail" placeholder="customer@example.com" style="width:100%;padding:10px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.95rem;">
+    </div>
+    <label style="font-size:0.85rem;font-weight:600;color:var(--text-secondary);margin-bottom:4px;display:block;">Share Link</label>
+    <div class="send-quote-link-box">
+      <input type="text" id="sendQuoteLinkDisplay" readonly>
+      <button onclick="copyQuoteLink()"><i class="fas fa-copy"></i> Copy</button>
+    </div>
+    <div class="send-quote-actions">
+      <button style="background:var(--bg-secondary);color:var(--text-secondary);border:1px solid var(--border) !important;" onclick="closeSendQuoteModal()">Cancel</button>
+      <button style="background:var(--accent);color:#fff;" onclick="executeSendQuote()"><i class="fas fa-paper-plane"></i> Open Email Client</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Quoting PIN Overlay ═══ -->
+<div class="contacts-pin-overlay" id="quotingPinOverlay">
+  <div class="contacts-pin-modal">
+    <h3><i class="fas fa-lock" style="margin-right:8px;"></i>Quoting Access</h3>
+    <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:12px;">Enter PIN to access the quoting module</p>
+    <input type="password" id="quotingPinInput" class="contacts-pin-input" placeholder="Enter PIN" autocomplete="off" maxlength="6" onkeydown="if(event.key==='Enter')submitQuotingPin()">
+    <div class="contacts-pin-error" id="quotingPinError"></div>
+    <div class="contacts-pin-buttons">
+      <button class="btn-submit" onclick="submitQuotingPin()">Unlock</button>
+      <button class="btn-cancel" onclick="closeQuotingPin()">Cancel</button>
     </div>
   </div>
 </div>
@@ -3397,6 +3605,7 @@ const categories = [
   { id: 'events', name: 'Events', icon: 'fa-trophy', color: '#EC4899' },
   { id: 'facility', name: 'Facility Management', icon: 'fa-building', color: '#F59E0B' },
   { id: 'howto', name: 'How To', icon: 'fa-book-open', color: '#F97316' },
+  { id: 'quoting', name: 'Quoting', icon: 'fa-file-invoice-dollar', color: '#F59E0B' },
   { id: 'websites', name: 'Key Websites', icon: 'fa-link', color: '#6366F1' },
   { id: 'assets', name: 'Marketing Assets', icon: 'fa-palette', color: '#E879F9' },
   { id: 'techresources', name: 'Tech Resources', icon: 'fa-microchip', color: '#38BDF8' },
@@ -4137,6 +4346,14 @@ function saveData() {
 
 // ── Init ──
 function init() {
+  /* ── Public quote view mode detection ── */
+  const urlParams = new URLSearchParams(window.location.search);
+  const publicQuoteId = urlParams.get('quote');
+  const publicToken = urlParams.get('token');
+  if (publicQuoteId && publicToken) {
+    return initPublicQuoteView(publicQuoteId, publicToken);
+  }
+
   if (sessionStorage.getItem(AUTH_KEY) === 'true') {
     showApp();
   }
@@ -4256,7 +4473,7 @@ function buildSidebar() {
   existingItems.forEach(el => el.remove());
 
   categories.forEach(cat => {
-    const count = cat.id === 'crm' ? crmCustomers.length : cat.id === 'assets' ? assetsData.length : cat.id === 'calendar' ? (srpEvents.length + vpsEvents.length) : cat.id === 'contacts' ? contactsData.length : sopData.filter(s => s.category === cat.id).length;
+    const count = cat.id === 'crm' ? crmCustomers.length : cat.id === 'assets' ? assetsData.length : cat.id === 'calendar' ? (srpEvents.length + vpsEvents.length) : cat.id === 'contacts' ? contactsData.length : cat.id === 'quoting' ? quotesData.length : sopData.filter(s => s.category === cat.id).length;
     const div = document.createElement('div');
     div.className = 'nav-item' + (currentCategory === cat.id ? ' active' : '');
     div.dataset.cat = cat.id;
@@ -5385,6 +5602,7 @@ function renderCategory(catId) {
   if (catId === 'contacts') return renderContactsCategory();
   if (catId === 'vendors') return renderVendorsCategory();
   if (catId === 'techresources') return renderTechResources();
+  if (catId === 'quoting') return renderQuotingCategory();
 
   const cat = categories.find(c => c.id === catId);
   const sops = sopData.filter(s => s.category === catId);
@@ -7666,6 +7884,816 @@ document.addEventListener('keydown', e => {
     if (key === 't') { calToday(); return; }
   }
 });
+
+// ══════════════════════════════════════════════
+// ── Quoting Module ──
+// ══════════════════════════════════════════════
+const QUOTING_PIN = '1012';
+let quotingUnlocked = false;
+let quotesData = [];
+let editingQuoteId = null;
+let quotesListenerStarted = false;
+
+/* ── Quote line-item definitions ── */
+const quoteItemGroups = [
+  { group: 'Cockpit & Seating', icon: 'fa-chair', items: [
+    { key: 'chassis', label: 'Chassis', type: 'dropdown', options: ['', 'SimLab GT1', 'SimLab P1X', 'Fanatec Clubsport'] },
+    { key: 'seats', label: 'Seats', type: 'text' },
+    { key: 'seatBrackets', label: 'Seat Brackets', type: 'text' },
+    { key: 'seatRails', label: 'Seat Rails', type: 'text' },
+    { key: 'seatHarness', label: 'Seat Harness', type: 'text' },
+    { key: 'activeBelts', label: 'Active Belts', type: 'text' },
+  ]},
+  { group: 'Controls & Input', icon: 'fa-gamepad', items: [
+    { key: 'wheelMotor', label: 'Wheel Motor', type: 'text' },
+    { key: 'steeringWheel', label: 'Steering Wheel', type: 'text' },
+    { key: 'quickRelease', label: 'Quick Release for Steering Wheel', type: 'text' },
+    { key: 'pedals', label: 'Pedals', type: 'text' },
+    { key: 'shifter', label: 'Shifter', type: 'text' },
+    { key: 'handbrake', label: 'Handbrake', type: 'text' },
+    { key: 'buttonBox', label: 'Button Box', type: 'text' },
+    { key: 'streamDeck', label: 'Stream Deck', type: 'checkonly' },
+    { key: 'keyboard', label: 'Keyboard', type: 'checkonly' },
+  ]},
+  { group: 'Display & Technology', icon: 'fa-desktop', items: [
+    { key: 'pc', label: 'PC', type: 'text' },
+    { key: 'screenOption', label: 'Screen Option', type: 'dropdown', options: ['', 'Single Screen', 'Ultrawide 49', 'Triple Screens'], sub: { key: 'vrAddon', label: 'Also add VR?', type: 'checkbox' } },
+    { key: 'iRacingVIP', label: 'iRacing VIP Account', type: 'checkonly' },
+  ]},
+  { group: 'Immersion & Motion', icon: 'fa-wave-square', items: [
+    { key: 'haptics', label: 'Haptics', type: 'text' },
+    { key: 'motion', label: 'Motion', type: 'dropdown', options: ['', 'Vero Motion - Actuators Only', 'Vero Motion - Actuators + Traction Loss'] },
+  ]},
+  { group: 'Power & Protection', icon: 'fa-plug', items: [
+    { key: 'surgeProtectors', label: 'Surge Protectors', type: 'checkonly' },
+    { key: 'apc', label: 'APC', type: 'checkonly' },
+  ]},
+  { group: 'Delivery & Shipping', icon: 'fa-truck', items: [
+    { key: 'deliveryRequired', label: 'Delivery Required?', type: 'yesno' },
+    { key: 'shippingRequired', label: 'Shipping Required?', type: 'yesno' },
+  ]},
+];
+/* Flat list for data operations (save/load/cards) */
+const quoteLineItems = quoteItemGroups.flatMap(g => g.items);
+
+/* ── Firestore listener ── */
+function startQuotesListener() {
+  if (quotesListenerStarted) return;
+  quotesListenerStarted = true;
+  db.collection('quotes').orderBy('createdAt', 'desc').onSnapshot(snap => {
+    quotesData = snap.docs.map(doc => ({ _id: doc.id, ...doc.data() }));
+    buildSidebar();
+    if (currentCategory === 'quoting' && quotingUnlocked) renderQuotingCategory();
+  }, err => {
+    console.error('Quotes listener error:', err);
+  });
+}
+
+/* ── PIN gate ── */
+function openQuotingPin() {
+  document.getElementById('quotingPinOverlay').classList.add('open');
+  document.getElementById('quotingPinInput').value = '';
+  document.getElementById('quotingPinError').textContent = '';
+  setTimeout(() => document.getElementById('quotingPinInput').focus(), 150);
+}
+function closeQuotingPin() {
+  document.getElementById('quotingPinOverlay').classList.remove('open');
+  document.getElementById('quotingPinInput').value = '';
+  showCategory('dashboard');
+}
+function submitQuotingPin() {
+  const pin = document.getElementById('quotingPinInput').value;
+  if (pin === QUOTING_PIN) {
+    quotingUnlocked = true;
+    document.getElementById('quotingPinOverlay').classList.remove('open');
+    startQuotesListener();
+    renderQuotingCategory();
+  } else {
+    document.getElementById('quotingPinError').textContent = 'Incorrect PIN. Try again.';
+    document.getElementById('quotingPinInput').value = '';
+    document.getElementById('quotingPinInput').focus();
+  }
+}
+
+/* ── Main render ── */
+function renderQuotingCategory() {
+  if (!quotingUnlocked) { openQuotingPin(); return; }
+  cleanupMessageListener();
+  startQuotesListener();
+
+  const cat = categories.find(c => c.id === 'quoting');
+  const main = document.getElementById('mainContent');
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  if (editingQuoteId !== null) { renderQuoteBuilder(); return; }
+
+  const cards = quotesData.map(q => {
+    const name = [q.firstName, q.lastName].filter(Boolean).join(' ') || q.companyName || 'Unnamed';
+    const initials = (q.firstName?.[0] || '') + (q.lastName?.[0] || '') || '?';
+    const d = q.createdAt ? new Date(q.createdAt) : null;
+    const dateStr = d ? monthNames[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear() : '';
+    const items = (q.items || {});
+    const included = quoteLineItems.filter(li => items[li.key]?.included).map(li => li.label);
+    const chips = included.slice(0, 6).map(l => `<span class="quote-card-chip included">${l}</span>`).join('');
+    const extra = included.length > 6 ? `<span class="quote-card-chip">+${included.length - 6} more</span>` : '';
+
+    const status = q.status || 'draft';
+    const statusLabel = { draft: 'Draft', sent: 'Sent', viewed: 'Viewed', accepted: 'Accepted', declined: 'Declined', withdrawn: 'Withdrawn' }[status] || status;
+
+    return `<div class="quote-card" onclick="openQuoteForEdit('${q._id}')">
+      <div class="quote-card-top">
+        <div class="quote-card-avatar">${initials.toUpperCase()}</div>
+        <div>
+          <div class="quote-card-name">${name}</div>
+          ${q.companyName && (q.firstName || q.lastName) ? `<div class="quote-card-company">${q.companyName}</div>` : ''}
+        </div>
+        <div style="margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+          <span class="quote-status-badge ${status}">${statusLabel}</span>
+          <span style="font-size:0.8rem;color:var(--text-muted);">${dateStr}</span>
+        </div>
+      </div>
+      <div class="quote-card-items">${chips}${extra}</div>
+    </div>`;
+  }).join('');
+
+  main.innerHTML = `
+    <div class="category-header">
+      <div class="category-header-left">
+        <div class="category-icon-lg" style="background:${cat.color}15; color:${cat.color}">
+          <i class="fas ${cat.icon}"></i>
+        </div>
+        <div>
+          <h2>Simulator Build Quotes</h2>
+          <span class="subtitle">${quotesData.length} quote${quotesData.length !== 1 ? 's' : ''}</span>
+        </div>
+      </div>
+      <div class="crm-actions-row">
+        <button class="crm-btn-primary" onclick="openNewQuote()"><i class="fas fa-plus"></i> New Quote</button>
+      </div>
+    </div>
+    ${quotesData.length ? `<div class="quote-list-grid">${cards}</div>` : `
+      <div class="quote-empty">
+        <i class="fas fa-file-invoice-dollar"></i>
+        <p>No quotes yet</p>
+        <div class="sub">Click "New Quote" to build your first simulator quote.</div>
+      </div>
+    `}
+  `;
+}
+
+/* ── Open new / edit ── */
+function openNewQuote() {
+  editingQuoteId = 'new';
+  renderQuoteBuilder();
+}
+function openQuoteForEdit(id) {
+  editingQuoteId = id;
+  renderQuoteBuilder();
+}
+
+/* ── Quote Builder ── */
+function renderQuoteBuilder() {
+  const main = document.getElementById('mainContent');
+  const cat = categories.find(c => c.id === 'quoting');
+  const isNew = editingQuoteId === 'new';
+  const q = isNew ? {} : quotesData.find(q => q._id === editingQuoteId) || {};
+  const items = q.items || {};
+
+  /* Contact fields */
+  const contactFields = [
+    { key: 'firstName', label: 'First Name', ph: 'John' },
+    { key: 'lastName', label: 'Last Name', ph: 'Doe' },
+    { key: 'companyName', label: 'Company', ph: 'Company name (optional)' },
+    { key: 'email', label: 'Email', ph: 'john@example.com' },
+    { key: 'phone', label: 'Phone', ph: '(555) 123-4567' },
+    { key: 'address', label: 'Address', ph: 'Street, City, State ZIP' },
+  ];
+
+  const contactHTML = contactFields.map(f =>
+    `<div class="form-group"><label>${f.label}</label><input type="text" id="q_${f.key}" placeholder="${f.ph}" value="${(q[f.key] || '').replace(/"/g, '&quot;')}"></div>`
+  ).join('');
+
+  /* Line items — render by group */
+  function renderLineItem(li) {
+    const item = items[li.key] || {};
+    const checked = item.included ? 'checked' : '';
+    let fieldsHTML = '';
+
+    if (li.type === 'dropdown') {
+      const opts = li.options.map(o => `<option value="${o}" ${item.value === o ? 'selected' : ''}>${o || '-- Select --'}</option>`).join('');
+      fieldsHTML = `<select id="qli_val_${li.key}">${opts}</select>`;
+    } else if (li.type === 'text') {
+      fieldsHTML = `<input type="text" id="qli_val_${li.key}" placeholder="Details..." value="${(item.value || '').replace(/"/g, '&quot;')}">`;
+    } else if (li.type === 'yesno') {
+      fieldsHTML = `
+        <div class="item-check ${item.value === 'yes' ? 'checked' : ''}" onclick="event.stopPropagation();this.classList.toggle('checked');this.nextElementSibling.classList.remove('checked');" id="qli_yes_${li.key}" style="width:auto;padding:4px 10px;border-radius:6px;gap:4px;"><i class="fas fa-check"></i> <span style="font-size:0.82rem;font-weight:600;">Yes</span></div>
+        <div class="item-check ${item.value === 'no' ? 'checked' : ''}" onclick="event.stopPropagation();this.classList.toggle('checked');this.previousElementSibling.classList.remove('checked');" id="qli_no_${li.key}" style="width:auto;padding:4px 10px;border-radius:6px;gap:4px;"><i class="fas fa-check"></i> <span style="font-size:0.82rem;font-weight:600;">No</span></div>`;
+    }
+
+    let subHTML = '';
+    if (li.sub) {
+      const subChecked = item.subValues?.[li.sub.key] ? 'checked' : '';
+      subHTML = `<div class="quote-line-sub">
+        <div class="item-check ${subChecked}" onclick="event.stopPropagation();this.classList.toggle('checked');" id="qli_sub_${li.sub.key}"><i class="fas fa-check"></i></div>
+        <span>${li.sub.label}</span>
+      </div>`;
+    }
+
+    return `
+      <div class="quote-line-item">
+        <div class="item-check ${checked}" onclick="event.stopPropagation();this.classList.toggle('checked');" id="qli_chk_${li.key}"><i class="fas fa-check"></i></div>
+        <span class="item-label">${li.label}</span>
+        <div class="item-fields">${fieldsHTML}</div>
+      </div>${subHTML}`;
+  }
+
+  const lineItemsHTML = quoteItemGroups.map(g => {
+    const groupItems = g.items.map(renderLineItem).join('');
+    const includedCount = g.items.filter(li => (items[li.key] || {}).included).length;
+    return `
+      <div class="quote-group">
+        <div class="quote-group-header">
+          <i class="fas ${g.icon}"></i>
+          <span>${g.group}</span>
+          ${includedCount > 0 ? `<span class="quote-group-badge">${includedCount}/${g.items.length}</span>` : ''}
+        </div>
+        <div class="quote-group-items">${groupItems}</div>
+      </div>`;
+  }).join('');
+
+  /* Notes */
+  const notesVal = (q.notes || '').replace(/"/g, '&quot;');
+
+  main.innerHTML = `
+    <div class="category-header">
+      <div class="category-header-left">
+        <div class="category-icon-lg" style="background:${cat.color}15; color:${cat.color}">
+          <i class="fas ${cat.icon}"></i>
+        </div>
+        <div>
+          <h2>${isNew ? 'New Quote' : 'Edit Quote'}</h2>
+          <span class="subtitle">Simulator build configuration</span>
+        </div>
+      </div>
+      <button class="crm-btn-secondary" onclick="editingQuoteId=null;renderQuotingCategory();"><i class="fas fa-arrow-left"></i> Back to Quotes</button>
+    </div>
+    <div class="quote-builder">
+      <div class="quote-section-label">Customer Information</div>
+      <div class="quote-contact-grid">${contactHTML}</div>
+
+      <div class="quote-section-label">Build Configuration</div>
+      ${lineItemsHTML}
+
+      <div class="quote-section-label">Notes</div>
+      <textarea id="q_notes" style="width:100%;min-height:80px;padding:10px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.95rem;font-family:'Inter',sans-serif;resize:vertical;" placeholder="Additional notes, special requests, etc...">${notesVal}</textarea>
+
+      <div class="quote-actions-bar">
+        ${!isNew ? `<button class="quote-btn-delete" onclick="deleteQuote('${editingQuoteId}')"><i class="fas fa-trash"></i> Delete</button>` : ''}
+        ${!isNew && (!q.status || q.status === 'draft') ? `<button style="background:#3b82f6;color:#fff;" onclick="saveQuote().then?saveQuote():null;openSendQuoteModal('${editingQuoteId}')"><i class="fas fa-paper-plane"></i> Send Quote</button>` : ''}
+        ${!isNew && (q.status === 'sent' || q.status === 'viewed') ? `<button style="background:#3b82f6;color:#fff;" onclick="resendQuote('${editingQuoteId}')"><i class="fas fa-paper-plane"></i> Resend</button>` : ''}
+        ${!isNew && q.status && q.status !== 'draft' && q.status !== 'withdrawn' ? `<button style="background:#f59e0b;color:#fff;" onclick="withdrawQuote('${editingQuoteId}')"><i class="fas fa-ban"></i> Withdraw</button>` : ''}
+        <button class="quote-btn-cancel" onclick="editingQuoteId=null;renderQuotingCategory();">Cancel</button>
+        <button class="quote-btn-save" onclick="saveQuote()"><i class="fas fa-save"></i> ${isNew ? 'Create Quote' : 'Save Changes'}</button>
+      </div>
+
+      ${!isNew ? `<div class="quote-section-label" style="margin-top:24px;"><i class="fas fa-clock-rotate-left" style="margin-right:4px;"></i> Activity &amp; Status${q.status ? ' &mdash; <span class="quote-status-badge ' + (q.status || 'draft') + '">' + (q.status || 'draft') + '</span>' : ''}</div>
+      <div class="quote-timeline" id="quoteTimeline"><div style="color:var(--text-muted);font-size:0.88rem;">Loading activity...</div></div>` : ''}
+
+      ${!isNew ? `<div class="quote-section-label" style="margin-top:24px;"><i class="fas fa-comments" style="margin-right:4px;"></i> Customer Q&amp;A <span id="qaUnreadCount"></span></div>
+      <div class="qa-admin-panel">
+        <div class="qa-admin-thread" id="qaAdminThread"><div class="qa-admin-empty">Loading messages...</div></div>
+        <div class="qa-reply-row">
+          <textarea id="qaAdminReplyInput" placeholder="Type a reply to the customer..." rows="2"></textarea>
+          <button id="qaAdminSendBtn" onclick="sendAdminReply('${editingQuoteId}')"><i class="fas fa-reply"></i> Reply</button>
+        </div>
+      </div>` : ''}
+    </div>
+  `;
+
+  /* Load and render activity timeline */
+  if (!isNew) {
+    loadQuoteActivity(editingQuoteId).then(activities => {
+      const el = document.getElementById('quoteTimeline');
+      if (el) el.innerHTML = renderActivityTimeline(activities);
+    });
+    /* Start real-time message listener for admin Q&A */
+    setupAdminMessageListener(editingQuoteId);
+  }
+}
+
+/* ── Save quote ── */
+function saveQuote() {
+  const val = id => { const e = document.getElementById(id); return e ? e.value.trim() : ''; };
+  const payload = {
+    firstName: val('q_firstName'),
+    lastName: val('q_lastName'),
+    companyName: val('q_companyName'),
+    email: val('q_email'),
+    phone: val('q_phone'),
+    address: val('q_address'),
+    notes: val('q_notes'),
+    items: {},
+    updatedAt: new Date().toISOString(),
+  };
+
+  if (!payload.firstName && !payload.lastName && !payload.companyName) {
+    alert('Please enter at least a name or company.');
+    return;
+  }
+
+  quoteLineItems.forEach(li => {
+    const chkEl = document.getElementById('qli_chk_' + li.key);
+    const included = chkEl ? chkEl.classList.contains('checked') : false;
+    let value = '';
+    if (li.type === 'dropdown' || li.type === 'text') {
+      value = val('qli_val_' + li.key);
+    } else if (li.type === 'yesno') {
+      const yesEl = document.getElementById('qli_yes_' + li.key);
+      const noEl = document.getElementById('qli_no_' + li.key);
+      if (yesEl && yesEl.classList.contains('checked')) value = 'yes';
+      else if (noEl && noEl.classList.contains('checked')) value = 'no';
+    }
+    const entry = { included, value };
+    if (li.sub) {
+      const subEl = document.getElementById('qli_sub_' + li.sub.key);
+      entry.subValues = { [li.sub.key]: subEl ? subEl.classList.contains('checked') : false };
+    }
+    payload.items[li.key] = entry;
+  });
+
+  if (editingQuoteId === 'new') {
+    payload.createdAt = new Date().toISOString();
+    db.collection('quotes').add(payload).then(() => {
+      editingQuoteId = null;
+      renderQuotingCategory();
+    }).catch(err => { console.error('Error creating quote:', err); alert('Failed to save quote.'); });
+  } else {
+    db.collection('quotes').doc(editingQuoteId).update(payload).then(() => {
+      editingQuoteId = null;
+      renderQuotingCategory();
+    }).catch(err => { console.error('Error updating quote:', err); alert('Failed to save quote.'); });
+  }
+}
+
+/* ── Delete quote ── */
+function deleteQuote(id) {
+  if (!confirm('Are you sure you want to delete this quote?')) return;
+  db.collection('quotes').doc(id).delete().then(() => {
+    editingQuoteId = null;
+    renderQuotingCategory();
+  }).catch(err => { console.error('Error deleting quote:', err); alert('Failed to delete.'); });
+}
+
+/* ═══ Quote Sending, Status, Timeline ═══ */
+
+function generatePublicToken() {
+  const arr = new Uint8Array(24);
+  crypto.getRandomValues(arr);
+  return Array.from(arr, b => b.toString(36).padStart(2, '0')).join('').substring(0, 32);
+}
+
+function getQuotePublicURL(quoteId, token) {
+  return window.location.origin + window.location.pathname + '?quote=' + quoteId + '&token=' + token;
+}
+
+function addQuoteActivity(quoteId, entry) {
+  entry.timestamp = new Date().toISOString();
+  return db.collection('quotes').doc(quoteId).collection('activity').add(entry);
+}
+
+/* ── Send Quote ── */
+let sendingQuoteId = null;
+
+function openSendQuoteModal(quoteId) {
+  const q = quotesData.find(x => x._id === quoteId);
+  if (!q) return;
+  sendingQuoteId = quoteId;
+
+  // Generate token if not already sent
+  let token = q.publicToken;
+  if (!token) {
+    token = generatePublicToken();
+    db.collection('quotes').doc(quoteId).update({ publicToken: token });
+    q.publicToken = token;
+  }
+
+  const url = getQuotePublicURL(quoteId, token);
+  document.getElementById('sendQuoteEmail').value = q.email || '';
+  document.getElementById('sendQuoteLinkDisplay').value = url;
+  document.getElementById('sendQuoteOverlay').classList.add('open');
+}
+
+function closeSendQuoteModal() {
+  document.getElementById('sendQuoteOverlay').classList.remove('open');
+  sendingQuoteId = null;
+}
+
+function copyQuoteLink() {
+  const input = document.getElementById('sendQuoteLinkDisplay');
+  navigator.clipboard.writeText(input.value).then(() => {
+    const btn = input.nextElementSibling;
+    btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+    setTimeout(() => { btn.innerHTML = '<i class="fas fa-copy"></i> Copy'; }, 2000);
+  });
+}
+
+function executeSendQuote() {
+  if (!sendingQuoteId) return;
+  const q = quotesData.find(x => x._id === sendingQuoteId);
+  if (!q) return;
+
+  const email = document.getElementById('sendQuoteEmail').value.trim();
+  const url = document.getElementById('sendQuoteLinkDisplay').value;
+  const name = q.firstName || 'there';
+
+  // Update status to sent
+  const updates = { status: 'sent', sentAt: new Date().toISOString() };
+  if (!q.publicToken) updates.publicToken = generatePublicToken();
+  db.collection('quotes').doc(sendingQuoteId).update(updates);
+
+  // Log activity
+  addQuoteActivity(sendingQuoteId, { type: 'sent', email: email || 'N/A' });
+
+  // Build mailto
+  const subject = encodeURIComponent('Your Simulator Build Quote from Velocity Pro Sims');
+  const body = encodeURIComponent(
+    `Hi ${name},\n\nThank you for your interest in a custom simulator build from Velocity Pro Sims!\n\nWe've put together a quote for you. Click the link below to review your build configuration:\n\n${url}\n\nFrom there you can accept or decline the quote directly. If you have any questions, don't hesitate to reach out.\n\nBest regards,\nVelocity Pro Sims\nwww.velocityprosims.com`
+  );
+
+  window.open(`mailto:${email}?subject=${subject}&body=${body}`, '_self');
+  closeSendQuoteModal();
+
+  // Refresh view
+  if (editingQuoteId) renderQuoteBuilder();
+  else renderQuotingCategory();
+}
+
+/* ── Withdraw Quote ── */
+function withdrawQuote(quoteId) {
+  if (!confirm('Withdraw this quote? The customer will no longer be able to accept it.')) return;
+  db.collection('quotes').doc(quoteId).update({ status: 'withdrawn', withdrawnAt: new Date().toISOString() });
+  addQuoteActivity(quoteId, { type: 'withdrawn' });
+  setTimeout(() => renderQuoteBuilder(), 500);
+}
+
+/* ── Resend Quote ── */
+function resendQuote(quoteId) {
+  openSendQuoteModal(quoteId);
+}
+
+/* ── Load Activity Timeline ── */
+async function loadQuoteActivity(quoteId) {
+  try {
+    const snap = await db.collection('quotes').doc(quoteId).collection('activity').orderBy('timestamp', 'asc').get();
+    return snap.docs.map(d => d.data());
+  } catch (err) {
+    console.error('Error loading activity:', err);
+    return [];
+  }
+}
+
+function renderActivityTimeline(activities) {
+  if (!activities.length) return '<div style="color:var(--text-muted);font-size:0.88rem;padding:8px 0;">No activity yet. Send this quote to start tracking.</div>';
+
+  const icons = { sent: 'fa-paper-plane', viewed: 'fa-eye', accepted: 'fa-check-circle', declined: 'fa-times-circle', withdrawn: 'fa-ban', question: 'fa-comment-dots', reply: 'fa-reply' };
+  const labels = { sent: 'Quote Sent', viewed: 'Quote Viewed', accepted: 'Quote Accepted', declined: 'Quote Declined', withdrawn: 'Quote Withdrawn', question: 'Customer Question', reply: 'Reply Sent' };
+
+  return activities.map(a => {
+    const d = a.timestamp ? new Date(a.timestamp) : new Date();
+    const timeStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' at ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    const feedback = a.feedback ? `<div class="quote-timeline-feedback">"${a.feedback}"</div>` : '';
+    const emailNote = a.email ? ` to ${a.email}` : '';
+
+    return `<div class="quote-timeline-item">
+      <div class="quote-timeline-dot ${a.type}"><i class="fas ${icons[a.type] || 'fa-circle'}"></i></div>
+      <div class="quote-timeline-content">
+        <div class="quote-timeline-title">${labels[a.type] || a.type}${emailNote}</div>
+        <div class="quote-timeline-time">${timeStr}</div>
+        ${feedback}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ═══ Quote Q&A Messaging ═══ */
+
+async function loadQuoteMessages(quoteId) {
+  try {
+    const snap = await db.collection('quotes').doc(quoteId).collection('messages').orderBy('timestamp', 'asc').get();
+    return snap.docs.map(d => ({ _id: d.id, ...d.data() }));
+  } catch (err) {
+    console.error('Error loading messages:', err);
+    return [];
+  }
+}
+
+function listenQuoteMessages(quoteId, callback) {
+  return db.collection('quotes').doc(quoteId).collection('messages').orderBy('timestamp', 'asc')
+    .onSnapshot(snap => {
+      const msgs = snap.docs.map(d => ({ _id: d.id, ...d.data() }));
+      callback(msgs);
+    }, err => console.error('Message listener error:', err));
+}
+
+function formatMsgTime(ts) {
+  if (!ts) return '';
+  const d = new Date(ts);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' at ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+}
+
+async function sendPublicMessage(quoteId, customerName) {
+  const textarea = document.getElementById('pqMessageInput');
+  if (!textarea) return;
+  const text = textarea.value.trim();
+  if (!text) return;
+
+  const btn = document.getElementById('pqSendMsgBtn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; }
+
+  const msg = {
+    sender: 'customer',
+    senderName: customerName || 'Customer',
+    text: text,
+    timestamp: new Date().toISOString(),
+    read: false
+  };
+
+  try {
+    await db.collection('quotes').doc(quoteId).collection('messages').add(msg);
+    addQuoteActivity(quoteId, { type: 'question', text: text.substring(0, 80) });
+    textarea.value = '';
+
+    /* Send email notification via mailto fallback — open hidden iframe to trigger */
+    try {
+      const subject = encodeURIComponent('New Question on Quote — ' + customerName);
+      const body = encodeURIComponent('A customer has posted a question on their quote.\n\nFrom: ' + customerName + '\nMessage: ' + text + '\n\nView and reply in your portal.');
+      const mailLink = 'mailto:sales@velocityprosims.com?subject=' + subject + '&body=' + body;
+      const a = document.createElement('a');
+      a.href = mailLink;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => a.remove(), 100);
+    } catch (mailErr) { /* silent */ }
+  } catch (err) {
+    console.error('Error sending message:', err);
+    alert('Failed to send message. Please try again.');
+  }
+
+  if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send'; }
+}
+
+async function sendAdminReply(quoteId) {
+  const textarea = document.getElementById('qaAdminReplyInput');
+  if (!textarea) return;
+  const text = textarea.value.trim();
+  if (!text) return;
+
+  const btn = document.getElementById('qaAdminSendBtn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; }
+
+  const msg = {
+    sender: 'admin',
+    senderName: 'Velocity Pro Sims',
+    text: text,
+    timestamp: new Date().toISOString(),
+    read: false
+  };
+
+  try {
+    await db.collection('quotes').doc(quoteId).collection('messages').add(msg);
+    addQuoteActivity(quoteId, { type: 'reply', text: text.substring(0, 80) });
+    textarea.value = '';
+
+    /* Mark all customer messages as read */
+    const snap = await db.collection('quotes').doc(quoteId).collection('messages').where('sender', '==', 'customer').where('read', '==', false).get();
+    const batch = db.batch();
+    snap.docs.forEach(d => batch.update(d.ref, { read: true }));
+    if (!snap.empty) await batch.commit();
+  } catch (err) {
+    console.error('Error sending reply:', err);
+    alert('Failed to send reply. Please try again.');
+  }
+
+  if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-reply"></i> Reply'; }
+}
+
+function renderPublicMessages(msgs) {
+  const thread = document.getElementById('pqMessageThread');
+  if (!thread) return;
+  if (!msgs.length) {
+    thread.innerHTML = '<div class="pq-qa-empty"><i class="fas fa-comments" style="font-size:1.5rem;opacity:0.3;display:block;margin-bottom:8px;"></i>No messages yet. Ask a question about your quote!</div>';
+    return;
+  }
+  thread.innerHTML = msgs.map(m => `
+    <div class="pq-msg ${m.sender}">
+      <div class="pq-msg-sender">${m.sender === 'admin' ? '<i class="fas fa-headset"></i> Velocity Pro Sims' : '<i class="fas fa-user"></i> You'}</div>
+      <div>${m.text.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>')}</div>
+      <div class="pq-msg-meta">${formatMsgTime(m.timestamp)}</div>
+    </div>
+  `).join('');
+  thread.scrollTop = thread.scrollHeight;
+}
+
+function renderAdminMessages(msgs) {
+  const thread = document.getElementById('qaAdminThread');
+  if (!thread) return;
+  if (!msgs.length) {
+    thread.innerHTML = '<div class="qa-admin-empty"><i class="fas fa-comments" style="font-size:1.2rem;opacity:0.3;display:block;margin-bottom:6px;"></i>No messages yet</div>';
+    return;
+  }
+  thread.innerHTML = msgs.map(m => {
+    const unreadBadge = (m.sender === 'customer' && !m.read) ? '<span class="pq-msg-new-badge">NEW</span>' : '';
+    return `<div class="qa-msg ${m.sender}">
+      <div class="qa-msg-sender">${m.sender === 'admin' ? '<i class="fas fa-headset"></i> Velocity Pro Sims' : '<i class="fas fa-user"></i> ' + (m.senderName || 'Customer')} ${unreadBadge}</div>
+      <div class="qa-msg-body">${m.text.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>')}</div>
+      <div class="qa-msg-time">${formatMsgTime(m.timestamp)}</div>
+    </div>`;
+  }).join('');
+  thread.scrollTop = thread.scrollHeight;
+}
+
+let activeMessageListener = null;
+
+function setupAdminMessageListener(quoteId) {
+  if (activeMessageListener) { activeMessageListener(); activeMessageListener = null; }
+  activeMessageListener = listenQuoteMessages(quoteId, msgs => renderAdminMessages(msgs));
+}
+
+function cleanupMessageListener() {
+  if (activeMessageListener) { activeMessageListener(); activeMessageListener = null; }
+}
+
+/* ═══ Public Quote View (Customer-Facing) ═══ */
+
+function initPublicQuoteView(quoteId, token) {
+  // Hide login and app, show a full-page public view
+  document.getElementById('loginScreen').style.display = 'none';
+  const appEl = document.getElementById('app');
+  if (appEl) appEl.style.display = 'none';
+
+  // Create public view container
+  const pqDiv = document.createElement('div');
+  pqDiv.id = 'publicQuoteView';
+  pqDiv.className = 'pq-page';
+  pqDiv.innerHTML = '<div class="pq-loading"><i class="fas fa-spinner fa-spin"></i><p>Loading your quote...</p></div>';
+  document.body.appendChild(pqDiv);
+
+  // Load quote from Firestore
+  db.collection('quotes').doc(quoteId).get().then(doc => {
+    if (!doc.exists) { pqDiv.innerHTML = '<div class="pq-loading"><i class="fas fa-file-circle-xmark"></i><p>Quote not found</p></div>'; return; }
+    const q = { _id: doc.id, ...doc.data() };
+    if (q.publicToken !== token) { pqDiv.innerHTML = '<div class="pq-loading"><i class="fas fa-lock"></i><p>Invalid link</p></div>'; return; }
+
+    // Log view event
+    if (q.status === 'sent' || q.status === 'viewed') {
+      db.collection('quotes').doc(quoteId).update({ status: 'viewed', lastViewedAt: new Date().toISOString() });
+      addQuoteActivity(quoteId, { type: 'viewed' });
+    }
+
+    renderPublicQuote(pqDiv, q);
+  }).catch(err => {
+    console.error(err);
+    pqDiv.innerHTML = '<div class="pq-loading"><i class="fas fa-triangle-exclamation"></i><p>Error loading quote</p></div>';
+  });
+}
+
+function renderPublicQuote(container, q) {
+  const name = [q.firstName, q.lastName].filter(Boolean).join(' ') || q.companyName || 'Customer';
+  const items = q.items || {};
+  const sentDate = q.sentAt ? new Date(q.sentAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
+  const isActionable = q.status === 'sent' || q.status === 'viewed';
+
+  let statusBanner = '';
+  if (q.status === 'accepted') statusBanner = '<div class="pq-status-banner accepted"><i class="fas fa-check-circle"></i> This quote has been accepted</div>';
+  else if (q.status === 'declined') statusBanner = '<div class="pq-status-banner declined"><i class="fas fa-times-circle"></i> This quote has been declined</div>';
+  else if (q.status === 'withdrawn') statusBanner = '<div class="pq-status-banner withdrawn"><i class="fas fa-ban"></i> This quote has been withdrawn</div>';
+
+  /* Build grouped items */
+  let groupsHTML = '';
+  quoteItemGroups.forEach(g => {
+    const groupItems = g.items.map(li => {
+      const item = items[li.key] || {};
+      const included = item.included;
+      const checkIcon = included ? '<i class="fas fa-check-circle"></i>' : '<i class="far fa-circle"></i>';
+      const checkClass = included ? '' : ' empty';
+      let valueStr = '';
+      if (li.type === 'dropdown' || li.type === 'text') valueStr = item.value || '';
+      else if (li.type === 'yesno') valueStr = item.value === 'yes' ? 'Yes' : item.value === 'no' ? 'No' : '';
+
+      let subStr = '';
+      if (li.sub && item.subValues?.[li.sub.key]) {
+        subStr = `<div class="pq-item-sub"><i class="fas fa-check" style="color:#10b981;margin-right:6px;"></i>${li.sub.label}</div>`;
+      }
+      return `<div class="pq-item-row">
+        <span class="pq-item-check${checkClass}">${checkIcon}</span>
+        <span class="pq-item-label">${li.label}</span>
+        <span class="pq-item-value">${valueStr}</span>
+      </div>${subStr}`;
+    }).join('');
+
+    const anyIncluded = g.items.some(li => (items[li.key] || {}).included);
+    if (anyIncluded) {
+      groupsHTML += `<div class="pq-section-title"><i class="fas ${g.icon}"></i> ${g.group}</div>${groupItems}`;
+    }
+  });
+
+  /* If no groups had included items, show all */
+  if (!groupsHTML) {
+    quoteItemGroups.forEach(g => {
+      const groupItems = g.items.map(li => {
+        const item = items[li.key] || {};
+        const checkIcon = item.included ? '<i class="fas fa-check-circle"></i>' : '<i class="far fa-circle"></i>';
+        const checkClass = item.included ? '' : ' empty';
+        let valueStr = '';
+        if (li.type === 'dropdown' || li.type === 'text') valueStr = item.value || '';
+        else if (li.type === 'yesno') valueStr = item.value === 'yes' ? 'Yes' : item.value === 'no' ? 'No' : '';
+        return `<div class="pq-item-row"><span class="pq-item-check${checkClass}">${checkIcon}</span><span class="pq-item-label">${li.label}</span><span class="pq-item-value">${valueStr}</span></div>`;
+      }).join('');
+      groupsHTML += `<div class="pq-section-title"><i class="fas ${g.icon}"></i> ${g.group}</div>${groupItems}`;
+    });
+  }
+
+  const actions = isActionable ? `
+    <div class="pq-actions" id="pqActions">
+      <button class="pq-btn pq-btn-accept" onclick="publicAcceptQuote('${q._id}')"><i class="fas fa-check"></i> Accept Quote</button>
+      <button class="pq-btn pq-btn-decline" onclick="publicShowDecline()"><i class="fas fa-times"></i> Decline</button>
+      <a class="pq-btn pq-btn-contact" href="mailto:sales@velocityprosims.com?subject=Question about my quote"><i class="fas fa-envelope"></i> Contact Us</a>
+    </div>
+    <div id="pqDeclineForm" style="display:none;" class="pq-decline-form">
+      <p style="font-weight:600;margin-bottom:6px;">We're sorry to see you go. Could you share why?</p>
+      <textarea id="pqDeclineFeedback" placeholder="Your feedback helps us improve..."></textarea>
+      <button onclick="publicDeclineQuote('${q._id}')">Submit &amp; Decline</button>
+    </div>
+  ` : '';
+
+  container.innerHTML = `
+    <div class="pq-header">
+      <div class="pq-header-inner">
+        <img src="${window.location.origin}/logo.png" alt="Velocity Pro Sims" onerror="this.style.display='none'">
+        <div class="pq-header-contact">Questions? <a href="mailto:sales@velocityprosims.com">sales@velocityprosims.com</a></div>
+      </div>
+    </div>
+    <div class="pq-body">
+      ${statusBanner}
+      <div class="pq-card">
+        <div class="pq-title">Your Simulator Build Quote</div>
+        <div class="pq-subtitle">Prepared for ${name}${sentDate ? ' &mdash; ' + sentDate : ''}</div>
+        <div class="pq-detail-grid">
+          ${q.firstName || q.lastName ? `<div class="pq-detail-item"><div class="pq-label">Name</div><div class="pq-value">${[q.firstName, q.lastName].filter(Boolean).join(' ')}</div></div>` : ''}
+          ${q.companyName ? `<div class="pq-detail-item"><div class="pq-label">Company</div><div class="pq-value">${q.companyName}</div></div>` : ''}
+          ${q.email ? `<div class="pq-detail-item"><div class="pq-label">Email</div><div class="pq-value">${q.email}</div></div>` : ''}
+          ${q.phone ? `<div class="pq-detail-item"><div class="pq-label">Phone</div><div class="pq-value">${q.phone}</div></div>` : ''}
+          ${q.address ? `<div class="pq-detail-item"><div class="pq-label">Address</div><div class="pq-value">${q.address}</div></div>` : ''}
+        </div>
+        ${groupsHTML}
+        ${q.notes ? `<div class="pq-section-title"><i class="fas fa-sticky-note"></i> Notes</div><p style="font-size:0.95rem;color:#475569;line-height:1.6;">${q.notes}</p>` : ''}
+      </div>
+      ${actions}
+      <div class="pq-qa-card">
+        <div class="pq-qa-title"><i class="fas fa-comments"></i> Questions &amp; Messages</div>
+        <div class="pq-qa-thread" id="pqMessageThread">
+          <div class="pq-qa-empty"><i class="fas fa-comments" style="font-size:1.5rem;opacity:0.3;display:block;margin-bottom:8px;"></i>No messages yet. Ask a question about your quote!</div>
+        </div>
+        <div class="pq-qa-input-row">
+          <textarea id="pqMessageInput" placeholder="Type your question here..." rows="2"></textarea>
+          <button id="pqSendMsgBtn" onclick="sendPublicMessage('${q._id}', '${name.replace(/'/g, "\\'")}')"><i class="fas fa-paper-plane"></i> Send</button>
+        </div>
+      </div>
+      <div class="pq-footer">
+        <p>Velocity Pro Sims &mdash; <a href="https://www.velocityprosims.com" target="_blank">velocityprosims.com</a></p>
+      </div>
+    </div>
+  `;
+
+  /* Start real-time message listener for public view */
+  listenQuoteMessages(q._id, msgs => renderPublicMessages(msgs));
+}
+
+/* Public page actions */
+function publicAcceptQuote(quoteId) {
+  if (!confirm('Accept this quote? This confirms your agreement to the build configuration above.')) return;
+  db.collection('quotes').doc(quoteId).update({ status: 'accepted', respondedAt: new Date().toISOString() });
+  addQuoteActivity(quoteId, { type: 'accepted' });
+  const actionsEl = document.getElementById('pqActions');
+  if (actionsEl) actionsEl.innerHTML = '<div class="pq-status-banner accepted" style="margin:0;"><i class="fas fa-check-circle"></i> Quote accepted! We\'ll be in touch shortly.</div>';
+  const declineForm = document.getElementById('pqDeclineForm');
+  if (declineForm) declineForm.style.display = 'none';
+}
+
+function publicShowDecline() {
+  document.getElementById('pqDeclineForm').style.display = 'block';
+}
+
+function publicDeclineQuote(quoteId) {
+  const feedback = (document.getElementById('pqDeclineFeedback').value || '').trim();
+  if (!feedback) { alert('Please share your feedback before declining.'); return; }
+  db.collection('quotes').doc(quoteId).update({ status: 'declined', respondedAt: new Date().toISOString(), declineFeedback: feedback });
+  addQuoteActivity(quoteId, { type: 'declined', feedback });
+  const actionsEl = document.getElementById('pqActions');
+  if (actionsEl) actionsEl.innerHTML = '<div class="pq-status-banner declined" style="margin:0;"><i class="fas fa-times-circle"></i> Quote declined. Thank you for your feedback.</div>';
+  document.getElementById('pqDeclineForm').style.display = 'none';
+}
 
 // ── Contacts ──
 const CONTACTS_STORAGE_KEY = 'vps_contacts';
