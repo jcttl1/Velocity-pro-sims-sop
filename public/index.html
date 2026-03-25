@@ -4072,6 +4072,35 @@ function toggleRentalCarYes(eventKey, cat, taskIndex) {
   renderDashboardPreserving();
 }
 
+/* Add new contact from POC dropdown — creates CRM entry and sets the field */
+function addPOCFromDash(eventKey, cat, taskIndex, selectEl) {
+  const firstName = prompt('Enter first name:');
+  if (!firstName || !firstName.trim()) { selectEl.value = ''; return; }
+  const lastName = prompt('Enter last name (optional):') || '';
+  const fullName = (firstName.trim() + ' ' + lastName.trim()).trim();
+
+  // Add to CRM
+  const data = {
+    firstName: firstName.trim(),
+    lastName: lastName.trim(),
+    companyName: '',
+    email: '',
+    phone: '',
+    type: 'event-rental',
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    files: []
+  };
+  db.collection('crmCustomers').add(data).then(() => {
+    // Update the task field
+    updateDashTaskField(eventKey, cat, taskIndex, 'contactName', fullName);
+    renderDashboardPreserving();
+  }).catch(err => {
+    console.error('CRM add error:', err);
+    alert('Error adding contact. Check console.');
+    selectEl.value = '';
+  });
+}
+
 function toggleDashSection(el) {
   const body = el.nextElementSibling;
   const isOpen = el.classList.contains('expanded');
@@ -4120,6 +4149,11 @@ function generateDefaultTasks(evt) {
 
   /* ── New default operational tasks ── */
 
+  // Point of Contact (CRM-backed)
+  operations.push({
+    text: 'Point of Contact', done: false, taskType: 'poc', contactName: ''
+  });
+
   // Confirm Hardware
   operations.push({
     text: 'Confirm Hardware', done: false, taskType: 'hardware',
@@ -4167,6 +4201,9 @@ function generateDefaultTasks(evt) {
     }
   });
 
+  // Driver Keys (moved above Uhaul)
+  operations.push({ text: 'Driver Keys', done: false });
+
   // Uhaul
   operations.push({
     text: 'Uhaul', done: false, taskType: 'uhaul', confirmationNumber: ''
@@ -4176,9 +4213,6 @@ function generateDefaultTasks(evt) {
   operations.push({
     text: 'Lodging', done: false, taskType: 'lodging', hotelLocation: '', booked: false
   });
-
-  // Driver Keys
-  operations.push({ text: 'Driver Keys', done: false });
 
   // Staff
   operations.push({
@@ -4278,13 +4312,14 @@ function renderDashboard() {
     ];
     /* New default operational tasks to backfill */
     const newOpsTasks = [
+      { text: 'Point of Contact', done: false, taskType: 'poc', contactName: '' },
       { text: 'Confirm Hardware', done: false, taskType: 'hardware', hardware: { wheel: '', motor: '', pedals: '', monitor: '', monitorRemote: false, pc: false, chassis: '' } },
       { text: 'Branding', done: false, taskType: 'branding', brandingYes: false, subChecks: { 'Assets received': false, 'Sent to print shop': false, 'Mock-ups received': false, 'Mock-ups approved by customer': false, 'Sent to print': false, 'Print items received': false, 'Print items packed for event': false } },
       { text: 'Pedestal', done: false, taskType: 'pedestal', pedestalColor: '', subChecks: { 'Custom paint color': false, 'Pedestal ready': false, 'Pedestal packed': false } },
       { text: 'Timing and Scoring', done: false, taskType: 'timing', subChecks: { 'Registration kiosk': false, 'Surface tablet': false, 'Networking cables': false, 'QR scanners': false, 'Ethernet to USB adapter': false, 'USB Hub': false, 'Leaderboard monitor': false, 'Leaderboard monitor stand': false, 'HDMI Cable (25-50 Foot)': false } },
+      { text: 'Driver Keys', done: false },
       { text: 'Uhaul', done: false, taskType: 'uhaul', confirmationNumber: '' },
       { text: 'Lodging', done: false, taskType: 'lodging', hotelLocation: '', booked: false },
-      { text: 'Driver Keys', done: false },
       { text: 'Staff Working Event', done: false, taskType: 'staff', selectedStaff: [] },
       { text: 'Rental Car', done: false, taskType: 'rentalcar', rentalCarYes: false, rentalConfirmation: '' },
       { text: 'Power Outlet Confirmed', done: false },
@@ -4305,7 +4340,7 @@ function renderDashboard() {
         }
         /* Backfill new operational tasks for existing events */
         const ops = dashTasks[key].operations || [];
-        const hasNewOps = ops.some(t => t.taskType === 'hardware');
+        const hasNewOps = ops.some(t => t.taskType === 'poc');
         if (!hasNewOps) {
           dashTasks[key].operations = [...ops, ...JSON.parse(JSON.stringify(newOpsTasks))];
           newTasksGenerated = true;
@@ -4454,7 +4489,7 @@ function renderDashboard() {
           </div>`;
         }
 
-        /* Branding: yes/no toggle + sub-checklist */
+        /* Branding: yes / no dual checkboxes + sub-checklist */
         if (t.taskType === 'branding') {
           let brandSub = '';
           if (t.brandingYes && t.subChecks) {
@@ -4470,20 +4505,23 @@ function renderDashboard() {
           subHTML = `<div class="dash-task-sub" onclick="event.stopPropagation()">
             <div class="dash-task-sub-row">
               <label>Branding needed?</label>
-              <div class="dash-sub-check-item ${t.brandingYes ? 'checked' : ''}" onclick="event.stopPropagation();toggleBrandingYes('${key}','${cat}',${i})">
-                <div class="sub-check-box"><i class="fas fa-check"></i></div>
-                <span class="sub-check-label">${t.brandingYes ? 'Yes' : 'No'}</span>
+              <div class="dash-sub-check-item ${t.brandingYes === true ? 'checked' : ''}" onclick="event.stopPropagation();var t2=loadDashTasks();var item=t2['${key}']?.${cat}?.[${i}];if(item){item.brandingYes=true;saveDashTasks(t2);renderDashboardPreserving();}">
+                <div class="sub-check-box"><i class="fas fa-check"></i></div><span class="sub-check-label">Yes</span>
+              </div>
+              <div class="dash-sub-check-item ${t.brandingYes === false ? 'checked' : ''}" onclick="event.stopPropagation();var t2=loadDashTasks();var item=t2['${key}']?.${cat}?.[${i}];if(item){item.brandingYes=false;saveDashTasks(t2);renderDashboardPreserving();}">
+                <div class="sub-check-box"><i class="fas fa-check"></i></div><span class="sub-check-label">No</span>
               </div>
             </div>
           </div>${brandSub}`;
         }
 
-        /* Pedestal: color dropdown + sub-checklist */
+        /* Pedestal: color dropdown + sub-checklist (explicit order) */
         if (t.taskType === 'pedestal') {
           const colorOpts = paintColors.map(c =>
             '<option value="' + c + '"' + ((t.pedestalColor || '') === c ? ' selected' : '') + '>' + (c || '-- Select Color --') + '</option>'
           ).join('');
-          const items = Object.keys(t.subChecks || {}).map(label => {
+          const pedestalOrder = ['Custom paint color', 'Pedestal ready', 'Pedestal packed'];
+          const items = pedestalOrder.map(label => {
             const checked = (t.subChecks || {})[label];
             let extra = '';
             if (label === 'Custom paint color') {
@@ -4520,7 +4558,7 @@ function renderDashboard() {
           </div>`;
         }
 
-        /* Lodging: hotel location + booked checkbox */
+        /* Lodging: hotel location + booked yes/no dual checkboxes */
         if (t.taskType === 'lodging') {
           subHTML = `<div class="dash-task-sub" onclick="event.stopPropagation()">
             <div class="dash-task-sub-row">
@@ -4530,9 +4568,11 @@ function renderDashboard() {
             </div>
             <div class="dash-task-sub-row">
               <label>Booked?</label>
-              <div class="dash-sub-check-item ${t.booked ? 'checked' : ''}" onclick="event.stopPropagation();var t2=loadDashTasks();var item=t2['${key}']?.${cat}?.[${i}];if(item){item.booked=!item.booked;saveDashTasks(t2);renderDashboardPreserving();}">
-                <div class="sub-check-box"><i class="fas fa-check"></i></div>
-                <span class="sub-check-label">${t.booked ? 'Yes' : 'No'}</span>
+              <div class="dash-sub-check-item ${t.booked === true ? 'checked' : ''}" onclick="event.stopPropagation();var t2=loadDashTasks();var item=t2['${key}']?.${cat}?.[${i}];if(item){item.booked=true;saveDashTasks(t2);renderDashboardPreserving();}">
+                <div class="sub-check-box"><i class="fas fa-check"></i></div><span class="sub-check-label">Yes</span>
+              </div>
+              <div class="dash-sub-check-item ${t.booked === false ? 'checked' : ''}" onclick="event.stopPropagation();var t2=loadDashTasks();var item=t2['${key}']?.${cat}?.[${i}];if(item){item.booked=false;saveDashTasks(t2);renderDashboardPreserving();}">
+                <div class="sub-check-box"><i class="fas fa-check"></i></div><span class="sub-check-label">No</span>
               </div>
             </div>
           </div>`;
@@ -4550,7 +4590,7 @@ function renderDashboard() {
           </div>`;
         }
 
-        /* Rental Car: yes/no + confirmation number */
+        /* Rental Car: yes/no dual checkboxes + confirmation number */
         if (t.taskType === 'rentalcar') {
           let rcSub = '';
           if (t.rentalCarYes) {
@@ -4563,12 +4603,31 @@ function renderDashboard() {
           subHTML = `<div class="dash-task-sub" onclick="event.stopPropagation()">
             <div class="dash-task-sub-row">
               <label>Rental Car?</label>
-              <div class="dash-sub-check-item ${t.rentalCarYes ? 'checked' : ''}" onclick="event.stopPropagation();toggleRentalCarYes('${key}','${cat}',${i})">
-                <div class="sub-check-box"><i class="fas fa-check"></i></div>
-                <span class="sub-check-label">${t.rentalCarYes ? 'Yes' : 'No'}</span>
+              <div class="dash-sub-check-item ${t.rentalCarYes === true ? 'checked' : ''}" onclick="event.stopPropagation();var t2=loadDashTasks();var item=t2['${key}']?.${cat}?.[${i}];if(item){item.rentalCarYes=true;saveDashTasks(t2);renderDashboardPreserving();}">
+                <div class="sub-check-box"><i class="fas fa-check"></i></div><span class="sub-check-label">Yes</span>
+              </div>
+              <div class="dash-sub-check-item ${t.rentalCarYes === false ? 'checked' : ''}" onclick="event.stopPropagation();var t2=loadDashTasks();var item=t2['${key}']?.${cat}?.[${i}];if(item){item.rentalCarYes=false;saveDashTasks(t2);renderDashboardPreserving();}">
+                <div class="sub-check-box"><i class="fas fa-check"></i></div><span class="sub-check-label">No</span>
               </div>
             </div>
             ${rcSub}
+          </div>`;
+        }
+
+        /* Point of Contact: CRM-backed dropdown + add new */
+        if (t.taskType === 'poc') {
+          const pocVal = (t.contactName || '').replace(/"/g, '&quot;');
+          const crmOpts = ['<option value="">-- Select Contact --</option>'];
+          (typeof crmCustomers !== 'undefined' ? crmCustomers : []).forEach(c => {
+            const cName = c.firstName && c.lastName ? c.firstName + ' ' + c.lastName : c.firstName || c.companyName || '';
+            if (cName) crmOpts.push('<option value="' + cName.replace(/"/g,'&quot;') + '"' + (pocVal === cName ? ' selected' : '') + '>' + cName + '</option>');
+          });
+          crmOpts.push('<option value="__add_new__">+ Add New Contact</option>');
+          subHTML = `<div class="dash-task-sub" onclick="event.stopPropagation()">
+            <div class="dash-task-sub-row">
+              <label>Contact:</label>
+              <select onchange="if(this.value==='__add_new__'){addPOCFromDash('${key}','${cat}',${i},this);}else{updateDashTaskField('${key}','${cat}',${i},'contactName',this.value);}">${crmOpts.join('')}</select>
+            </div>
           </div>`;
         }
 
