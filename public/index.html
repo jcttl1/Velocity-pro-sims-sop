@@ -3355,6 +3355,7 @@ const categories = [
   { id: 'equipment', name: 'Equipment & Simulators', icon: 'fa-desktop', color: '#5CBF2A' },
   { id: 'events', name: 'Events', icon: 'fa-trophy', color: '#EC4899' },
   { id: 'facility', name: 'Facility Management', icon: 'fa-building', color: '#F59E0B' },
+  { id: 'howto', name: 'How To', icon: 'fa-book-open', color: '#F97316' },
   { id: 'websites', name: 'Key Websites', icon: 'fa-link', color: '#6366F1' },
   { id: 'assets', name: 'Marketing Assets', icon: 'fa-palette', color: '#E879F9' },
   { id: 'techresources', name: 'Tech Resources', icon: 'fa-microchip', color: '#38BDF8' },
@@ -3868,6 +3869,43 @@ const defaultSOPs = [
     id: 40, category: 'websites', title: 'MAS/Graves', description: 'Windows activation scripts',
     priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-22',
     isWebsite: true, url: 'https://massgrave.dev', webGroup: 'it-tools', webIcon: 'fa-windows', content: ''
+  },
+  {
+    id: 70, category: 'howto', title: 'Building a Simulator',
+    description: 'Best practices for workspace setup, hardware organization, cable management, and ergonomics when building simulators.',
+    priority: 'critical', updatedBy: 'Jose', updatedAt: '2026-03-25',
+    content: `<h4>Setting Up Your Space</h4>
+<p>It's easy to open boxes and have stuff everywhere when it's only one sim. But now with multiple sims being built at once, we need to keep everything as organized as possible to ensure nothing gets mixed up or goes missing.</p>
+<p>Hardware should be organized prior to building and the space should be prepped so you can work cleanly and efficiently. Lay out all components for each build in designated areas — don't let parts from different builds intermingle.</p>
+<p>At times, we may not want to get rid of boxes right away while building. Do your best to stack them neatly in the event we need a box for any reason. A clean workspace is a productive workspace.</p>
+
+<h4>Cable Management</h4>
+<p>This is something that I feel sets us apart from other builders. We can provide a clean setup and a safe setup where cables are not getting in the way.</p>
+<p>Every cable should be routed intentionally — no loose wires hanging or draped across the rig. Use zip ties, cable channels, and velcro straps to bundle and secure all cabling. The goal is that when a customer looks at their sim, they see a premium, professional build — not a mess of wires.</p>
+<p>Clean cable management also means safer operation. No cables getting caught in pedals, tangled around the wheel base, or creating trip hazards around the rig.</p>
+
+<h4>Ergonomics</h4>
+<p>Not only do we want to replicate the real driving experience as close as possible, we also want to make sure customers are comfortable in their simulator. There's a line between the reality of the race car and the reality of the sim.</p>
+<p>I always feel that you should be able to access everything right from the seat. That means being able to turn the sim on or off, and being able to access any peripherals or accessories without having to get up or reach awkwardly.</p>
+<p>Seat position, wheel height, pedal distance, and monitor placement should all be dialed in so the driver feels locked in but comfortable. A well-ergonomic sim keeps customers in the seat longer and enjoying the experience more.</p>`
+  },
+  {
+    id: 71, category: 'howto', title: 'How to Use the iRacing Trade-Show Version',
+    description: 'Guide for setting up and running the iRacing trade-show version at events.',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-25',
+    content: '<p><em>Content coming soon.</em></p>'
+  },
+  {
+    id: 72, category: 'howto', title: 'How to Connect Network for VPS Timing and Scoring',
+    description: 'Steps to establish network connectivity for the VPS Timing and Scoring system.',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-25',
+    content: '<p><em>Content coming soon.</em></p>'
+  },
+  {
+    id: 73, category: 'howto', title: 'How to Use VPS Timing and Scoring App',
+    description: 'User guide for operating the VPS Timing and Scoring application.',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-25',
+    content: '<p><em>Content coming soon.</em></p>'
   }
 ];
 
@@ -4001,6 +4039,17 @@ function loadSOPs() {
         if (s._firestoreId) {
           db.collection('sops').doc(s._firestoreId).delete().catch(err => console.error('Error deleting removed-category SOP:', err));
         }
+      });
+
+      // ── Seed How To SOPs into Firestore ──
+      const howToSOPs = defaultSOPs.filter(s => s.category === 'howto');
+      const existingHowToTitles = new Set(sopData.filter(s => s.category === 'howto').map(s => s.title));
+      howToSOPs.filter(h => !existingHowToTitles.has(h.title)).forEach(h => {
+        db.collection('sops').add({
+          title: h.title, description: h.description, category: 'howto',
+          priority: h.priority, content: h.content,
+          updatedBy: h.updatedBy, updatedAt: h.updatedAt
+        }).catch(err => console.error('Error seeding How To SOP:', err));
       });
     }
     sopsLoaded = true;
