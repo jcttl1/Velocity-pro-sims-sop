@@ -418,6 +418,160 @@
     .dash-task-edit-cancel { color: var(--text-muted); }
     .dash-task-edit-cancel:hover { background: var(--bg-card-hover); }
 
+    /* ── Task Sub-Panel (expandable details beneath a task) ── */
+    .dash-task-sub {
+      margin-left: 30px; padding: 6px 10px 10px;
+      border-left: 2px solid var(--border); margin-bottom: 4px;
+    }
+    .dash-task-sub-row {
+      display: flex; align-items: center; gap: 8px; padding: 4px 0;
+      font-size: 0.8rem; color: var(--text-secondary); flex-wrap: wrap;
+    }
+    .dash-task-sub-row label {
+      font-size: 0.75rem; color: var(--text-muted); min-width: 80px; white-space: nowrap;
+    }
+    .dash-task-sub-row select {
+      background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm);
+      color: var(--text-primary); font-size: 0.78rem; font-family: 'Inter', sans-serif;
+      padding: 3px 8px; outline: none; cursor: pointer; transition: border-color var(--transition);
+      max-width: 200px;
+    }
+    .dash-task-sub-row select:focus { border-color: var(--green); }
+    .dash-task-sub-row input[type="text"] {
+      flex: 1; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm);
+      color: var(--text-primary); font-size: 0.78rem; font-family: 'Inter', sans-serif;
+      padding: 3px 8px; outline: none; transition: border-color var(--transition); min-width: 120px;
+    }
+    .dash-task-sub-row input[type="text"]:focus { border-color: var(--green); }
+
+    /* Branding / Pedestal / Timing sub-checkboxes */
+    .dash-sub-checklist {
+      margin-left: 30px; padding: 4px 10px 8px;
+      border-left: 2px solid var(--border); margin-bottom: 4px;
+    }
+    .dash-sub-check-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 3px 0; font-size: 0.8rem; color: var(--text-secondary); cursor: pointer;
+    }
+    .dash-sub-check-item:hover { color: var(--text-primary); }
+    .dash-sub-check-item .sub-check-box {
+      width: 16px; height: 16px; border-radius: 3px; border: 2px solid var(--border-light);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: all var(--transition);
+    }
+    .dash-sub-check-item .sub-check-box i { font-size: 0.55rem; color: transparent; transition: color var(--transition); }
+    .dash-sub-check-item.checked .sub-check-box {
+      background: var(--green); border-color: var(--green);
+    }
+    .dash-sub-check-item.checked .sub-check-box i { color: #fff; }
+    .dash-sub-check-item.checked .sub-check-label {
+      text-decoration: line-through; color: var(--text-muted);
+    }
+
+    /* Staff pill selector */
+    .dash-staff-grid {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-left: 30px;
+      padding: 6px 10px 10px;
+    }
+    .dash-staff-pill {
+      padding: 5px 14px; border-radius: 20px; font-size: 0.78rem;
+      border: 1px solid var(--border); color: var(--text-secondary);
+      cursor: pointer; transition: all var(--transition); user-select: none;
+      background: transparent;
+    }
+    .dash-staff-pill:hover { border-color: var(--green); color: var(--text-primary); }
+    .dash-staff-pill.active {
+      background: var(--green); border-color: var(--green); color: #fff; font-weight: 600;
+    }
+    .dash-staff-manage-btn {
+      font-size: 0.68rem; color: var(--text-muted); background: transparent;
+      border: 1px dashed var(--border); border-radius: 20px; padding: 4px 12px;
+      cursor: pointer; transition: all var(--transition); margin-left: 4px;
+    }
+    .dash-staff-manage-btn:hover { border-color: var(--green); color: var(--green); }
+
+    /* Staff management modal */
+    .staff-manage-modal {
+      position: fixed; inset: 0; z-index: 9999; display: flex;
+      align-items: center; justify-content: center; background: rgba(0,0,0,0.6);
+    }
+    .staff-manage-modal .staff-manage-box {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 24px; width: 340px; max-width: 90vw;
+    }
+    .staff-manage-modal h3 { margin: 0 0 16px; font-size: 1rem; color: var(--text-primary); }
+    .staff-manage-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; max-height: 260px; overflow-y: auto; }
+    .staff-manage-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 6px 10px; background: var(--bg-input); border-radius: var(--radius-sm);
+      font-size: 0.85rem; color: var(--text-primary);
+    }
+    .staff-manage-row button {
+      background: transparent; border: none; color: var(--danger); cursor: pointer;
+      font-size: 0.75rem; padding: 2px 6px; opacity: 0.7; transition: opacity var(--transition);
+    }
+    .staff-manage-row button:hover { opacity: 1; }
+    .staff-manage-add {
+      display: flex; gap: 6px; margin-bottom: 14px;
+    }
+    .staff-manage-add input {
+      flex: 1; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm);
+      color: var(--text-primary); font-size: 0.82rem; font-family: 'Inter', sans-serif;
+      padding: 6px 10px; outline: none;
+    }
+    .staff-manage-add button {
+      background: var(--green); border: none; border-radius: var(--radius-sm);
+      color: #fff; padding: 6px 14px; cursor: pointer; font-size: 0.8rem; font-weight: 600;
+    }
+    .staff-manage-close {
+      background: transparent; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      color: var(--text-secondary); padding: 6px 16px; cursor: pointer; font-size: 0.82rem;
+      width: 100%; transition: all var(--transition);
+    }
+    .staff-manage-close:hover { border-color: var(--green); color: var(--green); }
+
+    /* ── Task Category Sections ── */
+    .dash-task-category {
+      margin-top: 6px;
+    }
+    .dash-task-category + .dash-task-category { margin-top: 14px; }
+    .dash-task-category-header {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 1.2px; color: var(--text-muted); padding: 0 10px 4px;
+    }
+    .dash-task-category-header i { font-size: 0.65rem; }
+    .dash-task-category-header.ops { color: var(--green); }
+    .dash-task-category-header.acct { color: var(--accent, #6c8cff); }
+    .dash-task-category-header::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* ── Date Selectors for Accounting Tasks ── */
+    .dash-task-dates {
+      display: flex; align-items: center; gap: 8px; margin-left: 30px;
+      padding: 2px 10px 6px; flex-wrap: wrap;
+    }
+    .dash-task-date-field {
+      display: flex; align-items: center; gap: 4px; font-size: 0.72rem;
+    }
+    .dash-task-date-field label {
+      color: var(--text-muted); white-space: nowrap; font-size: 0.68rem;
+    }
+    .dash-task-date-field input[type="date"] {
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text-primary);
+      font-size: 0.72rem; font-family: 'Inter', sans-serif;
+      padding: 2px 6px; outline: none; cursor: pointer;
+      transition: border-color var(--transition);
+    }
+    .dash-task-date-field input[type="date"]:focus {
+      border-color: var(--green);
+    }
+    .dash-task-date-field input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(0.7); cursor: pointer; font-size: 0.7rem;
+    }
+
     /* ── Category View ── */
     .category-view { display: none; }
     .category-view.active { display: block; }
@@ -3456,6 +3610,7 @@ function init() {
   loadSOPs();
   loadAssets();
   startDashTasksListener();
+  loadStaffListFromFirestore();
   startCRMListener();
 
   // Start calendar listeners (SRP + VPS events from shared RTDB)
@@ -3595,13 +3750,23 @@ let dashTasksListenerStarted = false;
 let dashTasksLoaded = false;
 let dashTasksLocalUpdate = false;
 
+/* Normalise task data: old format was an array, new format is { operations: [], accounting: [] } */
+function normaliseDashTasks(raw) {
+  if (Array.isArray(raw)) return { operations: raw, accounting: [] };
+  if (raw && typeof raw === 'object' && (raw.operations || raw.accounting)) {
+    return { operations: raw.operations || [], accounting: raw.accounting || [] };
+  }
+  return { operations: [], accounting: [] };
+}
+
 function startDashTasksListener() {
   if (dashTasksListenerStarted) return;
   dashTasksListenerStarted = true;
   db.collection('dashTasks').onSnapshot(snapshot => {
     dashTasksCache = {};
     snapshot.docs.forEach(doc => {
-      dashTasksCache[doc.id] = doc.data().tasks || [];
+      const d = doc.data();
+      dashTasksCache[doc.id] = normaliseDashTasks(d.tasks);
     });
     dashTasksLoaded = true;
     // Also keep localStorage as offline backup
@@ -3613,9 +3778,11 @@ function startDashTasksListener() {
     dashTasksLocalUpdate = false;
   }, err => {
     console.error('Firestore dashTasks error:', err);
-    // Fallback to localStorage
+    // Fallback to localStorage (normalise old array format)
     const stored = localStorage.getItem(DASH_TASKS_KEY);
-    dashTasksCache = stored ? JSON.parse(stored) : {};
+    const raw = stored ? JSON.parse(stored) : {};
+    dashTasksCache = {};
+    Object.keys(raw).forEach(k => { dashTasksCache[k] = normaliseDashTasks(raw[k]); });
     dashTasksLoaded = true;
     if (currentCategory === 'dashboard') renderDashboard();
   });
@@ -3644,7 +3811,7 @@ function migrateDashTasksToFirestore() {
   db.collection('dashTasks').limit(1).get().then(snap => {
     if (!snap.empty) return; // Already migrated
     Object.keys(tasks).forEach(key => {
-      db.collection('dashTasks').doc(key).set({ tasks: tasks[key] }).catch(err => console.error('Dash task migration error:', err));
+      db.collection('dashTasks').doc(key).set({ tasks: normaliseDashTasks(tasks[key]) }).catch(err => console.error('Dash task migration error:', err));
     });
     console.log('Migrated dashboard tasks to Firestore');
   }).catch(err => console.error('Dash task migration check failed:', err));
@@ -3675,56 +3842,73 @@ function renderDashboardPreserving() {
   restoreExpandedDashKeys(expanded);
 }
 
-function toggleDashTask(eventKey, taskIndex) {
+function toggleDashTask(eventKey, cat, taskIndex) {
   const tasks = loadDashTasks();
-  if (!tasks[eventKey]) return;
-  tasks[eventKey][taskIndex].done = !tasks[eventKey][taskIndex].done;
+  if (!tasks[eventKey] || !tasks[eventKey][cat]) return;
+  tasks[eventKey][cat][taskIndex].done = !tasks[eventKey][cat][taskIndex].done;
   saveDashTasks(tasks);
   renderDashboardPreserving();
 }
 
-function addDashTask(eventKey) {
-  const input = document.getElementById('dashAddInput_' + CSS.escape(eventKey));
+function addDashTask(eventKey, cat) {
+  const prefix = cat === 'accounting' ? 'acct' : 'ops';
+  const input = document.getElementById('dashAddInput_' + prefix + '_' + CSS.escape(eventKey));
   if (!input) return;
   const text = input.value.trim();
   if (!text) return;
   const tasks = loadDashTasks();
-  if (!tasks[eventKey]) tasks[eventKey] = [];
-  tasks[eventKey].push({ text, done: false });
+  if (!tasks[eventKey]) tasks[eventKey] = { operations: [], accounting: [] };
+  if (!tasks[eventKey][cat]) tasks[eventKey][cat] = [];
+  tasks[eventKey][cat].push({ text, done: false });
   saveDashTasks(tasks);
   const expanded = getExpandedDashKeys();
   if (!expanded.includes(eventKey)) expanded.push(eventKey);
   renderDashboard();
   restoreExpandedDashKeys(expanded);
   setTimeout(() => {
-    const newInput = document.getElementById('dashAddInput_' + CSS.escape(eventKey));
+    const newInput = document.getElementById('dashAddInput_' + prefix + '_' + CSS.escape(eventKey));
     if (newInput) newInput.focus();
   }, 50);
 }
 
-function removeDashTask(eventKey, taskIndex) {
+function removeDashTask(eventKey, cat, taskIndex) {
   const tasks = loadDashTasks();
-  if (!tasks[eventKey]) return;
-  tasks[eventKey].splice(taskIndex, 1);
-  if (tasks[eventKey].length === 0) delete tasks[eventKey];
+  if (!tasks[eventKey] || !tasks[eventKey][cat]) return;
+  tasks[eventKey][cat].splice(taskIndex, 1);
+  const allEmpty = (tasks[eventKey].operations || []).length === 0 && (tasks[eventKey].accounting || []).length === 0;
+  if (allEmpty) delete tasks[eventKey];
   saveDashTasks(tasks);
   renderDashboardPreserving();
 }
 
-function editDashTask(eventKey, taskIndex) {
+function updateDashTaskDate(eventKey, cat, taskIndex, field, value) {
   const tasks = loadDashTasks();
-  if (!tasks[eventKey] || !tasks[eventKey][taskIndex]) return;
-  const currentText = tasks[eventKey][taskIndex].text;
+  if (!tasks[eventKey] || !tasks[eventKey][cat] || !tasks[eventKey][cat][taskIndex]) return;
+  tasks[eventKey][cat][taskIndex][field] = value;
+  saveDashTasks(tasks);
+}
 
-  /* Find all task items within the matching event section */
+function editDashTask(eventKey, cat, taskIndex) {
+  const tasks = loadDashTasks();
+  if (!tasks[eventKey] || !tasks[eventKey][cat] || !tasks[eventKey][cat][taskIndex]) return;
+  const currentText = tasks[eventKey][cat][taskIndex].text;
+
+  /* Find task items within the matching event section and category */
   const sections = document.querySelectorAll('.dash-date-header');
   let targetItem = null;
   sections.forEach(sec => {
     if (sec.getAttribute('data-dash-key') === eventKey) {
       const body = sec.nextElementSibling;
       if (body) {
-        const items = body.querySelectorAll('.dash-task-item');
-        if (items[taskIndex]) targetItem = items[taskIndex];
+        const catHeaders = body.querySelectorAll('.dash-task-category-header');
+        catHeaders.forEach(hdr => {
+          if ((cat === 'operations' && hdr.classList.contains('ops')) ||
+              (cat === 'accounting' && hdr.classList.contains('acct'))) {
+            const catDiv = hdr.parentElement;
+            const items = catDiv.querySelectorAll('.dash-task-item');
+            if (items[taskIndex]) targetItem = items[taskIndex];
+          }
+        });
       }
     }
   });
@@ -3735,10 +3919,10 @@ function editDashTask(eventKey, taskIndex) {
   targetItem.setAttribute('onclick', '');
   targetItem.innerHTML = `
     <input class="dash-task-edit-input" type="text" value="${currentText.replace(/"/g, '&quot;')}"
-      onkeydown="if(event.key==='Enter'){event.stopPropagation();saveDashTaskEdit('${eventKey}',${taskIndex},this);}
+      onkeydown="if(event.key==='Enter'){event.stopPropagation();saveDashTaskEdit('${eventKey}','${cat}',${taskIndex},this);}
                   if(event.key==='Escape'){event.stopPropagation();cancelDashTaskEdit();}">
     <div class="dash-task-edit-actions">
-      <button class="dash-task-edit-save" onclick="event.stopPropagation();saveDashTaskEdit('${eventKey}',${taskIndex},this.parentElement.previousElementSibling)">Save</button>
+      <button class="dash-task-edit-save" onclick="event.stopPropagation();saveDashTaskEdit('${eventKey}','${cat}',${taskIndex},this.parentElement.previousElementSibling)">Save</button>
       <button class="dash-task-edit-cancel" onclick="event.stopPropagation();cancelDashTaskEdit()">Cancel</button>
     </div>
   `;
@@ -3747,17 +3931,144 @@ function editDashTask(eventKey, taskIndex) {
   editInput.setSelectionRange(editInput.value.length, editInput.value.length);
 }
 
-function saveDashTaskEdit(eventKey, taskIndex, inputEl) {
+function saveDashTaskEdit(eventKey, cat, taskIndex, inputEl) {
   const newText = inputEl.value.trim();
   if (!newText) return;
   const tasks = loadDashTasks();
-  if (!tasks[eventKey] || !tasks[eventKey][taskIndex]) return;
-  tasks[eventKey][taskIndex].text = newText;
+  if (!tasks[eventKey] || !tasks[eventKey][cat] || !tasks[eventKey][cat][taskIndex]) return;
+  tasks[eventKey][cat][taskIndex].text = newText;
   saveDashTasks(tasks);
   renderDashboardPreserving();
 }
 
 function cancelDashTaskEdit() {
+  renderDashboardPreserving();
+}
+
+/* ── Staff List Management (PIN-protected) ── */
+const STAFF_MANAGE_PIN = '1228';
+let staffList = JSON.parse(localStorage.getItem('vps_staff_list') || 'null') ||
+  ['Jose','Rey','Robert','Mario','Chris','Seth','Esdras','Corey','JC Tanon','Juan Carlos'];
+
+function saveStaffList() {
+  localStorage.setItem('vps_staff_list', JSON.stringify(staffList));
+  // Also persist to Firestore
+  if (typeof db !== 'undefined') {
+    db.collection('meta').doc('staffList').set({ names: staffList }).catch(err => console.error('Staff save error:', err));
+  }
+}
+
+function loadStaffListFromFirestore() {
+  if (typeof db === 'undefined') return;
+  db.collection('meta').doc('staffList').get().then(doc => {
+    if (doc.exists && doc.data().names) {
+      staffList = doc.data().names;
+      localStorage.setItem('vps_staff_list', JSON.stringify(staffList));
+    }
+  }).catch(() => {});
+}
+
+function openStaffManageModal() {
+  const pin = prompt('Enter PIN to manage staff:');
+  if (pin !== STAFF_MANAGE_PIN) {
+    if (pin !== null) alert('Incorrect PIN.');
+    return;
+  }
+  const overlay = document.createElement('div');
+  overlay.className = 'staff-manage-modal';
+  overlay.id = 'staffManageModal';
+  function renderList() {
+    const listHTML = staffList.map((name, i) => `
+      <div class="staff-manage-row">
+        <span>${name}</span>
+        <button onclick="removeStaffMember(${i})" title="Remove"><i class="fas fa-xmark"></i></button>
+      </div>`).join('');
+    overlay.innerHTML = `
+      <div class="staff-manage-box">
+        <h3><i class="fas fa-users-gear" style="margin-right:8px;color:var(--green);"></i>Manage Staff</h3>
+        <div class="staff-manage-list">${listHTML}</div>
+        <div class="staff-manage-add">
+          <input type="text" id="staffAddInput" placeholder="New staff name..." onkeydown="if(event.key==='Enter')addStaffMember()">
+          <button onclick="addStaffMember()">Add</button>
+        </div>
+        <button class="staff-manage-close" onclick="closeStaffManageModal()">Done</button>
+      </div>`;
+  }
+  renderList();
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeStaffManageModal(); });
+  window._renderStaffModal = renderList;
+}
+
+function addStaffMember() {
+  const input = document.getElementById('staffAddInput');
+  if (!input) return;
+  const name = input.value.trim();
+  if (!name) return;
+  staffList.push(name);
+  saveStaffList();
+  if (window._renderStaffModal) window._renderStaffModal();
+  setTimeout(() => { const inp = document.getElementById('staffAddInput'); if (inp) inp.focus(); }, 50);
+}
+
+function removeStaffMember(index) {
+  staffList.splice(index, 1);
+  saveStaffList();
+  if (window._renderStaffModal) window._renderStaffModal();
+}
+
+function closeStaffManageModal() {
+  const m = document.getElementById('staffManageModal');
+  if (m) m.remove();
+  renderDashboardPreserving();
+}
+
+/* ── Generic sub-field updater (dropdowns, text inputs, sub-checks, staff) ── */
+function updateDashTaskField(eventKey, cat, taskIndex, field, value) {
+  const tasks = loadDashTasks();
+  if (!tasks[eventKey] || !tasks[eventKey][cat] || !tasks[eventKey][cat][taskIndex]) return;
+  tasks[eventKey][cat][taskIndex][field] = value;
+  saveDashTasks(tasks);
+}
+
+function toggleDashSubCheck(eventKey, cat, taskIndex, subField) {
+  const tasks = loadDashTasks();
+  const t = tasks[eventKey] && tasks[eventKey][cat] && tasks[eventKey][cat][taskIndex];
+  if (!t || !t.subChecks) return;
+  const sc = t.subChecks[subField];
+  if (sc === undefined) return;
+  t.subChecks[subField] = !sc;
+  saveDashTasks(tasks);
+  renderDashboardPreserving();
+}
+
+function toggleDashStaff(eventKey, cat, taskIndex, staffName) {
+  const tasks = loadDashTasks();
+  const t = tasks[eventKey] && tasks[eventKey][cat] && tasks[eventKey][cat][taskIndex];
+  if (!t) return;
+  if (!t.selectedStaff) t.selectedStaff = [];
+  const idx = t.selectedStaff.indexOf(staffName);
+  if (idx === -1) t.selectedStaff.push(staffName);
+  else t.selectedStaff.splice(idx, 1);
+  saveDashTasks(tasks);
+  renderDashboardPreserving();
+}
+
+function toggleBrandingYes(eventKey, cat, taskIndex) {
+  const tasks = loadDashTasks();
+  const t = tasks[eventKey] && tasks[eventKey][cat] && tasks[eventKey][cat][taskIndex];
+  if (!t) return;
+  t.brandingYes = !t.brandingYes;
+  saveDashTasks(tasks);
+  renderDashboardPreserving();
+}
+
+function toggleRentalCarYes(eventKey, cat, taskIndex) {
+  const tasks = loadDashTasks();
+  const t = tasks[eventKey] && tasks[eventKey][cat] && tasks[eventKey][cat][taskIndex];
+  if (!t) return;
+  t.rentalCarYes = !t.rentalCarYes;
+  saveDashTasks(tasks);
   renderDashboardPreserving();
 }
 
@@ -3774,41 +4085,121 @@ function toggleDashSection(el) {
 }
 
 function generateDefaultTasks(evt) {
-  const tasks = [];
+  const operations = [];
   const type = (evt.type || '').toLowerCase();
   const name = (evt.name || evt.title || '').toLowerCase();
   const isSRP = evt._source === 'srp';
 
   if (isSRP) {
-    tasks.push({ text: 'Confirm event logistics and point of contact', done: false });
-    tasks.push({ text: 'Prepare and load simulators for transport', done: false });
-    if (evt.simulators) tasks.push({ text: 'Verify all ' + evt.simulators + ' simulator(s) are operational', done: false });
-    if (evt.loadInDate) tasks.push({ text: 'Complete load-in by ' + formatDate(evt.loadInDate) + (evt.loadInTime ? ' at ' + evt.loadInTime : ''), done: false });
-    tasks.push({ text: 'Run pre-session check on all rigs', done: false });
-    tasks.push({ text: 'Ensure backup equipment is packed', done: false });
-    if (evt.loadOutDate) tasks.push({ text: 'Complete load-out by ' + formatDate(evt.loadOutDate) + (evt.loadOutTime ? ' at ' + evt.loadOutTime : ''), done: false });
+    operations.push({ text: 'Confirm event logistics and point of contact', done: false });
+    operations.push({ text: 'Prepare and load simulators for transport', done: false });
+    if (evt.simulators) operations.push({ text: 'Verify all ' + evt.simulators + ' simulator(s) are operational', done: false });
+    if (evt.loadInDate) operations.push({ text: 'Complete load-in by ' + formatDate(evt.loadInDate) + (evt.loadInTime ? ' at ' + evt.loadInTime : ''), done: false });
+    operations.push({ text: 'Run pre-session check on all rigs', done: false });
+    operations.push({ text: 'Ensure backup equipment is packed', done: false });
+    if (evt.loadOutDate) operations.push({ text: 'Complete load-out by ' + formatDate(evt.loadOutDate) + (evt.loadOutTime ? ' at ' + evt.loadOutTime : ''), done: false });
   } else {
-    // VPS events
     if (type === 'build') {
-      tasks.push({ text: 'Verify all parts and components received', done: false });
-      tasks.push({ text: 'Assemble chassis and mount hardware', done: false });
-      tasks.push({ text: 'Install and configure software', done: false });
-      tasks.push({ text: 'Run full calibration and QA test', done: false });
-      tasks.push({ text: 'Document build with photos', done: false });
+      operations.push({ text: 'Verify all parts and components received', done: false });
+      operations.push({ text: 'Assemble chassis and mount hardware', done: false });
+      operations.push({ text: 'Install and configure software', done: false });
+      operations.push({ text: 'Run full calibration and QA test', done: false });
+      operations.push({ text: 'Document build with photos', done: false });
     } else if (type === 'delivery') {
-      tasks.push({ text: 'Final QA check before delivery', done: false });
-      tasks.push({ text: 'Secure simulator for transport', done: false });
-      tasks.push({ text: 'Deliver and set up at client location', done: false });
-      tasks.push({ text: 'Walk client through operation and care', done: false });
-      tasks.push({ text: 'Collect delivery confirmation / sign-off', done: false });
+      operations.push({ text: 'Final QA check before delivery', done: false });
+      operations.push({ text: 'Secure simulator for transport', done: false });
+      operations.push({ text: 'Deliver and set up at client location', done: false });
+      operations.push({ text: 'Walk client through operation and care', done: false });
+      operations.push({ text: 'Collect delivery confirmation / sign-off', done: false });
     } else {
-      tasks.push({ text: 'Review event details and requirements', done: false });
-      tasks.push({ text: 'Assign team members to this event', done: false });
-      tasks.push({ text: 'Prepare all necessary equipment', done: false });
-      tasks.push({ text: 'Complete post-event wrap-up', done: false });
+      operations.push({ text: 'Review event details and requirements', done: false });
+      operations.push({ text: 'Prepare all necessary equipment', done: false });
+      operations.push({ text: 'Complete post-event wrap-up', done: false });
     }
   }
-  return tasks;
+
+  /* ── New default operational tasks ── */
+
+  // Confirm Hardware
+  operations.push({
+    text: 'Confirm Hardware', done: false, taskType: 'hardware',
+    hardware: { wheel: '', motor: '', pedals: '', monitor: '', monitorRemote: false, pc: false, chassis: '' }
+  });
+
+  // Branding
+  operations.push({
+    text: 'Branding', done: false, taskType: 'branding', brandingYes: false,
+    subChecks: {
+      'Assets received': false,
+      'Sent to print shop': false,
+      'Mock-ups received': false,
+      'Mock-ups approved by customer': false,
+      'Sent to print': false,
+      'Print items received': false,
+      'Print items packed for event': false
+    }
+  });
+
+  // Pedestal
+  operations.push({
+    text: 'Pedestal', done: false, taskType: 'pedestal',
+    pedestalColor: '',
+    subChecks: {
+      'Custom paint color': false,
+      'Pedestal ready': false,
+      'Pedestal packed': false
+    }
+  });
+
+  // Timing and Scoring
+  operations.push({
+    text: 'Timing and Scoring', done: false, taskType: 'timing',
+    subChecks: {
+      'Registration kiosk': false,
+      'Surface tablet': false,
+      'Networking cables': false,
+      'QR scanners': false,
+      'Ethernet to USB adapter': false,
+      'USB Hub': false,
+      'Leaderboard monitor': false,
+      'Leaderboard monitor stand': false,
+      'HDMI Cable (25-50 Foot)': false
+    }
+  });
+
+  // Uhaul
+  operations.push({
+    text: 'Uhaul', done: false, taskType: 'uhaul', confirmationNumber: ''
+  });
+
+  // Lodging
+  operations.push({
+    text: 'Lodging', done: false, taskType: 'lodging', hotelLocation: '', booked: false
+  });
+
+  // Driver Keys
+  operations.push({ text: 'Driver Keys', done: false });
+
+  // Staff
+  operations.push({
+    text: 'Staff Working Event', done: false, taskType: 'staff', selectedStaff: []
+  });
+
+  // Rental Car
+  operations.push({
+    text: 'Rental Car', done: false, taskType: 'rentalcar', rentalCarYes: false, rentalConfirmation: ''
+  });
+
+  /* Default accounting tasks for every event */
+  const accounting = [
+    { text: 'Quote Accepted', done: false },
+    { text: 'Invoice Customer', done: false },
+    { text: 'Deposit Received', done: false, hasDates: true, dateReceived: '', dateDue: '' },
+    { text: '50% Received', done: false, hasDates: true, dateReceived: '', dateDue: '' },
+    { text: 'Paid in Full', done: false, hasDates: true, dateReceived: '', dateDue: '' },
+  ];
+
+  return { operations, accounting };
 }
 
 function getEventKey(evt) {
@@ -3850,10 +4241,13 @@ function renderDashboard() {
     }
     // Also include recent past events with incomplete tasks
     if (end < todayStr && end >= pastStartStr) {
-      const tasks = dashTasks[key];
-      if (tasks && tasks.some(t => !t.done)) {
-        seenKeys.add(key);
-        uniqueEvents.push(evt);
+      const td = dashTasks[key];
+      if (td) {
+        const allT = [...(td.operations || []), ...(td.accounting || [])];
+        if (allT.some(t => !t.done)) {
+          seenKeys.add(key);
+          uniqueEvents.push(evt);
+        }
       }
     }
   });
@@ -3864,11 +4258,44 @@ function renderDashboard() {
   // Ensure tasks exist for each event (only generate defaults AFTER Firestore data has loaded)
   if (dashTasksLoaded) {
     let newTasksGenerated = false;
+    const defaultAccounting = [
+      { text: 'Quote Accepted', done: false },
+      { text: 'Invoice Customer', done: false },
+      { text: 'Deposit Received', done: false, hasDates: true, dateReceived: '', dateDue: '' },
+      { text: '50% Received', done: false, hasDates: true, dateReceived: '', dateDue: '' },
+      { text: 'Paid in Full', done: false, hasDates: true, dateReceived: '', dateDue: '' },
+    ];
+    /* New default operational tasks to backfill */
+    const newOpsTasks = [
+      { text: 'Confirm Hardware', done: false, taskType: 'hardware', hardware: { wheel: '', motor: '', pedals: '', monitor: '', monitorRemote: false, pc: false, chassis: '' } },
+      { text: 'Branding', done: false, taskType: 'branding', brandingYes: false, subChecks: { 'Assets received': false, 'Sent to print shop': false, 'Mock-ups received': false, 'Mock-ups approved by customer': false, 'Sent to print': false, 'Print items received': false, 'Print items packed for event': false } },
+      { text: 'Pedestal', done: false, taskType: 'pedestal', pedestalColor: '', subChecks: { 'Custom paint color': false, 'Pedestal ready': false, 'Pedestal packed': false } },
+      { text: 'Timing and Scoring', done: false, taskType: 'timing', subChecks: { 'Registration kiosk': false, 'Surface tablet': false, 'Networking cables': false, 'QR scanners': false, 'Ethernet to USB adapter': false, 'USB Hub': false, 'Leaderboard monitor': false, 'Leaderboard monitor stand': false, 'HDMI Cable (25-50 Foot)': false } },
+      { text: 'Uhaul', done: false, taskType: 'uhaul', confirmationNumber: '' },
+      { text: 'Lodging', done: false, taskType: 'lodging', hotelLocation: '', booked: false },
+      { text: 'Driver Keys', done: false },
+      { text: 'Staff Working Event', done: false, taskType: 'staff', selectedStaff: [] },
+      { text: 'Rental Car', done: false, taskType: 'rentalcar', rentalCarYes: false, rentalConfirmation: '' },
+    ];
+
     uniqueEvents.forEach(evt => {
       const key = getEventKey(evt);
       if (!dashTasks[key]) {
         dashTasks[key] = generateDefaultTasks(evt);
         newTasksGenerated = true;
+      } else {
+        /* Backfill default accounting tasks for existing events */
+        if (!dashTasks[key].accounting || dashTasks[key].accounting.length === 0) {
+          dashTasks[key].accounting = JSON.parse(JSON.stringify(defaultAccounting));
+          newTasksGenerated = true;
+        }
+        /* Backfill new operational tasks for existing events */
+        const ops = dashTasks[key].operations || [];
+        const hasNewOps = ops.some(t => t.taskType === 'hardware');
+        if (!hasNewOps) {
+          dashTasks[key].operations = [...ops, ...JSON.parse(JSON.stringify(newOpsTasks))];
+          newTasksGenerated = true;
+        }
       }
     });
     if (newTasksGenerated) saveDashTasks(dashTasks);
@@ -3881,9 +4308,10 @@ function renderDashboard() {
   let totalTasks = 0, completedTasks = 0;
   uniqueEvents.forEach(evt => {
     const key = getEventKey(evt);
-    const t = dashTasks[key] || [];
-    totalTasks += t.length;
-    completedTasks += t.filter(x => x.done).length;
+    const td = dashTasks[key] || { operations: [], accounting: [] };
+    const allT = [...(td.operations || []), ...(td.accounting || [])];
+    totalTasks += allT.length;
+    completedTasks += allT.filter(x => x.done).length;
   });
 
   let sectionsHTML = '';
@@ -3945,9 +4373,12 @@ function renderDashboard() {
       }
 
       const key = getEventKey(evt);
-      const tasks = dashTasks[key] || [];
-      const doneCount = tasks.filter(t => t.done).length;
-      const totalCount = tasks.length;
+      const taskData = dashTasks[key] || { operations: [], accounting: [] };
+      const opsArr = taskData.operations || [];
+      const acctArr = taskData.accounting || [];
+      const allTasks = [...opsArr, ...acctArr];
+      const doneCount = allTasks.filter(t => t.done).length;
+      const totalCount = allTasks.length;
       const pct = totalCount ? Math.round((doneCount / totalCount) * 100) : 0;
       const evtName = evt.name || evt.title || 'Event';
       const sourceTag = evt._source === 'srp' ? 'SRP' : 'VPS';
@@ -3961,16 +4392,185 @@ function renderDashboard() {
       if (evt.status) metaHTML += `<span><i class="fas fa-circle-info"></i>${evt.status.replace('-',' ')}</span>`;
       if (evt.description) metaHTML += `<span><i class="fas fa-align-left"></i>${evt.description.substring(0, 50)}${evt.description.length > 50 ? '...' : ''}</span>`;
 
-      let tasksHTML = tasks.map((t, i) => `
-        <div class="dash-task-item ${t.done ? 'completed' : ''}" onclick="toggleDashTask('${key}', ${i})">
-          <div class="dash-task-check"><i class="fas fa-check"></i></div>
-          <span class="dash-task-text">${t.text}</span>
-          <div class="dash-task-actions">
-            <button class="dash-task-edit" onclick="event.stopPropagation();editDashTask('${key}', ${i})" title="Edit task"><i class="fas fa-pen"></i></button>
-            <button class="dash-task-delete" onclick="event.stopPropagation();removeDashTask('${key}', ${i})" title="Remove task"><i class="fas fa-xmark"></i></button>
-          </div>
-        </div>
-      `).join('');
+      /* Hardware dropdown options */
+      const hwOptions = {
+        wheel: ['','Logitech G923','Logitech Pro','Moza FSR','Moza KS','Moza R5','Fanatec Formula'],
+        motor: ['','Logitech','Logitech Pro','Moza','Fanatec'],
+        pedals: ['','Logitech','Logitech Pro','Moza','Fanatec'],
+        monitor: ['','43 Inch','45 Inch Curved','49 Inch Curved'],
+        chassis: ['','SimLab GT1 Evo','Extreme Sim Racing P1','Fanatec Clubsport']
+      };
+      const paintColors = ['','Red','Blue','Green','Yellow','Orange','Purple','Black','White','Silver','Gold','Pink','Brown','Gray','Navy','Teal'];
+
+      /* Render a single task item */
+      function renderTaskItem(t, i, cat) {
+        let subHTML = '';
+
+        /* Accounting date fields */
+        if (t.hasDates) {
+          subHTML = `
+            <div class="dash-task-dates" onclick="event.stopPropagation()">
+              <div class="dash-task-date-field">
+                <label>Due:</label>
+                <input type="date" value="${t.dateDue || ''}" onchange="updateDashTaskDate('${key}','${cat}',${i},'dateDue',this.value)">
+              </div>
+              <div class="dash-task-date-field">
+                <label>Received:</label>
+                <input type="date" value="${t.dateReceived || ''}" onchange="updateDashTaskDate('${key}','${cat}',${i},'dateReceived',this.value)">
+              </div>
+            </div>`;
+        }
+
+        /* Hardware dropdowns */
+        if (t.taskType === 'hardware') {
+          const hw = t.hardware || {};
+          function selOpts(field) {
+            return (hwOptions[field] || []).map(o =>
+              '<option value="' + o + '"' + (hw[field] === o ? ' selected' : '') + '>' + (o || '-- Select --') + '</option>'
+            ).join('');
+          }
+          subHTML = `<div class="dash-task-sub" onclick="event.stopPropagation()">
+            <div class="dash-task-sub-row"><label>Wheel:</label><select onchange="updateDashTaskField('${key}','${cat}',${i},'hardware',Object.assign((loadDashTasks()['${key}']?.${cat}?.[${i}]?.hardware||{}),{wheel:this.value}));saveDashTasks(loadDashTasks())">${selOpts('wheel')}</select></div>
+            <div class="dash-task-sub-row"><label>Motor:</label><select onchange="updateDashTaskField('${key}','${cat}',${i},'hardware',Object.assign((loadDashTasks()['${key}']?.${cat}?.[${i}]?.hardware||{}),{motor:this.value}));saveDashTasks(loadDashTasks())">${selOpts('motor')}</select></div>
+            <div class="dash-task-sub-row"><label>Pedals:</label><select onchange="updateDashTaskField('${key}','${cat}',${i},'hardware',Object.assign((loadDashTasks()['${key}']?.${cat}?.[${i}]?.hardware||{}),{pedals:this.value}));saveDashTasks(loadDashTasks())">${selOpts('pedals')}</select></div>
+            <div class="dash-task-sub-row"><label>Monitor:</label><select onchange="updateDashTaskField('${key}','${cat}',${i},'hardware',Object.assign((loadDashTasks()['${key}']?.${cat}?.[${i}]?.hardware||{}),{monitor:this.value}));saveDashTasks(loadDashTasks())">${selOpts('monitor')}</select></div>
+            <div class="dash-task-sub-row"><label>Monitor Remote:</label><div class="dash-sub-check-item ${hw.monitorRemote ? 'checked' : ''}" onclick="var t=loadDashTasks();var h=t['${key}']?.${cat}?.[${i}]?.hardware;if(h){h.monitorRemote=!h.monitorRemote;saveDashTasks(t);renderDashboardPreserving();}"><div class="sub-check-box"><i class="fas fa-check"></i></div><span class="sub-check-label">Confirmed</span></div></div>
+            <div class="dash-task-sub-row"><label>PC:</label><div class="dash-sub-check-item ${hw.pc ? 'checked' : ''}" onclick="var t=loadDashTasks();var h=t['${key}']?.${cat}?.[${i}]?.hardware;if(h){h.pc=!h.pc;saveDashTasks(t);renderDashboardPreserving();}"><div class="sub-check-box"><i class="fas fa-check"></i></div><span class="sub-check-label">Confirmed</span></div></div>
+            <div class="dash-task-sub-row"><label>Chassis:</label><select onchange="updateDashTaskField('${key}','${cat}',${i},'hardware',Object.assign((loadDashTasks()['${key}']?.${cat}?.[${i}]?.hardware||{}),{chassis:this.value}));saveDashTasks(loadDashTasks())">${selOpts('chassis')}</select></div>
+          </div>`;
+        }
+
+        /* Branding: yes/no toggle + sub-checklist */
+        if (t.taskType === 'branding') {
+          let brandSub = '';
+          if (t.brandingYes && t.subChecks) {
+            const items = Object.keys(t.subChecks).map(label => {
+              const checked = t.subChecks[label];
+              return `<div class="dash-sub-check-item ${checked ? 'checked' : ''}" onclick="event.stopPropagation();toggleDashSubCheck('${key}','${cat}',${i},'${label.replace(/'/g,"\\'")}')">
+                <div class="sub-check-box"><i class="fas fa-check"></i></div>
+                <span class="sub-check-label">${label}</span>
+              </div>`;
+            }).join('');
+            brandSub = `<div class="dash-sub-checklist" onclick="event.stopPropagation()">${items}</div>`;
+          }
+          subHTML = `<div class="dash-task-sub" onclick="event.stopPropagation()">
+            <div class="dash-task-sub-row">
+              <label>Branding needed?</label>
+              <div class="dash-sub-check-item ${t.brandingYes ? 'checked' : ''}" onclick="event.stopPropagation();toggleBrandingYes('${key}','${cat}',${i})">
+                <div class="sub-check-box"><i class="fas fa-check"></i></div>
+                <span class="sub-check-label">${t.brandingYes ? 'Yes' : 'No'}</span>
+              </div>
+            </div>
+          </div>${brandSub}`;
+        }
+
+        /* Pedestal: color dropdown + sub-checklist */
+        if (t.taskType === 'pedestal') {
+          const colorOpts = paintColors.map(c =>
+            '<option value="' + c + '"' + ((t.pedestalColor || '') === c ? ' selected' : '') + '>' + (c || '-- Select Color --') + '</option>'
+          ).join('');
+          const items = Object.keys(t.subChecks || {}).map(label => {
+            const checked = (t.subChecks || {})[label];
+            let extra = '';
+            if (label === 'Custom paint color') {
+              extra = `<select style="margin-left:8px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.75rem;padding:2px 6px;cursor:pointer;" onclick="event.stopPropagation()" onchange="event.stopPropagation();updateDashTaskField('${key}','${cat}',${i},'pedestalColor',this.value)">${colorOpts}</select>`;
+            }
+            return `<div class="dash-sub-check-item ${checked ? 'checked' : ''}" onclick="event.stopPropagation();toggleDashSubCheck('${key}','${cat}',${i},'${label.replace(/'/g,"\\'")}')">
+              <div class="sub-check-box"><i class="fas fa-check"></i></div>
+              <span class="sub-check-label">${label}</span>${extra}
+            </div>`;
+          }).join('');
+          subHTML = `<div class="dash-sub-checklist" onclick="event.stopPropagation()">${items}</div>`;
+        }
+
+        /* Timing and Scoring: sub-checklist */
+        if (t.taskType === 'timing') {
+          const items = Object.keys(t.subChecks || {}).map(label => {
+            const checked = (t.subChecks || {})[label];
+            return `<div class="dash-sub-check-item ${checked ? 'checked' : ''}" onclick="event.stopPropagation();toggleDashSubCheck('${key}','${cat}',${i},'${label.replace(/'/g,"\\'")}')">
+              <div class="sub-check-box"><i class="fas fa-check"></i></div>
+              <span class="sub-check-label">${label}</span>
+            </div>`;
+          }).join('');
+          subHTML = `<div class="dash-sub-checklist" onclick="event.stopPropagation()">${items}</div>`;
+        }
+
+        /* Uhaul: confirmation number text input */
+        if (t.taskType === 'uhaul') {
+          subHTML = `<div class="dash-task-sub" onclick="event.stopPropagation()">
+            <div class="dash-task-sub-row">
+              <label>Confirmation #:</label>
+              <input type="text" value="${(t.confirmationNumber || '').replace(/"/g,'&quot;')}" placeholder="Enter confirmation or reservation #"
+                onchange="updateDashTaskField('${key}','${cat}',${i},'confirmationNumber',this.value)">
+            </div>
+          </div>`;
+        }
+
+        /* Lodging: hotel location + booked checkbox */
+        if (t.taskType === 'lodging') {
+          subHTML = `<div class="dash-task-sub" onclick="event.stopPropagation()">
+            <div class="dash-task-sub-row">
+              <label>Hotel:</label>
+              <input type="text" value="${(t.hotelLocation || '').replace(/"/g,'&quot;')}" placeholder="Enter hotel name / location"
+                onchange="updateDashTaskField('${key}','${cat}',${i},'hotelLocation',this.value)">
+            </div>
+            <div class="dash-task-sub-row">
+              <label>Booked?</label>
+              <div class="dash-sub-check-item ${t.booked ? 'checked' : ''}" onclick="event.stopPropagation();var t2=loadDashTasks();var item=t2['${key}']?.${cat}?.[${i}];if(item){item.booked=!item.booked;saveDashTasks(t2);renderDashboardPreserving();}">
+                <div class="sub-check-box"><i class="fas fa-check"></i></div>
+                <span class="sub-check-label">${t.booked ? 'Yes' : 'No'}</span>
+              </div>
+            </div>
+          </div>`;
+        }
+
+        /* Staff Working Event: clickable name pills */
+        if (t.taskType === 'staff') {
+          const selected = t.selectedStaff || [];
+          const pills = staffList.map(name =>
+            `<div class="dash-staff-pill ${selected.includes(name) ? 'active' : ''}" onclick="event.stopPropagation();toggleDashStaff('${key}','${cat}',${i},'${name.replace(/'/g,"\\'")}')">${name}</div>`
+          ).join('');
+          subHTML = `<div class="dash-staff-grid" onclick="event.stopPropagation()">
+            ${pills}
+            <button class="dash-staff-manage-btn" onclick="event.stopPropagation();openStaffManageModal()"><i class="fas fa-gear"></i> Manage</button>
+          </div>`;
+        }
+
+        /* Rental Car: yes/no + confirmation number */
+        if (t.taskType === 'rentalcar') {
+          let rcSub = '';
+          if (t.rentalCarYes) {
+            rcSub = `<div class="dash-task-sub-row">
+              <label>Confirmation #:</label>
+              <input type="text" value="${(t.rentalConfirmation || '').replace(/"/g,'&quot;')}" placeholder="Enter confirmation #"
+                onchange="updateDashTaskField('${key}','${cat}',${i},'rentalConfirmation',this.value)">
+            </div>`;
+          }
+          subHTML = `<div class="dash-task-sub" onclick="event.stopPropagation()">
+            <div class="dash-task-sub-row">
+              <label>Rental Car?</label>
+              <div class="dash-sub-check-item ${t.rentalCarYes ? 'checked' : ''}" onclick="event.stopPropagation();toggleRentalCarYes('${key}','${cat}',${i})">
+                <div class="sub-check-box"><i class="fas fa-check"></i></div>
+                <span class="sub-check-label">${t.rentalCarYes ? 'Yes' : 'No'}</span>
+              </div>
+            </div>
+            ${rcSub}
+          </div>`;
+        }
+
+        return `
+          <div class="dash-task-item ${t.done ? 'completed' : ''}" onclick="toggleDashTask('${key}','${cat}',${i})">
+            <div class="dash-task-check"><i class="fas fa-check"></i></div>
+            <span class="dash-task-text">${t.text}</span>
+            <div class="dash-task-actions">
+              <button class="dash-task-edit" onclick="event.stopPropagation();editDashTask('${key}','${cat}',${i})" title="Edit task"><i class="fas fa-pen"></i></button>
+              <button class="dash-task-delete" onclick="event.stopPropagation();removeDashTask('${key}','${cat}',${i})" title="Remove task"><i class="fas fa-xmark"></i></button>
+            </div>
+          </div>${subHTML}`;
+      }
+
+      let opsHTML = opsArr.map((t, i) => renderTaskItem(t, i, 'operations')).join('');
+      let acctHTML = acctArr.map((t, i) => renderTaskItem(t, i, 'accounting')).join('');
 
       sectionsHTML += `
         <div class="dash-date-section">
@@ -3991,11 +4591,23 @@ function renderDashboard() {
             <div class="dash-event-card">
               ${metaHTML ? `<div class="dash-event-meta">${metaHTML}</div>` : ''}
               <div class="dash-tasks">
-                ${tasksHTML}
-                <div class="dash-add-task">
-                  <i class="fas fa-plus" style="color:var(--text-muted);font-size:0.75rem;"></i>
-                  <input type="text" id="dashAddInput_${key}" placeholder="Add a task..." onkeydown="if(event.key==='Enter'){event.stopPropagation();addDashTask('${key}');}">
-                  <button onclick="event.stopPropagation();addDashTask('${key}')">Add</button>
+                <div class="dash-task-category">
+                  <div class="dash-task-category-header ops"><i class="fas fa-clipboard-list"></i> Operations</div>
+                  ${opsHTML}
+                  <div class="dash-add-task">
+                    <i class="fas fa-plus" style="color:var(--text-muted);font-size:0.75rem;"></i>
+                    <input type="text" id="dashAddInput_ops_${key}" placeholder="Add operations task..." onkeydown="if(event.key==='Enter'){event.stopPropagation();addDashTask('${key}','operations');}">
+                    <button onclick="event.stopPropagation();addDashTask('${key}','operations')">Add</button>
+                  </div>
+                </div>
+                <div class="dash-task-category">
+                  <div class="dash-task-category-header acct"><i class="fas fa-file-invoice-dollar"></i> Accounting</div>
+                  ${acctHTML}
+                  <div class="dash-add-task">
+                    <i class="fas fa-plus" style="color:var(--text-muted);font-size:0.75rem;"></i>
+                    <input type="text" id="dashAddInput_acct_${key}" placeholder="Add accounting task..." onkeydown="if(event.key==='Enter'){event.stopPropagation();addDashTask('${key}','accounting');}">
+                    <button onclick="event.stopPropagation();addDashTask('${key}','accounting')">Add</button>
+                  </div>
                 </div>
               </div>
               ${totalCount > 0 ? `
