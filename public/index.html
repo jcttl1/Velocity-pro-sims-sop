@@ -572,6 +572,76 @@
       filter: invert(0.7); cursor: pointer; font-size: 0.7rem;
     }
 
+    /* ── Form Task Sections (collapsible) ── */
+    .form-task-section {
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      margin-top: 16px; overflow: hidden;
+    }
+    .form-task-section-header {
+      display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+      background: var(--bg-input); cursor: pointer; user-select: none;
+      transition: background var(--transition);
+    }
+    .form-task-section-header:hover { background: var(--bg-card-hover); }
+    .form-task-section-header i.section-icon { font-size: 0.75rem; }
+    .form-task-section-header .section-title {
+      font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; flex: 1;
+    }
+    .form-task-section-header .section-chevron {
+      font-size: 0.65rem; color: var(--text-muted); transition: transform 0.2s ease;
+    }
+    .form-task-section-header.open .section-chevron { transform: rotate(90deg); }
+    .form-task-section-body {
+      max-height: 0; overflow: hidden; transition: max-height 0.35s ease;
+      padding: 0 14px;
+    }
+    .form-task-section-body.open { max-height: 4000px; padding: 12px 14px; }
+    .form-task-row {
+      display: flex; align-items: center; gap: 8px; padding: 6px 0;
+      border-bottom: 1px solid var(--border); flex-wrap: wrap;
+    }
+    .form-task-row:last-child { border-bottom: none; }
+    .form-task-row label.task-label {
+      font-size: 0.82rem; font-weight: 600; color: var(--text-primary);
+      min-width: 140px;
+    }
+    .form-task-row .task-field {
+      flex: 1; min-width: 120px;
+    }
+    .form-task-row select, .form-task-row input[type="text"],
+    .form-task-row input[type="date"], .form-task-row input[type="number"] {
+      width: 100%; background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text-primary);
+      font-size: 0.8rem; font-family: 'Inter', sans-serif;
+      padding: 5px 8px; outline: none;
+    }
+    .form-task-row select:focus, .form-task-row input:focus { border-color: var(--green); }
+    .form-task-check {
+      display: flex; align-items: center; gap: 6px; cursor: pointer;
+      font-size: 0.8rem; color: var(--text-secondary);
+    }
+    .form-task-check input[type="checkbox"] {
+      accent-color: var(--green); width: 16px; height: 16px; cursor: pointer;
+    }
+    .form-task-sub-label {
+      font-size: 0.72rem; color: var(--text-muted); font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.8px;
+      margin-top: 8px; margin-bottom: 4px;
+    }
+    .form-staff-grid {
+      display: flex; flex-wrap: wrap; gap: 6px; padding: 6px 0;
+    }
+    .form-staff-pill {
+      padding: 5px 14px; border-radius: 20px; font-size: 0.78rem;
+      border: 1px solid var(--border); color: var(--text-secondary);
+      cursor: pointer; transition: all var(--transition); user-select: none;
+    }
+    .form-staff-pill:hover { border-color: var(--green); }
+    .form-staff-pill.active {
+      background: var(--green); border-color: var(--green); color: #fff; font-weight: 600;
+    }
+
     /* ── Category View ── */
     .category-view { display: none; }
     .category-view.active { display: block; }
@@ -2303,6 +2373,214 @@
     }
     .crm-tab:hover { color: var(--text-primary); }
     .crm-tab.active { color: #22D3EE; border-bottom-color: #22D3EE; }
+
+    /* ══════════════════════════════════════════════════════
+       READABILITY OVERRIDES — Larger fonts & touch targets
+       ══════════════════════════════════════════════════════ */
+
+    /* ── Base & Body ── */
+    body { font-size: 16px; line-height: 1.7; }
+
+    /* ── Header ── */
+    .header-title { font-size: 1rem; }
+    .search-bar input { font-size: 0.95rem; padding: 11px 16px 11px 40px; }
+    .search-bar i { font-size: 0.95rem; }
+    .search-result-item .sr-cat { font-size: 0.8rem; }
+    .search-result-item .sr-title { font-size: 0.95rem; }
+    .btn-icon { width: 40px; height: 40px; font-size: 1rem; }
+
+    /* ── Sidebar ── */
+    .sidebar-label { font-size: 0.8rem; }
+    .nav-item { font-size: 1rem; padding: 12px 14px; gap: 12px; }
+    .nav-item i { font-size: 0.95rem; width: 22px; }
+    .nav-item .badge { font-size: 0.8rem; padding: 3px 9px; }
+
+    /* ── Dashboard Header ── */
+    .dashboard-header h1 { font-size: 2.2rem; }
+    .dashboard-header p { font-size: 1.05rem; }
+
+    /* ── Stat Cards ── */
+    .stat-label { font-size: 0.9rem; }
+    .stat-value { font-size: 2.2rem; }
+
+    /* ── Dashboard Date Sections ── */
+    .dash-date-icon .day-num { font-size: 1.5rem; }
+    .dash-date-icon .day-name { font-size: 0.72rem; }
+    .dash-date-title { font-size: 1.15rem; }
+    .dash-date-sub { font-size: 0.9rem; }
+    .dash-date-badge { font-size: 0.8rem; padding: 4px 10px; }
+    .dash-date-chevron { font-size: 0.9rem; }
+
+    /* ── Dashboard Event Cards ── */
+    .dash-event-name { font-size: 1.05rem; }
+    .dash-event-time { font-size: 0.9rem; }
+    .dash-event-meta { font-size: 0.88rem; }
+
+    /* ── Dashboard Task Items ── */
+    .dash-task-item { padding: 10px 12px; gap: 12px; }
+    .dash-task-check { width: 24px; height: 24px; border-radius: 5px; }
+    .dash-task-check i { font-size: 0.75rem; }
+    .dash-task-text { font-size: 1rem; }
+    .dash-task-edit, .dash-task-delete { font-size: 0.85rem; padding: 4px 6px; }
+    .dash-task-edit-input { font-size: 1rem; padding: 6px 10px; }
+    .dash-task-edit-actions button { font-size: 0.85rem; padding: 5px 12px; }
+    .dash-add-task input { font-size: 0.95rem; }
+    .dash-add-task button { font-size: 0.88rem; padding: 6px 14px; }
+    .dash-task-progress-text { font-size: 0.82rem; }
+    .dash-task-progress-bar { height: 6px; }
+
+    /* ── Dashboard Sub-Panels ── */
+    .dash-task-sub-row { font-size: 0.92rem; padding: 5px 0; }
+    .dash-task-sub-row label { font-size: 0.85rem; min-width: 90px; }
+    .dash-task-sub-row select { font-size: 0.9rem; padding: 5px 10px; max-width: 240px; }
+    .dash-task-sub-row input[type="text"] { font-size: 0.9rem; padding: 5px 10px; }
+
+    /* ── Sub-Checklists (Branding, Pedestal, Timing) ── */
+    .dash-sub-check-item { font-size: 0.92rem; padding: 5px 0; gap: 10px; }
+    .dash-sub-check-item .sub-check-box { width: 20px; height: 20px; border-radius: 4px; }
+    .dash-sub-check-item .sub-check-box i { font-size: 0.65rem; }
+
+    /* ── Staff Pills (Dashboard) ── */
+    .dash-staff-pill { font-size: 0.9rem; padding: 7px 16px; }
+    .dash-staff-manage-btn { font-size: 0.8rem; padding: 6px 14px; }
+
+    /* ── Task Category Headers ── */
+    .dash-task-category-header { font-size: 0.82rem; }
+    .dash-task-category-header i { font-size: 0.78rem; }
+    .dash-section-label { font-size: 0.85rem; }
+
+    /* ── Date Fields (Accounting Tasks) ── */
+    .dash-task-date-field { font-size: 0.82rem; }
+    .dash-task-date-field label { font-size: 0.8rem; }
+    .dash-task-date-field input[type="date"] { font-size: 0.85rem; padding: 4px 8px; }
+
+    /* ── SOP Cards ── */
+    .sop-card { padding: 20px 22px; gap: 18px; }
+    .sop-card-icon { width: 44px; height: 44px; font-size: 1.05rem; }
+    .sop-card-title { font-size: 1.05rem; }
+    .sop-card-desc { font-size: 0.92rem; }
+    .sop-tag { font-size: 0.8rem; padding: 5px 12px; }
+    .sop-card-date { font-size: 0.88rem; }
+
+    /* ── Modals ── */
+    .modal-header h3 { font-size: 1.4rem; }
+    .modal-close { width: 36px; height: 36px; }
+    .modal-body { padding: 30px; }
+    .modal-body h4 { font-size: 1.15rem; }
+    .modal-body p, .modal-body li { font-size: 1rem; line-height: 1.8; }
+    .meta-label { font-size: 0.8rem; }
+    .meta-value { font-size: 0.95rem; }
+    .sop-edit-btn { font-size: 0.88rem; height: 36px; padding: 0 14px; }
+    .sop-delete-btn { font-size: 0.88rem; height: 36px; padding: 0 12px; }
+
+    /* ── Forms (Add/Edit SOP, Calendar Events, etc.) ── */
+    .form-group label { font-size: 0.9rem; margin-bottom: 8px; }
+    .form-group input, .form-group select, .form-group textarea { font-size: 1rem; padding: 12px 16px; }
+    .form-actions { margin-top: 28px; }
+    .btn-cancel { font-size: 0.95rem; padding: 12px 22px; }
+    .btn-save { font-size: 0.95rem; padding: 12px 28px; }
+
+    /* ── Calendar ── */
+    .cal-month-label { font-size: 1.6rem; }
+    .cal-nav-btn { width: 40px; height: 40px; font-size: 0.95rem; }
+    .cal-today-btn { font-size: 0.9rem; padding: 8px 18px; }
+    .cal-legend-item { font-size: 0.88rem; }
+    .cal-legend-dot { width: 12px; height: 12px; }
+    .cal-dow { font-size: 0.82rem; padding: 12px 4px; }
+    .cal-day-num { font-size: 0.92rem; }
+    .cal-event { font-size: 0.8rem; padding: 4px 8px; line-height: 1.4; }
+    .cal-event-more { font-size: 0.78rem; }
+
+    /* ── Calendar Detail Modal ── */
+    .cal-detail-header h3 { font-size: 1.35rem; }
+    .cal-detail-label { font-size: 0.82rem; min-width: 90px; }
+    .cal-detail-value { font-size: 1rem; }
+    .cal-detail-source-tag { font-size: 0.82rem; padding: 4px 12px; }
+
+    /* ── Delete PIN Modal ── */
+    .delete-pin-modal h3 { font-size: 1.3rem; }
+    .delete-pin-modal .delete-sop-name { font-size: 1rem; }
+    .delete-pin-modal input { font-size: 1.2rem; padding: 14px 18px; }
+    .delete-pin-actions button { font-size: 1rem; padding: 12px; }
+
+    /* ── Vendor / Contact Cards ── */
+    .vendor-card { padding: 20px 22px; }
+    .vendor-card-avatar { width: 48px; height: 48px; font-size: 1.2rem; }
+    .vendor-card-name { font-size: 1.05rem; }
+    .vendor-card-company { font-size: 0.92rem; }
+    .vendor-card-role { font-size: 0.88rem; }
+    .vendor-detail-item .meta-label { font-size: 0.8rem; }
+    .vendor-detail-item .meta-value { font-size: 1rem; }
+
+    /* ── Tech Resources ── */
+    .tr-search input { font-size: 1rem; padding: 14px 18px 14px 44px; }
+    .tr-brand-name { font-size: 1rem; }
+    .tr-brand-count { font-size: 0.85rem; }
+    .tr-product-name { font-size: 1rem; }
+    .tr-product-type { font-size: 0.88rem; }
+    .tr-product-links a { font-size: 0.82rem; padding: 6px 12px; }
+    .tr-detail-link span { font-size: 1rem; }
+
+    /* ── Staff Manage Modal ── */
+    .staff-manage-modal h3 { font-size: 1.15rem; }
+    .staff-manage-row { font-size: 0.95rem; padding: 8px 12px; }
+    .staff-manage-add input { font-size: 0.95rem; padding: 8px 12px; }
+    .staff-manage-add button { font-size: 0.9rem; padding: 8px 16px; }
+    .staff-manage-close { font-size: 0.92rem; padding: 8px 18px; }
+
+    /* ── Form Task Sections (in SRP modal) ── */
+    .form-task-section-header { padding: 12px 16px; }
+    .form-task-section-header i.section-icon { font-size: 0.88rem; }
+    .form-task-section-header .section-title { font-size: 0.92rem; }
+    .form-task-section-header .section-chevron { font-size: 0.78rem; }
+    .form-task-section-body.open { padding: 14px 16px; }
+    .form-task-row { padding: 8px 0; gap: 10px; }
+    .form-task-row label { font-size: 0.95rem; }
+    .form-task-row select, .form-task-row input[type="text"],
+    .form-task-row input[type="date"], .form-task-row input[type="number"] { font-size: 0.92rem; padding: 7px 10px; }
+    .form-task-check { font-size: 0.92rem; gap: 8px; }
+    .form-task-check input[type="checkbox"] { width: 20px; height: 20px; }
+    .form-staff-pill { font-size: 0.9rem; padding: 7px 16px; }
+
+    /* ── Marketing Assets ── */
+    .asset-card-name { font-size: 0.92rem; }
+    .asset-card-tag { font-size: 0.78rem; }
+
+    /* ── Login Screen ── */
+    .login-title { font-size: 1.2rem; }
+    .password-field input { font-size: 1.05rem; padding: 16px 50px 16px 18px; }
+    .login-btn { font-size: 1.05rem; padding: 16px; }
+    .login-error { font-size: 0.95rem; }
+
+    /* ── Category Header ── */
+    .category-header h2 { font-size: 1.8rem; }
+    .category-header .subtitle { font-size: 0.95rem; }
+    .btn-add-sop { font-size: 0.95rem; padding: 12px 20px; }
+
+    /* ── Contacts PIN Modal ── */
+    .contacts-pin-input { font-size: 1.1rem; }
+
+    /* ── Dashboard No Events ── */
+    .dash-no-events p { font-size: 1.05rem; }
+    .dash-no-events .sub { font-size: 0.92rem; }
+
+    /* ── CRM ── */
+    .crm-tab { font-size: 0.92rem; padding: 10px 18px; }
+
+    /* ── Checklist Items ── */
+    .checklist-item { font-size: 0.95rem; }
+
+    /* ── Responsive Adjustments for Readability ── */
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      .nav-item { font-size: 0.95rem; }
+      .dash-task-text { font-size: 0.95rem; }
+      .dash-task-check { width: 22px; height: 22px; }
+      .form-group input, .form-group select, .form-group textarea { font-size: 0.95rem; padding: 11px 14px; }
+      .btn-cancel, .btn-save { font-size: 0.9rem; }
+      .cal-event { font-size: 0.78rem; padding: 5px 7px; }
+    }
+
   </style>
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -2429,6 +2707,20 @@
   </div>
 </div>
 
+<!-- ═══ Event Delete PIN Modal ═══ -->
+<div class="delete-pin-overlay" id="eventDeletePinOverlay" onclick="if(event.target===this)closeEventDeletePin()">
+  <div class="delete-pin-modal">
+    <h3><i class="fas fa-triangle-exclamation" style="margin-right:8px;"></i>Confirm Event Delete</h3>
+    <div class="delete-sop-name" id="eventDeleteName"></div>
+    <input type="password" id="eventDeletePinInput" placeholder="Enter PIN" maxlength="5" onkeydown="if(event.key==='Enter')confirmEventDelete()">
+    <div class="delete-pin-error" id="eventDeletePinError">Incorrect PIN</div>
+    <div class="delete-pin-actions">
+      <button class="delete-pin-cancel" onclick="closeEventDeletePin()">Cancel</button>
+      <button class="delete-pin-confirm" onclick="confirmEventDelete()"><i class="fas fa-trash"></i> Delete</button>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ Contacts Admin PIN Modal ═══ -->
 <div class="contacts-pin-overlay" id="contactsPinOverlay">
   <div class="contacts-pin-modal">
@@ -2449,10 +2741,10 @@
     <div class="cal-detail-header">
       <h3 id="calDetailTitle">Event</h3>
       <div style="display:flex;gap:8px;align-items:center;">
-        <button class="btn-cancel" id="calEditBtn" onclick="editCalEventFromDetail()" style="border-color:var(--green);color:var(--green);padding:6px 12px;font-size:0.78rem;display:none;">
+        <button class="btn-cancel" id="calEditBtn" onclick="editCalEventFromDetail()" style="border-color:var(--green);color:var(--green);padding:6px 12px;font-size:0.92rem;display:none;">
           <i class="fas fa-pen"></i>
         </button>
-        <button class="btn-cancel" id="calDeleteBtn" onclick="deleteCalEventFromDetail()" style="border-color:var(--danger);color:var(--danger);padding:6px 12px;font-size:0.78rem;display:none;">
+        <button class="btn-cancel" id="calDeleteBtn" onclick="deleteCalEventFromDetail()" style="border-color:var(--danger);color:var(--danger);padding:6px 12px;font-size:0.92rem;display:none;">
           <i class="fas fa-trash"></i>
         </button>
         <button class="modal-close" onclick="closeCalDetail()"><i class="fas fa-xmark"></i></button>
@@ -2526,12 +2818,12 @@
 
 <!-- SRP / New Event Modal -->
 <div class="modal-overlay" id="srpEventModal" onclick="if(event.target===this)closeSRPEventModal()">
-  <div class="modal" style="max-width:580px;">
+  <div class="modal" style="max-width:580px;max-height:90vh;display:flex;flex-direction:column;">
     <div class="modal-header" style="border-color:#F97316;">
       <h3 id="srpEventModalTitle" style="color:#F97316;">Add New Event</h3>
       <button class="modal-close" onclick="closeSRPEventModal()"><i class="fas fa-xmark"></i></button>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" style="overflow-y:auto;flex:1;">
       <div class="form-group">
         <label>Event Name</label>
         <input type="text" id="srpEvtName" placeholder="e.g. Corporate Racing Event — Acme Corp">
@@ -2599,6 +2891,218 @@
           <option value="on-hold">On Hold</option>
         </select>
       </div>
+      <!-- ═══ Operations Tasks Section ═══ -->
+      <div class="form-task-section">
+        <div class="form-task-section-header" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+          <i class="fas fa-caret-right section-chevron"></i>
+          <i class="fas fa-clipboard-list section-icon" style="color:#F97316;"></i>
+          <span class="section-title">Operations Tasks</span>
+        </div>
+        <div class="form-task-section-body">
+
+          <!-- Point of Contact -->
+          <div class="form-task-row">
+            <label><i class="fas fa-user-tie" style="width:18px;color:var(--green);"></i> Point of Contact</label>
+            <select id="srpFormPOC" style="flex:1;padding:6px 8px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font-size:0.95rem;">
+              <option value="">— Select Contact —</option>
+            </select>
+          </div>
+
+          <!-- Confirm Hardware -->
+          <div class="form-task-row" style="flex-wrap:wrap;gap:8px;">
+            <label style="width:100%;margin-bottom:2px;"><i class="fas fa-microchip" style="width:18px;color:var(--green);"></i> Confirm Hardware</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;">
+              <div><label style="font-size:0.88rem;color:var(--text-muted);margin-bottom:2px;">Wheel</label>
+                <select id="srpFormHwWheel" style="width:100%;padding:5px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font-size:0.92rem;">
+                  <option value="">—</option><option>Logitech G923</option><option>Logitech Pro</option><option>Moza FSR</option><option>Moza KS</option><option>Moza R5</option><option>Fanatec Formula</option>
+                </select></div>
+              <div><label style="font-size:0.88rem;color:var(--text-muted);margin-bottom:2px;">Motor</label>
+                <select id="srpFormHwMotor" style="width:100%;padding:5px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font-size:0.92rem;">
+                  <option value="">—</option><option>Logitech</option><option>Logitech Pro</option><option>Moza</option><option>Fanatec</option>
+                </select></div>
+              <div><label style="font-size:0.88rem;color:var(--text-muted);margin-bottom:2px;">Pedals</label>
+                <select id="srpFormHwPedals" style="width:100%;padding:5px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font-size:0.92rem;">
+                  <option value="">—</option><option>Logitech</option><option>Logitech Pro</option><option>Moza</option><option>Fanatec</option>
+                </select></div>
+              <div><label style="font-size:0.88rem;color:var(--text-muted);margin-bottom:2px;">Monitor</label>
+                <select id="srpFormHwMonitor" style="width:100%;padding:5px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font-size:0.92rem;">
+                  <option value="">—</option><option>43 Inch</option><option>45 Inch Curved</option><option>49 Inch Curved</option>
+                </select></div>
+              <div><label style="font-size:0.88rem;color:var(--text-muted);margin-bottom:2px;">Chassis</label>
+                <select id="srpFormHwChassis" style="width:100%;padding:5px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font-size:0.92rem;">
+                  <option value="">—</option><option>SimLab GT1 Evo</option><option>Extreme Sim Racing P1</option><option>Fanatec Clubsport</option>
+                </select></div>
+              <div style="display:flex;flex-direction:column;gap:4px;justify-content:end;">
+                <label class="form-task-check"><input type="checkbox" id="srpFormHwMonitorRemote"> Monitor Remote</label>
+                <label class="form-task-check"><input type="checkbox" id="srpFormHwPC"> PC</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Branding -->
+          <div class="form-task-row" style="flex-wrap:wrap;gap:6px;">
+            <label style="width:100%;"><i class="fas fa-palette" style="width:18px;color:var(--green);"></i> Branding</label>
+            <div style="display:flex;gap:12px;align-items:center;">
+              <label class="form-task-check"><input type="checkbox" id="srpFormBrandingYes" onchange="if(this.checked)document.getElementById('srpFormBrandingNo').checked=false;document.getElementById('srpFormBrandingSubs').style.display=this.checked?'block':'none';"> Yes</label>
+              <label class="form-task-check"><input type="checkbox" id="srpFormBrandingNo" onchange="if(this.checked){document.getElementById('srpFormBrandingYes').checked=false;document.getElementById('srpFormBrandingSubs').style.display='none';}"> No</label>
+            </div>
+            <div id="srpFormBrandingSubs" style="display:none;width:100%;padding-left:18px;">
+              <label class="form-task-check"><input type="checkbox" id="srpFormBrand_assetsReceived"> Assets received</label>
+              <label class="form-task-check"><input type="checkbox" id="srpFormBrand_sentToPrint"> Sent to print shop</label>
+              <label class="form-task-check"><input type="checkbox" id="srpFormBrand_mockupsReceived"> Mock-ups received</label>
+              <label class="form-task-check"><input type="checkbox" id="srpFormBrand_mockupsApproved"> Mock-ups approved by customer</label>
+              <label class="form-task-check"><input type="checkbox" id="srpFormBrand_sentPrint"> Sent to print</label>
+              <label class="form-task-check"><input type="checkbox" id="srpFormBrand_printReceived"> Print items received</label>
+              <label class="form-task-check"><input type="checkbox" id="srpFormBrand_printPacked"> Print items packed for event</label>
+            </div>
+          </div>
+
+          <!-- Pedestal -->
+          <div class="form-task-row" style="flex-wrap:wrap;gap:6px;">
+            <label style="width:100%;"><i class="fas fa-chess-rook" style="width:18px;color:var(--green);"></i> Pedestal</label>
+            <div style="display:flex;gap:8px;align-items:center;width:100%;">
+              <label style="font-size:0.92rem;color:var(--text-muted);">Color:</label>
+              <select id="srpFormPedestalColor" style="flex:1;padding:5px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font-size:0.92rem;">
+                <option value="">—</option><option>Red</option><option>Blue</option><option>Green</option><option>Yellow</option><option>Orange</option><option>Purple</option><option>Black</option><option>White</option><option>Silver</option><option>Gold</option><option>Pink</option><option>Brown</option><option>Gray</option><option>Navy</option><option>Teal</option>
+              </select>
+            </div>
+            <div style="width:100%;padding-left:18px;">
+              <label class="form-task-check"><input type="checkbox" id="srpFormPed_paintColor"> Custom paint color</label>
+              <label class="form-task-check"><input type="checkbox" id="srpFormPed_ready"> Pedestal ready</label>
+              <label class="form-task-check"><input type="checkbox" id="srpFormPed_packed"> Pedestal packed</label>
+            </div>
+          </div>
+
+          <!-- Timing and Scoring -->
+          <div class="form-task-row" style="flex-wrap:wrap;gap:6px;">
+            <label style="width:100%;"><i class="fas fa-stopwatch" style="width:18px;color:var(--green);"></i> Timing and Scoring</label>
+            <div style="width:100%;padding-left:18px;">
+              <label class="form-task-check"><input type="checkbox" id="srpFormTiming_regKiosk"> Registration kiosk</label>
+              <label class="form-task-check"><input type="checkbox" id="srpFormTiming_surfaceTablet"> Surface tablet</label>
+              <label class="form-task-check"><input type="checkbox" id="srpFormTiming_netCables"> Networking cables</label>
+              <label class="form-task-check"><input type="checkbox" id="srpFormTiming_qrScanners"> QR scanners</label>
+              <label class="form-task-check"><input type="checkbox" id="srpFormTiming_ethAdapter"> Ethernet to USB adapter</label>
+              <label class="form-task-check"><input type="checkbox" id="srpFormTiming_usbHub"> USB Hub</label>
+              <label class="form-task-check"><input type="checkbox" id="srpFormTiming_lbMonitor"> Leaderboard monitor</label>
+              <label class="form-task-check"><input type="checkbox" id="srpFormTiming_lbStand"> Leaderboard monitor stand</label>
+              <label class="form-task-check"><input type="checkbox" id="srpFormTiming_hdmi"> HDMI Cable (25-50 Foot)</label>
+            </div>
+          </div>
+
+          <!-- Driver Keys -->
+          <div class="form-task-row">
+            <label><i class="fas fa-key" style="width:18px;color:var(--green);"></i> Driver Keys</label>
+            <label class="form-task-check"><input type="checkbox" id="srpFormDriverKeys"> Ready</label>
+          </div>
+
+          <!-- Uhaul -->
+          <div class="form-task-row">
+            <label><i class="fas fa-truck" style="width:18px;color:var(--green);"></i> Uhaul</label>
+            <input type="text" id="srpFormUhaulConf" placeholder="Confirmation #" style="flex:1;padding:5px 8px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font-size:0.95rem;">
+          </div>
+
+          <!-- Lodging -->
+          <div class="form-task-row" style="flex-wrap:wrap;gap:6px;">
+            <label style="width:100%;"><i class="fas fa-hotel" style="width:18px;color:var(--green);"></i> Lodging</label>
+            <input type="text" id="srpFormHotelLocation" placeholder="Hotel / Location" style="flex:1;padding:5px 8px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font-size:0.95rem;">
+            <div style="display:flex;gap:12px;align-items:center;">
+              <label class="form-task-check"><input type="checkbox" id="srpFormLodgingBooked"> Booked</label>
+            </div>
+          </div>
+
+          <!-- Staff Working Event -->
+          <div class="form-task-row" style="flex-wrap:wrap;gap:6px;">
+            <label style="width:100%;"><i class="fas fa-users" style="width:18px;color:var(--green);"></i> Staff Working Event</label>
+            <div class="form-staff-grid" id="srpFormStaffGrid"></div>
+          </div>
+
+          <!-- Rental Car -->
+          <div class="form-task-row" style="flex-wrap:wrap;gap:6px;">
+            <label style="width:100%;"><i class="fas fa-car" style="width:18px;color:var(--green);"></i> Rental Car</label>
+            <div style="display:flex;gap:12px;align-items:center;">
+              <label class="form-task-check"><input type="checkbox" id="srpFormRentalYes" onchange="if(this.checked)document.getElementById('srpFormRentalNo').checked=false;document.getElementById('srpFormRentalConfWrap').style.display=this.checked?'flex':'none';"> Yes</label>
+              <label class="form-task-check"><input type="checkbox" id="srpFormRentalNo" onchange="if(this.checked){document.getElementById('srpFormRentalYes').checked=false;document.getElementById('srpFormRentalConfWrap').style.display='none';}"> No</label>
+            </div>
+            <div id="srpFormRentalConfWrap" style="display:none;width:100%;">
+              <input type="text" id="srpFormRentalConf" placeholder="Confirmation #" style="width:100%;padding:5px 8px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font-size:0.95rem;">
+            </div>
+          </div>
+
+          <!-- Power Outlet Confirmed -->
+          <div class="form-task-row">
+            <label><i class="fas fa-plug" style="width:18px;color:var(--green);"></i> Power Outlet Confirmed</label>
+            <label class="form-task-check"><input type="checkbox" id="srpFormPowerOutlet"> Confirmed</label>
+          </div>
+
+          <!-- Solid Ground Confirmed -->
+          <div class="form-task-row">
+            <label><i class="fas fa-mountain" style="width:18px;color:var(--green);"></i> Solid Ground Confirmed</label>
+            <label class="form-task-check"><input type="checkbox" id="srpFormSolidGround"> Confirmed</label>
+          </div>
+
+          <!-- Confirmed By -->
+          <div class="form-task-row">
+            <label><i class="fas fa-user-check" style="width:18px;color:var(--green);"></i> Confirmed By</label>
+            <input type="text" id="srpFormConfirmedBy" placeholder="Name" style="flex:1;padding:5px 8px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font-size:0.95rem;">
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ═══ Accounting Tasks Section ═══ -->
+      <div class="form-task-section">
+        <div class="form-task-section-header" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+          <i class="fas fa-caret-right section-chevron"></i>
+          <i class="fas fa-calculator section-icon" style="color:#3B82F6;"></i>
+          <span class="section-title">Accounting Tasks</span>
+        </div>
+        <div class="form-task-section-body">
+
+          <!-- Quote Accepted -->
+          <div class="form-task-row">
+            <label><i class="fas fa-file-invoice" style="width:18px;color:#3B82F6;"></i> Quote Accepted</label>
+            <label class="form-task-check"><input type="checkbox" id="srpFormQuoteAccepted"> Done</label>
+          </div>
+
+          <!-- Invoice Customer -->
+          <div class="form-task-row">
+            <label><i class="fas fa-file-invoice-dollar" style="width:18px;color:#3B82F6;"></i> Invoice Customer</label>
+            <label class="form-task-check"><input type="checkbox" id="srpFormInvoice"> Done</label>
+          </div>
+
+          <!-- Deposit Received -->
+          <div class="form-task-row" style="flex-wrap:wrap;gap:6px;">
+            <label style="width:100%;"><i class="fas fa-money-bill-wave" style="width:18px;color:#3B82F6;"></i> Deposit Received</label>
+            <label class="form-task-check"><input type="checkbox" id="srpFormDepositDone"> Received</label>
+            <div style="display:flex;gap:8px;width:100%;">
+              <div style="flex:1;"><label style="font-size:0.88rem;color:var(--text-muted);">Date Received</label><input type="date" id="srpFormDepositDateRecv" style="width:100%;padding:4px 6px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font-size:0.92rem;"></div>
+              <div style="flex:1;"><label style="font-size:0.88rem;color:var(--text-muted);">Date Due</label><input type="date" id="srpFormDepositDateDue" style="width:100%;padding:4px 6px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font-size:0.92rem;"></div>
+            </div>
+          </div>
+
+          <!-- 50% Received -->
+          <div class="form-task-row" style="flex-wrap:wrap;gap:6px;">
+            <label style="width:100%;"><i class="fas fa-money-bill-wave" style="width:18px;color:#3B82F6;"></i> 50% Received</label>
+            <label class="form-task-check"><input type="checkbox" id="srpFormFiftyDone"> Received</label>
+            <div style="display:flex;gap:8px;width:100%;">
+              <div style="flex:1;"><label style="font-size:0.88rem;color:var(--text-muted);">Date Received</label><input type="date" id="srpFormFiftyDateRecv" style="width:100%;padding:4px 6px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font-size:0.92rem;"></div>
+              <div style="flex:1;"><label style="font-size:0.88rem;color:var(--text-muted);">Date Due</label><input type="date" id="srpFormFiftyDateDue" style="width:100%;padding:4px 6px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font-size:0.92rem;"></div>
+            </div>
+          </div>
+
+          <!-- Paid in Full -->
+          <div class="form-task-row" style="flex-wrap:wrap;gap:6px;">
+            <label style="width:100%;"><i class="fas fa-money-bill-wave" style="width:18px;color:#3B82F6;"></i> Paid in Full</label>
+            <label class="form-task-check"><input type="checkbox" id="srpFormPaidDone"> Received</label>
+            <div style="display:flex;gap:8px;width:100%;">
+              <div style="flex:1;"><label style="font-size:0.88rem;color:var(--text-muted);">Date Received</label><input type="date" id="srpFormPaidDateRecv" style="width:100%;padding:4px 6px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font-size:0.92rem;"></div>
+              <div style="flex:1;"><label style="font-size:0.88rem;color:var(--text-muted);">Date Due</label><input type="date" id="srpFormPaidDateDue" style="width:100%;padding:4px 6px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font-size:0.92rem;"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
       <div class="form-actions">
         <button class="btn-cancel" onclick="closeSRPEventModal()">Cancel</button>
         <button class="btn-save" style="background:#F97316;border-color:#F97316;" onclick="saveSRPEvent()"><i class="fas fa-plus"></i> Save Event</button>
@@ -3102,48 +3606,34 @@ const defaultSOPs = [
 <h4>Maintenance</h4><p>Replace HVAC filters monthly. Schedule professional HVAC servicing quarterly. Log all filter changes in the Facility Maintenance sheet.</p>`
   },
   {
-    id: 12, category: 'events', title: 'Corporate Event Hosting',
-    description: 'Complete guide for hosting corporate team-building and private events at Velocity Pro Sims.',
-    priority: 'important', updatedBy: 'Jose', updatedAt: '2026-03-18',
-    content: `<h4>Purpose</h4><p>Corporate events are a key revenue driver. Delivering a premium, organized experience leads to repeat bookings and referrals.</p>
-<h4>Pre-Event (1 Week Before)</h4><ol>
-<li>Confirm guest count, event duration, and any special requests with the organizer</li>
-<li>Block off the required number of rigs in the booking system</li>
-<li>Prepare a custom lobby screen with the company's logo (if requested)</li>
-<li>Coordinate any catering or beverage orders</li>
-<li>Assign a dedicated event host from staff</li>
-</ol>
-<h4>Event Day</h4><ol>
-<li>Set up a welcome table with name tags and event schedule</li>
-<li>Event host gives a group orientation (modified for the group's experience level)</li>
-<li>Run activities in rounds — rotate guests through rigs if guest count exceeds rig count</li>
-<li>Display a live leaderboard on the main screen for competition events</li>
-<li>Take group photos (with permission) for social media</li>
-</ol>
-<h4>Post-Event</h4><ol>
-<li>Send a thank-you email with results, photos, and a rebooking offer</li>
-<li>Request a Google/Yelp review</li>
-<li>Log the event in the CRM for future follow-up</li>
-</ol>`
+    id: 12, category: 'events', title: 'Uniforms',
+    description: 'Dress code policy for all Velocity Pro Sims events.',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-25',
+    content: `<h4>Dress Code</h4><p>Preferably wear a Velocity Pro Sims t-shirt with jeans or black shorts. This keeps us looking clean, professional, and on-brand at every event.</p><p>The only exception is when a customer specifically requests that we wear their own branded shirts for the event. In that case, follow their dress code for the duration of the event.</p><p>Always make sure your shirt is clean, wrinkle-free, and presentable. You are representing Velocity Pro Sims.</p>`
   },
   {
-    id: 13, category: 'events', title: 'Social Media & Live Streaming',
-    description: 'Guidelines for capturing and sharing content from events and daily operations.',
-    priority: 'info', updatedBy: 'Jose', updatedAt: '2026-03-11',
-    content: `<h4>Purpose</h4><p>Consistent social media presence builds brand awareness and attracts new customers. Live streaming events adds excitement and community engagement.</p>
-<h4>Content Guidelines</h4><ul>
-<li>Always get verbal or written consent before posting photos/videos of customers</li>
-<li>Use the official Velocity Pro Sims branding (colors, logo, tone)</li>
-<li>Post at least 3x per week across Instagram, TikTok, and Facebook</li>
-<li>Best performing content: race highlights, customer reactions, rig setup tours, league results</li>
-</ul>
-<h4>Live Streaming</h4><ol>
-<li>Use OBS on the streaming PC with the Velocity Pro Sims overlay template</li>
-<li>Test audio levels and camera angles 15 minutes before going live</li>
-<li>Have a staff member monitor chat and moderate</li>
-<li>Announce streams 24 hours in advance on all channels</li>
-</ol>
-<h4>Branding</h4><p>Always use the approved logo, tag @VelocityProSims, and include the location tag. Keep captions energetic and professional.</p>`
+    id: 13, category: 'events', title: 'Smoking',
+    description: 'Smoking policy during events to maintain professionalism.',
+    priority: 'important', updatedBy: 'Jose', updatedAt: '2026-03-25',
+    content: `<h4>Smoking Policy</h4><p>Please do not smoke cigarettes and bring the smell close to customers or guests. If you need to smoke, step far enough away from the event area so that neither the smoke nor the smell can reach anyone attending the event.</p><p>This applies to cigarettes, cigars, and vapes. We want every guest to have a comfortable experience, and lingering smoke odor on clothing or near the event space reflects poorly on the company.</p>`
+  },
+  {
+    id: 60, category: 'events', title: 'Sales Questions',
+    description: 'How to handle sales inquiries from guests at events.',
+    priority: 'important', updatedBy: 'Jose', updatedAt: '2026-03-25',
+    content: `<h4>Handling Sales Questions</h4><p>When a guest or anyone at the event asks about our services, always make sure to tell them about our website <strong>www.velocityprosims.com</strong> and our turn-key simulator services. This is our bread and butter — custom-built, ready-to-go racing simulators delivered and set up for the customer.</p><p>If you are unsure of pricing or specific package details, do not guess or make up numbers. Instead, refer them directly to <strong>Jose</strong> or <strong>Rey</strong> who can provide accurate quotes and answer detailed questions.</p><p>The goal is to be helpful, confident, and point them in the right direction — even if that means saying "Let me connect you with someone who can give you exact pricing."</p>`
+  },
+  {
+    id: 61, category: 'events', title: 'Business Card Distribution',
+    description: 'Guidelines for distributing business cards at events.',
+    priority: 'standard', updatedBy: 'Jose', updatedAt: '2026-03-25',
+    content: `<h4>Business Card Distribution</h4><p>Always make sure that we have business cards on hand at every event. Before you leave for an event, verify that you have a stack ready to go.</p><p>Depending on the event, you may need to be more subtle when distributing cards. At a corporate event where we are the hired service, you don't want to be aggressively handing out cards to every guest — read the room. However, if someone expresses interest in what we do or asks questions, absolutely give them a card.</p><p>Remember that we are there to provide a service, but we also need to capitalize on our time there and capture leads. Don't expect to capture many leads at events, but always be ready when the opportunity comes. Focus conversations around building interest in our turn-key simulators.</p>`
+  },
+  {
+    id: 62, category: 'events', title: 'Lead Generation',
+    description: 'The importance of planting seeds and building leads at every event.',
+    priority: 'critical', updatedBy: 'Jose', updatedAt: '2026-03-25',
+    content: `<h4>Lead Generation</h4><p>Building leads for us is just as important as building leads is for the people that use our services. Every event is an opportunity. The more seeds we plant, the more chances we have of something growing.</p><p>Case in point — <strong>Brett Oakley</strong>. This was a simple question that was asked at an event that turned into the sale of a <strong>$60,000 rig</strong>. That's the power of being present, being approachable, and being ready to have a conversation about what we do.</p><p>You never know who is standing next to the simulator watching. It could be someone who has been thinking about getting one for their home, their office, or their business. Be friendly, strike up conversations, and when the moment is right, let them know what Velocity Pro Sims can do for them.</p><p>Every lead counts. Log any promising contacts or conversations in the CRM so we can follow up.</p>`
   },
   {
     id: 14, category: 'tech', title: 'Network & Connectivity Troubleshooting',
@@ -3410,27 +3900,6 @@ const defaultSOPs = [
 <li>For split shipments, repeat this process for each shipment as it goes out</li>
 <li>The customer will receive an email notification with tracking details automatically</li>
 </ul>`
-  },
-  {
-    id: 26, category: 'events', title: 'Pre-Event Checklist',
-    description: 'Interactive checklist to complete before every event to ensure everything is set up and ready.',
-    priority: 'critical', updatedBy: 'Jose', updatedAt: '2026-03-22',
-    isChecklist: true,
-    checklistItems: [
-      { text: 'Confirm event date, time, and guest count with organizer', checked: false },
-      { text: 'Verify all assigned rigs are operational (run Pre-Session check)', checked: false },
-      { text: 'Load correct track and car combo on all PCs', checked: false },
-      { text: 'Set up server with correct event settings', checked: false },
-      { text: 'Test all peripherals (wheels, pedals, headsets)', checked: false },
-      { text: 'Prepare welcome signage and event schedule display', checked: false },
-      { text: 'Stock front desk with waivers, name tags, and event materials', checked: false },
-      { text: 'Coordinate catering or beverage orders if applicable', checked: false },
-      { text: 'Assign dedicated event host from staff', checked: false },
-      { text: 'Test A/V equipment (PA system, lobby screens, leaderboard)', checked: false },
-      { text: 'Confirm backup rig is available in case of technical issues', checked: false },
-      { text: 'Brief all on-duty staff on event schedule and responsibilities', checked: false },
-    ],
-    content: `<h4>Pre-Event Checklist</h4><p>Use the interactive checklist below to track your preparation before every event. Check off each item as you complete it. Progress is saved automatically.</p>`
   },
   {
     id: 27, category: 'websites', title: 'Velocity Pro Sims', description: 'Main business website and storefront',
@@ -4206,12 +4675,7 @@ function generateDefaultTasks(evt) {
   const isSRP = evt._source === 'srp';
 
   if (isSRP) {
-    operations.push({ text: 'Confirm event logistics and point of contact', done: false });
-    operations.push({ text: 'Prepare and load simulators for transport', done: false });
-    if (evt.simulators) operations.push({ text: 'Verify all ' + evt.simulators + ' simulator(s) are operational', done: false });
     if (evt.loadInDate) operations.push({ text: 'Complete load-in by ' + formatDate(evt.loadInDate) + (evt.loadInTime ? ' at ' + evt.loadInTime : ''), done: false });
-    operations.push({ text: 'Run pre-session check on all rigs', done: false });
-    operations.push({ text: 'Ensure backup equipment is packed', done: false });
     if (evt.loadOutDate) operations.push({ text: 'Complete load-out by ' + formatDate(evt.loadOutDate) + (evt.loadOutTime ? ' at ' + evt.loadOutTime : ''), done: false });
   } else {
     if (type === 'build') {
@@ -4413,19 +4877,35 @@ function renderDashboard() {
       { text: 'Confirmed By', done: false, taskType: 'confirmedby', confirmedByName: '' },
     ];
 
+    /* Task texts to strip from all events (legacy defaults removed) */
+    const legacyTaskTexts = [
+      'Confirm event logistics and point of contact',
+      'Prepare and load simulators for transport',
+      'Run pre-session check on all rigs',
+      'Ensure backup equipment is packed'
+    ];
+    const legacyPattern = /^Verify all \d+ simulator\(s\) are operational$/;
+
     uniqueEvents.forEach(evt => {
       const key = getEventKey(evt);
       if (!dashTasks[key]) {
         dashTasks[key] = generateDefaultTasks(evt);
         newTasksGenerated = true;
       } else {
+        /* Strip legacy default tasks that were removed */
+        let ops = dashTasks[key].operations || [];
+        const cleaned = ops.filter(t => !legacyTaskTexts.includes(t.text) && !legacyPattern.test(t.text));
+        if (cleaned.length !== ops.length) {
+          dashTasks[key].operations = cleaned;
+          newTasksGenerated = true;
+        }
         /* Backfill default accounting tasks for existing events */
         if (!dashTasks[key].accounting || dashTasks[key].accounting.length === 0) {
           dashTasks[key].accounting = JSON.parse(JSON.stringify(defaultAccounting));
           newTasksGenerated = true;
         }
         /* Backfill new operational tasks for existing events */
-        const ops = dashTasks[key].operations || [];
+        ops = dashTasks[key].operations || [];
         const hasNewOps = ops.some(t => t.taskType === 'poc');
         if (!hasNewOps) {
           dashTasks[key].operations = [...ops, ...JSON.parse(JSON.stringify(newOpsTasks))];
@@ -4611,7 +5091,7 @@ function renderDashboard() {
             const checked = (t.subChecks || {})[label];
             let extra = '';
             if (label === 'Custom paint color') {
-              extra = `<select style="margin-left:8px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.75rem;padding:2px 6px;cursor:pointer;" onclick="event.stopPropagation()" onchange="event.stopPropagation();updateDashTaskField('${key}','${cat}',${i},'pedestalColor',this.value)">${colorOpts}</select>`;
+              extra = `<select style="margin-left:8px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.9rem;padding:2px 6px;cursor:pointer;" onclick="event.stopPropagation()" onchange="event.stopPropagation();updateDashTaskField('${key}','${cat}',${i},'pedestalColor',this.value)">${colorOpts}</select>`;
             }
             return `<div class="dash-sub-check-item ${checked ? 'checked' : ''}" onclick="event.stopPropagation();toggleDashSubCheck('${key}','${cat}',${i},'${label.replace(/'/g,"\\'")}')">
               <div class="sub-check-box"><i class="fas fa-check"></i></div>
@@ -4754,7 +5234,7 @@ function renderDashboard() {
               <div class="dash-date-sub">${dateLabel} · ${dateSub}${timeStr ? ' · ' + timeStr : ''}</div>
             </div>
             <span class="dash-date-badge ${sourceClass}">${sourceTag}</span>
-            ${totalCount > 0 ? `<span style="font-size:0.72rem;color:${pct===100?'var(--green)':'var(--text-muted)'};white-space:nowrap;">${doneCount}/${totalCount}</span>` : ''}
+            ${totalCount > 0 ? `<span style="font-size:0.88rem;color:${pct===100?'var(--green)':'var(--text-muted)'};white-space:nowrap;">${doneCount}/${totalCount}</span>` : ''}
             <i class="fas fa-chevron-right dash-date-chevron"></i>
           </div>
           <div class="dash-events-body ${autoExpand ? 'open' : ''}">
@@ -4765,7 +5245,7 @@ function renderDashboard() {
                   <div class="dash-task-category-header ops"><i class="fas fa-clipboard-list"></i> Operations</div>
                   ${opsHTML}
                   <div class="dash-add-task">
-                    <i class="fas fa-plus" style="color:var(--text-muted);font-size:0.75rem;"></i>
+                    <i class="fas fa-plus" style="color:var(--text-muted);font-size:0.9rem;"></i>
                     <input type="text" id="dashAddInput_ops_${key}" placeholder="Add operations task..." onkeydown="if(event.key==='Enter'){event.stopPropagation();addDashTask('${key}','operations');}">
                     <button onclick="event.stopPropagation();addDashTask('${key}','operations')">Add</button>
                   </div>
@@ -4774,7 +5254,7 @@ function renderDashboard() {
                   <div class="dash-task-category-header acct"><i class="fas fa-file-invoice-dollar"></i> Accounting</div>
                   ${acctHTML}
                   <div class="dash-add-task">
-                    <i class="fas fa-plus" style="color:var(--text-muted);font-size:0.75rem;"></i>
+                    <i class="fas fa-plus" style="color:var(--text-muted);font-size:0.9rem;"></i>
                     <input type="text" id="dashAddInput_acct_${key}" placeholder="Add accounting task..." onkeydown="if(event.key==='Enter'){event.stopPropagation();addDashTask('${key}','accounting');}">
                     <button onclick="event.stopPropagation();addDashTask('${key}','accounting')">Add</button>
                   </div>
@@ -5073,7 +5553,7 @@ function renderTechResources() {
           <div class="tr-product-icon" style="width:48px;height:48px;font-size:1.1rem;"><i class="fas fa-microchip"></i></div>
           <div>
             <div style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">${p.trName || p.title}</div>
-            <div style="font-size:0.82rem;color:#38BDF8;font-weight:500;">${p.trBrand}${p.trType ? ' — ' + p.trType : ''}</div>
+            <div style="font-size:0.95rem;color:#38BDF8;font-weight:500;">${p.trBrand}${p.trType ? ' — ' + p.trType : ''}</div>
           </div>
           <div style="margin-left:auto;display:flex;gap:8px;">
             <button class="sop-edit-btn" onclick="openTRProductModal('${p.id}')"><i class="fas fa-pen"></i> Edit</button>
@@ -5389,7 +5869,7 @@ function openVendorDetail(id) {
       `).join('')}
       ${notesHTML}
     </div>
-    <div style="font-size:0.75rem;color:var(--text-muted);border-top:1px solid var(--border);padding-top:14px;margin-top:8px;">
+    <div style="font-size:0.9rem;color:var(--text-muted);border-top:1px solid var(--border);padding-top:14px;margin-top:8px;">
       Last updated ${formatDate(v.updatedAt)} by ${v.updatedBy}
     </div>
   `;
@@ -6298,9 +6778,12 @@ function saveCalEvent() {
 
 function deleteVPSEvent() {
   if (!viewingCalEvent || viewingCalEvent._source !== 'vps') return;
-  if (!confirm('Delete this event? This cannot be undone.')) return;
+  openEventDeletePin();
+}
+
+function deleteVPSEventConfirmed() {
   rtdb.ref('vps_events/' + viewingCalEvent._id).remove()
-    .then(() => { closeCalDetail(); })
+    .then(() => { closeEventDeletePin(); closeCalDetail(); })
     .catch(err => { console.error(err); alert('Failed to delete event.'); });
 }
 
@@ -6325,8 +6808,9 @@ function openEditVPSEvent(evtId) {
 function editCalEventFromDetail() {
   if (!viewingCalEvent) return;
   const id = viewingCalEvent._id;
+  const source = viewingCalEvent._source;
   closeCalDetail();
-  if (viewingCalEvent._source === 'vps') openEditVPSEvent(id);
+  if (source === 'vps') openEditVPSEvent(id);
   else openEditSRPEvent(id);
 }
 
@@ -6355,8 +6839,121 @@ function openNewSRPEvent() {
   document.getElementById('srpEvtLoadOutTime').value = '';
   document.getElementById('srpEvtDesc').value = '';
   document.getElementById('srpEvtStatus').value = 'scheduled';
+
+  /* Show task sections for new events */
+  document.querySelectorAll('#srpEventModal .form-task-section').forEach(s => s.style.display = '');
+
+  /* Reset all task form fields */
+  resetSRPFormTasks();
+
+  /* Populate POC dropdown from CRM */
+  populateSRPFormPOC();
+
+  /* Populate staff grid */
+  populateSRPFormStaffGrid();
+
   document.getElementById('srpEventModal').classList.add('open');
   document.body.style.overflow = 'hidden';
+}
+
+function resetSRPFormTasks() {
+  // Operations
+  const el = id => document.getElementById(id);
+  if (el('srpFormPOC')) el('srpFormPOC').value = '';
+  if (el('srpFormHwWheel')) el('srpFormHwWheel').value = '';
+  if (el('srpFormHwMotor')) el('srpFormHwMotor').value = '';
+  if (el('srpFormHwPedals')) el('srpFormHwPedals').value = '';
+  if (el('srpFormHwMonitor')) el('srpFormHwMonitor').value = '';
+  if (el('srpFormHwChassis')) el('srpFormHwChassis').value = '';
+  if (el('srpFormHwMonitorRemote')) el('srpFormHwMonitorRemote').checked = false;
+  if (el('srpFormHwPC')) el('srpFormHwPC').checked = false;
+  if (el('srpFormBrandingYes')) el('srpFormBrandingYes').checked = false;
+  if (el('srpFormBrandingNo')) el('srpFormBrandingNo').checked = false;
+  if (el('srpFormBrandingSubs')) el('srpFormBrandingSubs').style.display = 'none';
+  ['assetsReceived','sentToPrint','mockupsReceived','mockupsApproved','sentPrint','printReceived','printPacked'].forEach(k => {
+    const cb = el('srpFormBrand_' + k); if (cb) cb.checked = false;
+  });
+  if (el('srpFormPedestalColor')) el('srpFormPedestalColor').value = '';
+  ['paintColor','ready','packed'].forEach(k => { const cb = el('srpFormPed_' + k); if (cb) cb.checked = false; });
+  ['regKiosk','surfaceTablet','netCables','qrScanners','ethAdapter','usbHub','lbMonitor','lbStand','hdmi'].forEach(k => {
+    const cb = el('srpFormTiming_' + k); if (cb) cb.checked = false;
+  });
+  if (el('srpFormDriverKeys')) el('srpFormDriverKeys').checked = false;
+  if (el('srpFormUhaulConf')) el('srpFormUhaulConf').value = '';
+  if (el('srpFormHotelLocation')) el('srpFormHotelLocation').value = '';
+  if (el('srpFormLodgingBooked')) el('srpFormLodgingBooked').checked = false;
+  if (el('srpFormRentalYes')) el('srpFormRentalYes').checked = false;
+  if (el('srpFormRentalNo')) el('srpFormRentalNo').checked = false;
+  if (el('srpFormRentalConfWrap')) el('srpFormRentalConfWrap').style.display = 'none';
+  if (el('srpFormRentalConf')) el('srpFormRentalConf').value = '';
+  if (el('srpFormPowerOutlet')) el('srpFormPowerOutlet').checked = false;
+  if (el('srpFormSolidGround')) el('srpFormSolidGround').checked = false;
+  if (el('srpFormConfirmedBy')) el('srpFormConfirmedBy').value = '';
+  // Accounting
+  if (el('srpFormQuoteAccepted')) el('srpFormQuoteAccepted').checked = false;
+  if (el('srpFormInvoice')) el('srpFormInvoice').checked = false;
+  if (el('srpFormDepositDone')) el('srpFormDepositDone').checked = false;
+  if (el('srpFormDepositDateRecv')) el('srpFormDepositDateRecv').value = '';
+  if (el('srpFormDepositDateDue')) el('srpFormDepositDateDue').value = '';
+  if (el('srpFormFiftyDone')) el('srpFormFiftyDone').checked = false;
+  if (el('srpFormFiftyDateRecv')) el('srpFormFiftyDateRecv').value = '';
+  if (el('srpFormFiftyDateDue')) el('srpFormFiftyDateDue').value = '';
+  if (el('srpFormPaidDone')) el('srpFormPaidDone').checked = false;
+  if (el('srpFormPaidDateRecv')) el('srpFormPaidDateRecv').value = '';
+  if (el('srpFormPaidDateDue')) el('srpFormPaidDateDue').value = '';
+  // Collapse sections
+  document.querySelectorAll('#srpEventModal .form-task-section-header').forEach(h => h.classList.remove('open'));
+  document.querySelectorAll('#srpEventModal .form-task-section-body').forEach(b => b.classList.remove('open'));
+}
+
+function populateSRPFormPOC() {
+  const sel = document.getElementById('srpFormPOC');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">— Select Contact —</option>';
+  (crmCustomers || []).forEach(c => {
+    const fullName = ((c.firstName || '') + ' ' + (c.lastName || '')).trim();
+    if (fullName) {
+      const opt = document.createElement('option');
+      opt.value = fullName;
+      opt.textContent = fullName;
+      sel.appendChild(opt);
+    }
+  });
+  const addOpt = document.createElement('option');
+  addOpt.value = '__add_new__';
+  addOpt.textContent = '+ Add New Contact';
+  sel.appendChild(addOpt);
+  sel.onchange = function() {
+    if (this.value === '__add_new__') {
+      const firstName = prompt('Enter first name:');
+      if (!firstName) { this.value = ''; return; }
+      const lastName = prompt('Enter last name:');
+      const email = prompt('Enter email (optional):');
+      const phone = prompt('Enter phone (optional):');
+      const data = { firstName, lastName: lastName || '', email: email || '', phone: phone || '', createdAt: new Date().toISOString() };
+      db.collection('crmCustomers').add(data).then(() => {
+        const full = (firstName + ' ' + (lastName || '')).trim();
+        const newOpt = document.createElement('option');
+        newOpt.value = full;
+        newOpt.textContent = full;
+        sel.insertBefore(newOpt, sel.querySelector('option[value="__add_new__"]'));
+        sel.value = full;
+      });
+    }
+  };
+}
+
+function populateSRPFormStaffGrid() {
+  const grid = document.getElementById('srpFormStaffGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  (staffList || []).forEach(name => {
+    const pill = document.createElement('span');
+    pill.className = 'form-staff-pill';
+    pill.textContent = name;
+    pill.onclick = function() { this.classList.toggle('active'); };
+    grid.appendChild(pill);
+  });
 }
 
 function openNewSRPEventOnDate(dateStr) {
@@ -6382,6 +6979,8 @@ function openEditSRPEvent(evtId) {
   document.getElementById('srpEvtLoadOutTime').value = evt.loadOutTime || '';
   document.getElementById('srpEvtDesc').value = evt.description || '';
   document.getElementById('srpEvtStatus').value = evt.status || 'scheduled';
+  /* Hide task sections when editing — tasks are managed in the dashboard */
+  document.querySelectorAll('#srpEventModal .form-task-section').forEach(s => s.style.display = 'none');
   document.getElementById('srpEventModal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -6419,18 +7018,168 @@ function saveSRPEvent() {
       .then(() => { closeSRPEventModal(); closeCalDetail(); })
       .catch(err => { console.error(err); alert('Failed to save event.'); });
   } else {
+    /* NEW event — gather task form values and pre-populate dashboard tasks */
     rtdb.ref('events').push(eventData)
-      .then(() => { closeSRPEventModal(); })
+      .then((ref) => {
+        const newId = ref.key;
+        const eventKey = 'srp_' + newId;
+        const tasks = buildTasksFromSRPForm(eventData);
+        /* Save pre-populated tasks to Firestore (matches saveDashTasks format) */
+        db.collection('dashTasks').doc(eventKey).set({ tasks });
+        dashTasksCache[eventKey] = tasks;
+        closeSRPEventModal();
+      })
       .catch(err => { console.error(err); alert('Failed to save event.'); });
   }
 }
 
+function buildTasksFromSRPForm(eventData) {
+  const el = id => document.getElementById(id);
+  const checked = id => { const c = el(id); return c ? c.checked : false; };
+  const val = id => { const e = el(id); return e ? e.value : ''; };
+
+  /* ── SRP-specific contextual tasks ── */
+  const operations = [];
+  if (eventData.loadInDate) operations.push({ text: 'Complete load-in by ' + formatDate(eventData.loadInDate) + (eventData.loadInTime ? ' at ' + eventData.loadInTime : ''), done: false });
+  if (eventData.loadOutDate) operations.push({ text: 'Complete load-out by ' + formatDate(eventData.loadOutDate) + (eventData.loadOutTime ? ' at ' + eventData.loadOutTime : ''), done: false });
+
+  /* ── Point of Contact ── */
+  const pocVal = val('srpFormPOC');
+  operations.push({ text: 'Point of Contact', done: !!pocVal, taskType: 'poc', contactName: pocVal || '' });
+
+  /* ── Confirm Hardware ── */
+  operations.push({
+    text: 'Confirm Hardware', done: false, taskType: 'hardware',
+    hardware: {
+      wheel: val('srpFormHwWheel'),
+      motor: val('srpFormHwMotor'),
+      pedals: val('srpFormHwPedals'),
+      monitor: val('srpFormHwMonitor'),
+      monitorRemote: checked('srpFormHwMonitorRemote'),
+      pc: checked('srpFormHwPC'),
+      chassis: val('srpFormHwChassis')
+    }
+  });
+
+  /* ── Branding ── */
+  const brandingYes = checked('srpFormBrandingYes');
+  operations.push({
+    text: 'Branding', done: false, taskType: 'branding', brandingYes,
+    subChecks: {
+      'Assets received': checked('srpFormBrand_assetsReceived'),
+      'Sent to print shop': checked('srpFormBrand_sentToPrint'),
+      'Mock-ups received': checked('srpFormBrand_mockupsReceived'),
+      'Mock-ups approved by customer': checked('srpFormBrand_mockupsApproved'),
+      'Sent to print': checked('srpFormBrand_sentPrint'),
+      'Print items received': checked('srpFormBrand_printReceived'),
+      'Print items packed for event': checked('srpFormBrand_printPacked')
+    }
+  });
+
+  /* ── Pedestal ── */
+  operations.push({
+    text: 'Pedestal', done: false, taskType: 'pedestal',
+    pedestalColor: val('srpFormPedestalColor'),
+    subChecks: {
+      'Custom paint color': checked('srpFormPed_paintColor'),
+      'Pedestal ready': checked('srpFormPed_ready'),
+      'Pedestal packed': checked('srpFormPed_packed')
+    }
+  });
+
+  /* ── Timing and Scoring ── */
+  operations.push({
+    text: 'Timing and Scoring', done: false, taskType: 'timing',
+    subChecks: {
+      'Registration kiosk': checked('srpFormTiming_regKiosk'),
+      'Surface tablet': checked('srpFormTiming_surfaceTablet'),
+      'Networking cables': checked('srpFormTiming_netCables'),
+      'QR scanners': checked('srpFormTiming_qrScanners'),
+      'Ethernet to USB adapter': checked('srpFormTiming_ethAdapter'),
+      'USB Hub': checked('srpFormTiming_usbHub'),
+      'Leaderboard monitor': checked('srpFormTiming_lbMonitor'),
+      'Leaderboard monitor stand': checked('srpFormTiming_lbStand'),
+      'HDMI Cable (25-50 Foot)': checked('srpFormTiming_hdmi')
+    }
+  });
+
+  /* ── Driver Keys ── */
+  operations.push({ text: 'Driver Keys', done: checked('srpFormDriverKeys') });
+
+  /* ── Uhaul ── */
+  operations.push({ text: 'Uhaul', done: false, taskType: 'uhaul', confirmationNumber: val('srpFormUhaulConf') });
+
+  /* ── Lodging ── */
+  operations.push({ text: 'Lodging', done: false, taskType: 'lodging', hotelLocation: val('srpFormHotelLocation'), booked: checked('srpFormLodgingBooked') });
+
+  /* ── Staff ── */
+  const selectedStaff = [];
+  document.querySelectorAll('#srpFormStaffGrid .form-staff-pill.active').forEach(p => selectedStaff.push(p.textContent));
+  operations.push({ text: 'Staff Working Event', done: false, taskType: 'staff', selectedStaff });
+
+  /* ── Rental Car ── */
+  operations.push({ text: 'Rental Car', done: false, taskType: 'rentalcar', rentalCarYes: checked('srpFormRentalYes'), rentalConfirmation: val('srpFormRentalConf') });
+
+  /* ── Power Outlet ── */
+  operations.push({ text: 'Power Outlet Confirmed', done: checked('srpFormPowerOutlet') });
+
+  /* ── Solid Ground ── */
+  operations.push({ text: 'Solid Ground Confirmed', done: checked('srpFormSolidGround') });
+
+  /* ── Confirmed By ── */
+  operations.push({ text: 'Confirmed By', done: false, taskType: 'confirmedby', confirmedByName: val('srpFormConfirmedBy') });
+
+  /* ── Accounting ── */
+  const accounting = [
+    { text: 'Quote Accepted', done: checked('srpFormQuoteAccepted') },
+    { text: 'Invoice Customer', done: checked('srpFormInvoice') },
+    { text: 'Deposit Received', done: checked('srpFormDepositDone'), hasDates: true, dateReceived: val('srpFormDepositDateRecv'), dateDue: val('srpFormDepositDateDue') },
+    { text: '50% Received', done: checked('srpFormFiftyDone'), hasDates: true, dateReceived: val('srpFormFiftyDateRecv'), dateDue: val('srpFormFiftyDateDue') },
+    { text: 'Paid in Full', done: checked('srpFormPaidDone'), hasDates: true, dateReceived: val('srpFormPaidDateRecv'), dateDue: val('srpFormPaidDateDue') },
+  ];
+
+  return { operations, accounting };
+}
+
 function deleteSRPEvent() {
   if (!viewingCalEvent || viewingCalEvent._source !== 'srp') return;
-  if (!confirm('Delete this event? This cannot be undone.')) return;
+  openEventDeletePin();
+}
+
+function deleteSRPEventConfirmed() {
   rtdb.ref('events/' + viewingCalEvent._id).remove()
-    .then(() => { closeCalDetail(); })
+    .then(() => { closeEventDeletePin(); closeCalDetail(); })
     .catch(err => { console.error(err); alert('Failed to delete event.'); });
+}
+
+// ── Event Delete PIN helpers ──
+const EVENT_DELETE_PIN = '1228';
+
+function openEventDeletePin() {
+  if (!viewingCalEvent) return;
+  const name = viewingCalEvent.name || viewingCalEvent.title || 'Unnamed Event';
+  document.getElementById('eventDeleteName').textContent = name;
+  document.getElementById('eventDeletePinInput').value = '';
+  document.getElementById('eventDeletePinError').classList.remove('show');
+  document.getElementById('eventDeletePinOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('eventDeletePinInput').focus(), 150);
+}
+
+function closeEventDeletePin() {
+  document.getElementById('eventDeletePinOverlay').classList.remove('open');
+}
+
+function confirmEventDelete() {
+  const pin = document.getElementById('eventDeletePinInput').value;
+  if (pin !== EVENT_DELETE_PIN) {
+    document.getElementById('eventDeletePinError').classList.add('show');
+    document.getElementById('eventDeletePinInput').value = '';
+    document.getElementById('eventDeletePinInput').focus();
+    return;
+  }
+  if (!viewingCalEvent) return;
+  if (viewingCalEvent._source === 'vps') deleteVPSEventConfirmed();
+  else deleteSRPEventConfirmed();
 }
 
 // ── Mobile Navigation ──
@@ -7000,7 +7749,7 @@ function renderCRMCategory() {
       </div>
       <div class="crm-filter-group">
         <label>Chassis Brand</label>
-        <input type="text" placeholder="e.g. SimLab, Trak Racer" value="${crmFilterChassis}" oninput="crmFilterChassis=this.value;renderCRMCategory();" style="padding:8px 10px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.82rem;font-family:'Inter',sans-serif;outline:none;">
+        <input type="text" placeholder="e.g. SimLab, Trak Racer" value="${crmFilterChassis}" oninput="crmFilterChassis=this.value;renderCRMCategory();" style="padding:8px 10px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.95rem;font-family:'Inter',sans-serif;outline:none;">
       </div>
       <div class="crm-filter-group">
         <label>Has Motion</label>
@@ -7011,7 +7760,7 @@ function renderCRMCategory() {
         </select>
       </div>
       <div class="crm-filter-group" style="justify-content:flex-end;">
-        <button class="crm-btn-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="crmFilterType='';crmFilterChassis='';crmFilterMotion='';renderCRMCategory();">
+        <button class="crm-btn-secondary" style="padding:6px 12px;font-size:0.92rem;" onclick="crmFilterType='';crmFilterChassis='';crmFilterMotion='';renderCRMCategory();">
           <i class="fas fa-xmark"></i> Clear Filters
         </button>
       </div>
@@ -7123,7 +7872,7 @@ function openCRMAddModal(customerId) {
             </select>
           </div>
           <div class="crm-form-group" style="justify-content:flex-end;">
-            <button class="crm-btn-secondary" style="padding:6px 12px;font-size:0.78rem;margin-top:auto;" onclick="openAddCustomerTypeModal()">
+            <button class="crm-btn-secondary" style="padding:6px 12px;font-size:0.92rem;margin-top:auto;" onclick="openAddCustomerTypeModal()">
               <i class="fas fa-plus"></i> New Type
             </button>
           </div>
@@ -7293,7 +8042,7 @@ function updateCRMFormFields(existingData) {
           <label>Disciplines (select all that apply)</label>
           <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;" id="crmDisciplines">
             ${['Oval', 'Road Course', 'Dirt Oval', 'Dirt Road / Rally', 'GT', 'F1', 'NASCAR', 'IndyCar', 'Drag Racing', 'Drifting'].map(d => `
-              <label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:6px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:20px;font-size:0.82rem;color:var(--text-secondary);transition:all 0.2s;">
+              <label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:6px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:20px;font-size:0.95rem;color:var(--text-secondary);transition:all 0.2s;">
                 <input type="checkbox" value="${d}" ${sim.disciplines && sim.disciplines.includes(d) ? 'checked' : ''} style="accent-color:#22D3EE;" onchange="this.parentElement.style.borderColor=this.checked?'#22D3EE':'var(--border)';this.parentElement.style.color=this.checked?'#22D3EE':'var(--text-secondary)';this.parentElement.style.background=this.checked?'rgba(34,211,238,0.08)':'var(--bg-input)';">
                 ${d}
               </label>
@@ -7348,7 +8097,7 @@ function updateCRMFormFields(existingData) {
       <div class="crm-form-grid single">
         <div class="crm-form-group full">
           <label>Folder Organization</label>
-          <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">Upload logos, event artwork, and other assets after saving the customer. Files will be organized in customer-specific folders.</p>
+          <p style="font-size:0.92rem;color:var(--text-muted);margin-bottom:8px;">Upload logos, event artwork, and other assets after saving the customer. Files will be organized in customer-specific folders.</p>
         </div>
       </div>
     `;
@@ -7603,14 +8352,14 @@ function openCRMDetail(id) {
       <div class="crm-detail-section">
         <div class="crm-detail-section-title"><i class="fas fa-folder-open"></i> Customer Assets</div>
         <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
-          <select id="crmFileFolder" onchange="crmCurrentFolder=this.value;" style="padding:6px 10px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.82rem;">
+          <select id="crmFileFolder" onchange="crmCurrentFolder=this.value;" style="padding:6px 10px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.95rem;">
             <option value="general">General</option>
             <option value="logos">Logos</option>
             <option value="artwork">Event Artwork</option>
             <option value="contracts">Contracts</option>
             <option value="photos">Photos</option>
           </select>
-          <label class="crm-btn-secondary" style="padding:6px 12px;font-size:0.78rem;cursor:pointer;">
+          <label class="crm-btn-secondary" style="padding:6px 12px;font-size:0.92rem;cursor:pointer;">
             <i class="fas fa-upload"></i> Upload File
             <input type="file" multiple style="display:none;" onchange="uploadCRMFiles('${c.id}', this.files)">
           </label>
@@ -7622,9 +8371,9 @@ function openCRMDetail(id) {
               ${f.type && f.type.startsWith('image/') ? `<img src="${f.url}" style="width:100%;height:60px;object-fit:cover;border-radius:4px;margin-bottom:6px;">` : `<i class="fas ${getFileIcon(f.name)}"></i>`}
               <div class="fname">${f.name}</div>
               <div class="fsize">${f.folder || 'general'}</div>
-              <a href="${f.url}" target="_blank" rel="noopener" onclick="event.stopPropagation();" style="font-size:0.72rem;color:#22D3EE;text-decoration:none;margin-top:4px;display:block;">Download</a>
+              <a href="${f.url}" target="_blank" rel="noopener" onclick="event.stopPropagation();" style="font-size:0.88rem;color:#22D3EE;text-decoration:none;margin-top:4px;display:block;">Download</a>
             </div>
-          `).join('') : '<p style="color:var(--text-muted);font-size:0.82rem;font-style:italic;">No files uploaded yet.</p>'}
+          `).join('') : '<p style="color:var(--text-muted);font-size:0.95rem;font-style:italic;">No files uploaded yet.</p>'}
         </div>
       </div>
     `;
@@ -7689,7 +8438,7 @@ async function uploadCRMFiles(customerId, fileList) {
   if (!customer) return;
 
   const filesGrid = document.getElementById('crmFilesGrid');
-  if (filesGrid) filesGrid.innerHTML = '<p style="color:#22D3EE;font-size:0.82rem;"><i class="fas fa-spinner fa-spin"></i> Uploading...</p>';
+  if (filesGrid) filesGrid.innerHTML = '<p style="color:#22D3EE;font-size:0.95rem;"><i class="fas fa-spinner fa-spin"></i> Uploading...</p>';
 
   const existingFiles = customer.files || [];
   const newFiles = [];
@@ -7928,12 +8677,12 @@ function renderCRMImportPreview(headers) {
         Assign a customer type to each contact, or leave blank to tag them later. Use "Set All" to bulk-assign.
       </p>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-        <span style="font-size:0.78rem;color:var(--text-muted);font-weight:600;">SET ALL:</span>
-        <select id="crmImportBulkType" style="padding:6px 10px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.82rem;">
+        <span style="font-size:0.92rem;color:var(--text-muted);font-weight:600;">SET ALL:</span>
+        <select id="crmImportBulkType" style="padding:6px 10px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.95rem;">
           <option value="">— No Type —</option>
           ${typeOptions}
         </select>
-        <button class="crm-btn-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="bulkSetCRMImportType()">Apply</button>
+        <button class="crm-btn-secondary" style="padding:6px 12px;font-size:0.92rem;" onclick="bulkSetCRMImportType()">Apply</button>
       </div>
     </div>
 
@@ -7974,7 +8723,7 @@ function renderCRMImportPreview(headers) {
     </div>
 
     <div class="crm-form-actions" style="border-top:1px solid var(--border);padding-top:16px;margin-top:16px;">
-      <span style="font-size:0.78rem;color:var(--text-muted);margin-right:auto;">${crmImportData.length} contacts will be imported</span>
+      <span style="font-size:0.92rem;color:var(--text-muted);margin-right:auto;">${crmImportData.length} contacts will be imported</span>
       <button class="crm-cancel-btn" onclick="closeCRMModal()">Cancel</button>
       <button class="crm-save-btn" onclick="executeCRMImport()">Import ${crmImportData.length} Contacts</button>
     </div>
@@ -8102,7 +8851,7 @@ function openAddCustomerTypeModal() {
           <label>Type Name</label>
           <input type="text" id="crmNewTypeName" placeholder="e.g. Rental, Wholesale, Partner">
         </div>
-        <p style="font-size:0.78rem;color:var(--text-muted);margin-top:8px;">
+        <p style="font-size:0.92rem;color:var(--text-muted);margin-top:8px;">
           This will be added to the customer type dropdown for all future customers.
         </p>
         <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;">
