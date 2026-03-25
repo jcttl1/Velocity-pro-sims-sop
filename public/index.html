@@ -2581,6 +2581,30 @@
       .cal-event { font-size: 0.78rem; padding: 5px 7px; }
     }
 
+  /* ── SOP Image Upload & Inline Images ── */
+  .sop-image-upload-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+  .btn-sop-img-upload { background: var(--accent); color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 6px; transition: background 0.2s; }
+  .btn-sop-img-upload:hover { background: #4f8cff; }
+  .sop-img-upload-hint { font-size: 0.82rem; color: var(--text-muted); }
+  .sop-image-upload-progress { display: flex; align-items: center; gap: 8px; width: 100%; margin-top: 4px; }
+  .sop-img-progress-bar { flex: 1; height: 6px; background: var(--bg-secondary); border-radius: 3px; overflow: hidden; }
+  .sop-img-progress-fill { height: 100%; background: var(--accent); border-radius: 3px; width: 0%; transition: width 0.3s; }
+  #sopImageProgressText { font-size: 0.82rem; color: var(--text-muted); white-space: nowrap; }
+  .sop-image-preview-strip { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .sop-image-preview-strip .sop-img-thumb { position: relative; width: 80px; height: 80px; border-radius: 8px; overflow: hidden; border: 2px solid var(--border); }
+  .sop-image-preview-strip .sop-img-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .sop-image-preview-strip .sop-img-thumb .sop-img-thumb-remove { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.6); color: #fff; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 0.65rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+  /* Inline images inside SOP content view */
+  #modalBody img.sop-inline-img,
+  #modalBody img[src*="firebasestorage"] {
+    max-width: 100%; height: auto; border-radius: 10px; margin: 14px 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.12); display: block;
+  }
+  #modalBody .sop-img-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 14px 0; }
+  #modalBody .sop-img-row img { flex: 1 1 45%; min-width: 200px; max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,0.12); }
+  #modalBody .sop-img-caption { text-align: center; font-size: 0.88rem; color: var(--text-muted); margin-top: -8px; margin-bottom: 12px; font-style: italic; }
+
   </style>
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -3211,6 +3235,18 @@
       <div class="form-group">
         <label>Content (use markdown-style formatting)</label>
         <textarea id="sopFormContent" placeholder="## Purpose&#10;Describe the purpose...&#10;&#10;## Steps&#10;1. First step&#10;2. Second step&#10;&#10;## Notes&#10;- Important note"></textarea>
+        <div class="sop-image-upload-row" id="sopImageUploadRow">
+          <input type="file" id="sopImageFileInput" accept="image/*" multiple style="display:none" onchange="handleSOPImageUpload(this)">
+          <button type="button" class="btn-sop-img-upload" onclick="document.getElementById('sopImageFileInput').click()">
+            <i class="fas fa-image"></i> Insert Image
+          </button>
+          <span class="sop-img-upload-hint">Images will be uploaded and embedded inline</span>
+          <div class="sop-image-upload-progress" id="sopImageProgress" style="display:none">
+            <div class="sop-img-progress-bar"><div class="sop-img-progress-fill" id="sopImageProgressFill"></div></div>
+            <span id="sopImageProgressText">Uploading...</span>
+          </div>
+        </div>
+        <div class="sop-image-preview-strip" id="sopImagePreviewStrip"></div>
       </div>
       <div class="form-actions">
         <button class="btn-cancel" onclick="closeAddModal()">Cancel</button>
@@ -5999,12 +6035,17 @@ function openAddModal(catId) {
   document.getElementById('sopFormPriority').value = 'standard';
   document.getElementById('sopFormDesc').value = '';
   document.getElementById('sopFormContent').value = '';
+  document.getElementById('sopImagePreviewStrip').innerHTML = '';
+  document.getElementById('sopImageProgress').style.display = 'none';
   document.getElementById('addModal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
 function htmlToMarkdown(html) {
   let text = html;
+  // Convert img tags back to markdown image syntax BEFORE stripping other tags
+  text = text.replace(/<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?>/gi, '![$2]($1)');
+  text = text.replace(/<img[^>]*alt="([^"]*)"[^>]*src="([^"]*)"[^>]*\/?>/gi, '![$1]($2)');
   text = text.replace(/<h4>(.*?)<\/h4>/gi, '## $1');
   text = text.replace(/<strong>(.*?)<\/strong>/gi, '**$1**');
   text = text.replace(/<ul>\s*/gi, '');
@@ -6032,7 +6073,25 @@ function openEditModal(sopId) {
   document.getElementById('sopFormCategory').value = sop.category || categories[0].id;
   document.getElementById('sopFormPriority').value = sop.priority || 'standard';
   document.getElementById('sopFormDesc').value = sop.description || '';
-  document.getElementById('sopFormContent').value = htmlToMarkdown(sop.content || '');
+  const mdContent = htmlToMarkdown(sop.content || '');
+  document.getElementById('sopFormContent').value = mdContent;
+
+  // Rebuild image preview strip from existing images
+  const previewStrip = document.getElementById('sopImagePreviewStrip');
+  previewStrip.innerHTML = '';
+  const imgMatches = mdContent.matchAll(/!\[([^\]]*)\]\(([^)]+)\)/g);
+  for (const match of imgMatches) {
+    const alt = match[1];
+    const url = match[2];
+    const thumb = document.createElement('div');
+    thumb.className = 'sop-img-thumb';
+    thumb.innerHTML = `
+      <img src="${url}" alt="${alt}">
+      <button class="sop-img-thumb-remove" title="Remove image" onclick="removeSOPImage(this, '${url}')"><i class="fas fa-xmark"></i></button>
+    `;
+    previewStrip.appendChild(thumb);
+  }
+
   document.getElementById('addModal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -6058,6 +6117,7 @@ function saveSOP() {
   let content = rawContent
     .replace(/^## (.+)$/gm, '<h4>$1</h4>')
     .replace(/^### (.+)$/gm, '<h4>$1</h4>')
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img class="sop-inline-img" src="$2" alt="$1">')
     .replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>')
     .replace(/^[-*]\s+(.+)$/gm, '<li>$1</li>')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
@@ -6126,6 +6186,80 @@ function saveSOP() {
       else showCategory(category);
     });
   }
+}
+
+// ── SOP Image Upload ──
+async function handleSOPImageUpload(input) {
+  const files = Array.from(input.files);
+  if (!files.length) return;
+
+  const progressWrap = document.getElementById('sopImageProgress');
+  const progressFill = document.getElementById('sopImageProgressFill');
+  const progressText = document.getElementById('sopImageProgressText');
+  const previewStrip = document.getElementById('sopImagePreviewStrip');
+  const textarea = document.getElementById('sopFormContent');
+
+  progressWrap.style.display = 'flex';
+  let completed = 0;
+
+  for (const file of files) {
+    if (!file.type.startsWith('image/')) continue;
+
+    // Show progress
+    progressText.textContent = `Uploading ${completed + 1} of ${files.length}...`;
+    progressFill.style.width = `${(completed / files.length) * 100}%`;
+
+    try {
+      const timestamp = Date.now();
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+      const path = `sop-images/${timestamp}_${safeName}`;
+      const ref = storage.ref(path);
+
+      // Upload
+      const snapshot = await ref.put(file);
+      const url = await snapshot.ref.getDownloadURL();
+
+      // Insert image markdown at cursor position or end of textarea
+      const imgMarkdown = `\n![${file.name}](${url})\n`;
+      const cursorPos = textarea.selectionStart;
+      const before = textarea.value.substring(0, cursorPos);
+      const after = textarea.value.substring(cursorPos);
+      textarea.value = before + imgMarkdown + after;
+      textarea.selectionStart = textarea.selectionEnd = cursorPos + imgMarkdown.length;
+
+      // Add thumbnail preview
+      const thumb = document.createElement('div');
+      thumb.className = 'sop-img-thumb';
+      thumb.innerHTML = `
+        <img src="${url}" alt="${file.name}">
+        <button class="sop-img-thumb-remove" title="Remove image" onclick="removeSOPImage(this, '${url}')"><i class="fas fa-xmark"></i></button>
+      `;
+      previewStrip.appendChild(thumb);
+
+      completed++;
+      progressFill.style.width = `${(completed / files.length) * 100}%`;
+    } catch (err) {
+      console.error('Image upload failed:', err);
+      progressText.textContent = `Error uploading ${file.name}`;
+    }
+  }
+
+  progressText.textContent = `${completed} image${completed !== 1 ? 's' : ''} uploaded`;
+  progressFill.style.width = '100%';
+  setTimeout(() => { progressWrap.style.display = 'none'; progressFill.style.width = '0%'; }, 2500);
+
+  // Reset file input so the same file can be re-selected
+  input.value = '';
+}
+
+function removeSOPImage(btn, url) {
+  const textarea = document.getElementById('sopFormContent');
+  // Remove the markdown image line containing this URL
+  const escapedUrl = url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const imgRegex = new RegExp(`\\n?!\\[[^\\]]*\\]\\(${escapedUrl}\\)\\n?`, 'g');
+  textarea.value = textarea.value.replace(imgRegex, '\n');
+  // Remove the thumbnail
+  btn.closest('.sop-img-thumb').remove();
 }
 
 // ── Search ──
