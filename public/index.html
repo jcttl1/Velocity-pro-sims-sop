@@ -4190,6 +4190,17 @@ function generateDefaultTasks(evt) {
     text: 'Rental Car', done: false, taskType: 'rentalcar', rentalCarYes: false, rentalConfirmation: ''
   });
 
+  // Power Outlet Confirmed
+  operations.push({ text: 'Power Outlet Confirmed', done: false });
+
+  // Solid Ground Confirmed
+  operations.push({ text: 'Solid Ground Confirmed', done: false });
+
+  // Confirmed By
+  operations.push({
+    text: 'Confirmed By', done: false, taskType: 'confirmedby', confirmedByName: ''
+  });
+
   /* Default accounting tasks for every event */
   const accounting = [
     { text: 'Quote Accepted', done: false },
@@ -4276,6 +4287,9 @@ function renderDashboard() {
       { text: 'Driver Keys', done: false },
       { text: 'Staff Working Event', done: false, taskType: 'staff', selectedStaff: [] },
       { text: 'Rental Car', done: false, taskType: 'rentalcar', rentalCarYes: false, rentalConfirmation: '' },
+      { text: 'Power Outlet Confirmed', done: false },
+      { text: 'Solid Ground Confirmed', done: false },
+      { text: 'Confirmed By', done: false, taskType: 'confirmedby', confirmedByName: '' },
     ];
 
     uniqueEvents.forEach(evt => {
@@ -4555,6 +4569,17 @@ function renderDashboard() {
               </div>
             </div>
             ${rcSub}
+          </div>`;
+        }
+
+        /* Confirmed By: text input for name */
+        if (t.taskType === 'confirmedby') {
+          subHTML = `<div class="dash-task-sub" onclick="event.stopPropagation()">
+            <div class="dash-task-sub-row">
+              <label>Name:</label>
+              <input type="text" value="${(t.confirmedByName || '').replace(/"/g,'&quot;')}" placeholder="Enter name"
+                onchange="updateDashTaskField('${key}','${cat}',${i},'confirmedByName',this.value)">
+            </div>
           </div>`;
         }
 
