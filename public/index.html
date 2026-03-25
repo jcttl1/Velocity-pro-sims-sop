@@ -8211,7 +8211,7 @@ function renderQuoteBuilder() {
 
       <div class="quote-actions-bar">
         ${!isNew ? `<button class="quote-btn-delete" onclick="deleteQuote('${editingQuoteId}')"><i class="fas fa-trash"></i> Delete</button>` : ''}
-        ${!isNew && (!q.status || q.status === 'draft') ? `<button style="background:#3b82f6;color:#fff;" onclick="saveQuote().then?saveQuote():null;openSendQuoteModal('${editingQuoteId}')"><i class="fas fa-paper-plane"></i> Send Quote</button>` : ''}
+        ${!isNew && (!q.status || q.status === 'draft') ? `<button style="background:#3b82f6;color:#fff;" onclick="saveQuote({stayOnPage:true}).then(()=>openSendQuoteModal('${editingQuoteId}'))"><i class="fas fa-paper-plane"></i> Send Quote</button>` : ''}
         ${!isNew && (q.status === 'sent' || q.status === 'viewed') ? `<button style="background:#3b82f6;color:#fff;" onclick="resendQuote('${editingQuoteId}')"><i class="fas fa-paper-plane"></i> Resend</button>` : ''}
         ${!isNew && q.status && q.status !== 'draft' && q.status !== 'withdrawn' ? `<button style="background:#f59e0b;color:#fff;" onclick="withdrawQuote('${editingQuoteId}')"><i class="fas fa-ban"></i> Withdraw</button>` : ''}
         <button class="quote-btn-cancel" onclick="editingQuoteId=null;renderQuotingCategory();">Cancel</button>
@@ -8279,7 +8279,8 @@ function recalcQuoteTotal() {
 }
 
 /* ── Save quote ── */
-function saveQuote() {
+function saveQuote(opts) {
+  const stayOnPage = opts && opts.stayOnPage;
   const val = id => { const e = document.getElementById(id); return e ? e.value.trim() : ''; };
   const payload = {
     firstName: val('q_firstName'),
@@ -8295,7 +8296,7 @@ function saveQuote() {
 
   if (!payload.firstName && !payload.lastName && !payload.companyName) {
     alert('Please enter at least a name or company.');
-    return;
+    return Promise.reject('validation');
   }
 
   quoteLineItems.forEach(li => {
@@ -8330,12 +8331,14 @@ function saveQuote() {
 
   if (editingQuoteId === 'new') {
     payload.createdAt = new Date().toISOString();
-    db.collection('quotes').add(payload).then(() => {
+    return db.collection('quotes').add(payload).then(docRef => {
+      if (stayOnPage) { editingQuoteId = docRef.id; return docRef.id; }
       editingQuoteId = null;
       renderQuotingCategory();
     }).catch(err => { console.error('Error creating quote:', err); alert('Failed to save quote.'); });
   } else {
-    db.collection('quotes').doc(editingQuoteId).update(payload).then(() => {
+    return db.collection('quotes').doc(editingQuoteId).update(payload).then(() => {
+      if (stayOnPage) return editingQuoteId;
       editingQuoteId = null;
       renderQuotingCategory();
     }).catch(err => { console.error('Error updating quote:', err); alert('Failed to save quote.'); });
@@ -8427,12 +8430,18 @@ function executeSendQuote() {
     `Hi ${name},\n\nThank you for your interest in a custom simulator build from Velocity Pro Sims!\n\nWe've put together a quote for you. Click the link below to review your build configuration:\n\n${url}\n\nFrom there you can accept or decline the quote directly. If you have any questions, don't hesitate to reach out.\n\nBest regards,\nVelocity Pro Sims\nwww.velocityprosims.com`
   );
 
-  window.open(`mailto:${email}?subject=${subject}&body=${body}`, '_self');
+  window.open(`mailto:${email}?subject=${subject}&body=${body}`, '_blank');
   closeSendQuoteModal();
 
-  // Refresh view
-  if (editingQuoteId) renderQuoteBuilder();
-  else renderQuotingCategory();
+  // Update local data immediately so UI reflects changes
+  if (q) { q.status = 'sent'; q.sentAt = updates.sentAt; }
+
+  // Refresh view after a short delay to let Firestore sync
+  const refreshId = sendingQuoteId;
+  setTimeout(() => {
+    if (editingQuoteId === refreshId || editingQuoteId) renderQuoteBuilder();
+    else renderQuotingCategory();
+  }, 600);
 }
 
 /* ── Withdraw Quote ── */
