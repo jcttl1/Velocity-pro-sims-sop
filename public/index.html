@@ -2449,7 +2449,10 @@
     <div class="cal-detail-header">
       <h3 id="calDetailTitle">Event</h3>
       <div style="display:flex;gap:8px;align-items:center;">
-        <button class="btn-cancel" id="calDeleteBtn" onclick="deleteVPSEvent()" style="border-color:var(--danger);color:var(--danger);padding:6px 12px;font-size:0.78rem;display:none;">
+        <button class="btn-cancel" id="calEditBtn" onclick="editCalEventFromDetail()" style="border-color:var(--green);color:var(--green);padding:6px 12px;font-size:0.78rem;display:none;">
+          <i class="fas fa-pen"></i>
+        </button>
+        <button class="btn-cancel" id="calDeleteBtn" onclick="deleteCalEventFromDetail()" style="border-color:var(--danger);color:var(--danger);padding:6px 12px;font-size:0.78rem;display:none;">
           <i class="fas fa-trash"></i>
         </button>
         <button class="modal-close" onclick="closeCalDetail()"><i class="fas fa-xmark"></i></button>
@@ -2516,6 +2519,89 @@
       <div class="form-actions">
         <button class="btn-cancel" onclick="closeCalEventModal()">Cancel</button>
         <button class="btn-save" onclick="saveCalEvent()"><i class="fas fa-plus"></i> Save Event</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SRP / New Event Modal -->
+<div class="modal-overlay" id="srpEventModal" onclick="if(event.target===this)closeSRPEventModal()">
+  <div class="modal" style="max-width:580px;">
+    <div class="modal-header" style="border-color:#F97316;">
+      <h3 id="srpEventModalTitle" style="color:#F97316;">Add New Event</h3>
+      <button class="modal-close" onclick="closeSRPEventModal()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Event Name</label>
+        <input type="text" id="srpEvtName" placeholder="e.g. Corporate Racing Event — Acme Corp">
+      </div>
+      <div class="cal-form-row">
+        <div class="form-group">
+          <label>Event Type</label>
+          <input type="text" id="srpEvtType" placeholder="e.g. Corporate, Birthday, Wedding">
+        </div>
+        <div class="form-group">
+          <label>Number of Simulators</label>
+          <input type="number" id="srpEvtSimulators" min="0" placeholder="e.g. 4">
+        </div>
+      </div>
+      <div class="cal-form-row">
+        <div class="form-group">
+          <label>Start Date</label>
+          <input type="date" id="srpEvtDate">
+        </div>
+        <div class="form-group">
+          <label>End Date (optional)</label>
+          <input type="date" id="srpEvtEndDate">
+        </div>
+      </div>
+      <div class="cal-form-row">
+        <div class="form-group">
+          <label>Start Time</label>
+          <input type="time" id="srpEvtStartTime">
+        </div>
+        <div class="form-group">
+          <label>End Time</label>
+          <input type="time" id="srpEvtEndTime">
+        </div>
+      </div>
+      <div class="cal-form-row">
+        <div class="form-group">
+          <label>Load-In Date</label>
+          <input type="date" id="srpEvtLoadInDate">
+        </div>
+        <div class="form-group">
+          <label>Load-In Time</label>
+          <input type="time" id="srpEvtLoadInTime">
+        </div>
+      </div>
+      <div class="cal-form-row">
+        <div class="form-group">
+          <label>Load-Out Date</label>
+          <input type="date" id="srpEvtLoadOutDate">
+        </div>
+        <div class="form-group">
+          <label>Load-Out Time</label>
+          <input type="time" id="srpEvtLoadOutTime">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description (optional)</label>
+        <textarea id="srpEvtDesc" style="min-height:80px;" placeholder="Event details, special requirements, notes..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select id="srpEvtStatus">
+          <option value="scheduled">Scheduled</option>
+          <option value="in-progress">In Progress</option>
+          <option value="completed">Completed</option>
+          <option value="on-hold">On Hold</option>
+        </select>
+      </div>
+      <div class="form-actions">
+        <button class="btn-cancel" onclick="closeSRPEventModal()">Cancel</button>
+        <button class="btn-save" style="background:#F97316;border-color:#F97316;" onclick="saveSRPEvent()"><i class="fas fa-plus"></i> Save Event</button>
       </div>
     </div>
   </div>
@@ -5986,9 +6072,14 @@ function renderCalendarCategory() {
           <span class="subtitle">${totalEvents} event${totalEvents !== 1 ? 's' : ''} — SRP rentals & VPS builds</span>
         </div>
       </div>
-      <button class="btn-add-sop" style="border-color:var(--green);color:var(--green);" onclick="openNewCalEvent()">
-        <i class="fas fa-plus"></i> Add Build / Delivery
-      </button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn-add-sop" style="border-color:#F97316;color:#F97316;background:rgba(249,115,22,0.08);" onclick="openNewSRPEvent()">
+          <i class="fas fa-plus"></i> Add New Event
+        </button>
+        <button class="btn-add-sop" style="border-color:var(--green);color:var(--green);" onclick="openNewCalEvent()">
+          <i class="fas fa-plus"></i> Add Build / Delivery
+        </button>
+      </div>
     </div>
     <div class="cal-legend">
       <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--green)"></div> VPS Builds & Deliveries</div>
@@ -6026,11 +6117,11 @@ function renderCalendarCategory() {
     if (cellEl && !cellEl.classList.contains('outside')) {
       const dateStr = cellEl.dataset.calDate;
       const dayEvents = [...getEventsForDate(dateStr, vpsEvents), ...getEventsForDate(dateStr, srpEvents)];
-      // If the cell has events, show the day's event list (easier on mobile)
+      // If the cell has events, show the day's event list; otherwise open new event form
       if (dayEvents.length > 0) {
         showDayEventsModal(dateStr);
       } else {
-        openNewCalEventOnDate(dateStr);
+        openNewSRPEventOnDate(dateStr);
       }
     }
   });
@@ -6098,9 +6189,9 @@ function showCalEventDetail(source, id) {
 
   document.getElementById('calDetailBody').innerHTML = bodyHTML;
 
-  // Only show delete button for VPS events
-  const deleteBtn = document.getElementById('calDeleteBtn');
-  deleteBtn.style.display = source === 'vps' ? 'inline-flex' : 'none';
+  // Show edit and delete buttons for all events
+  document.getElementById('calEditBtn').style.display = 'inline-flex';
+  document.getElementById('calDeleteBtn').style.display = 'inline-flex';
 
   document.getElementById('calDetailModal').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -6132,11 +6223,17 @@ function showDayEventsModal(dateStr) {
       <span class="cal-detail-source-tag ${cls}">${tag}</span>
     </div>`;
   });
-  bodyHTML += `<button class="btn-add-sop" style="border-color:var(--green);color:var(--green);width:100%;justify-content:center;margin-top:12px;" onclick="closeCalDetail();openNewCalEventOnDate('${dateStr}')">
-    <i class="fas fa-plus"></i> Add Event on This Day
-  </button>`;
+  bodyHTML += `<div style="display:flex;gap:8px;margin-top:12px;">
+    <button class="btn-add-sop" style="border-color:#F97316;color:#F97316;flex:1;justify-content:center;" onclick="closeCalDetail();openNewSRPEventOnDate('${dateStr}')">
+      <i class="fas fa-plus"></i> New Event
+    </button>
+    <button class="btn-add-sop" style="border-color:var(--green);color:var(--green);flex:1;justify-content:center;" onclick="closeCalDetail();openNewCalEventOnDate('${dateStr}')">
+      <i class="fas fa-plus"></i> Build / Delivery
+    </button>
+  </div>`;
   document.getElementById('calDetailTitle').textContent = 'Events on ' + d;
   document.getElementById('calDetailBody').innerHTML = bodyHTML;
+  document.getElementById('calEditBtn').style.display = 'none';
   document.getElementById('calDeleteBtn').style.display = 'none';
   document.getElementById('calDetailModal').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -6203,6 +6300,135 @@ function deleteVPSEvent() {
   if (!viewingCalEvent || viewingCalEvent._source !== 'vps') return;
   if (!confirm('Delete this event? This cannot be undone.')) return;
   rtdb.ref('vps_events/' + viewingCalEvent._id).remove()
+    .then(() => { closeCalDetail(); })
+    .catch(err => { console.error(err); alert('Failed to delete event.'); });
+}
+
+function openEditVPSEvent(evtId) {
+  const evt = vpsEvents.find(e => e._id === evtId);
+  if (!evt) return;
+  editingCalEventId = evtId;
+  document.getElementById('calEventModalTitle').textContent = 'Edit Build / Delivery';
+  document.getElementById('calEvtName').value = evt.name || '';
+  document.getElementById('calEvtType').value = evt.type || 'build';
+  document.getElementById('calEvtDate').value = evt.date || '';
+  document.getElementById('calEvtEndDate').value = evt.endDate || '';
+  document.getElementById('calEvtStartTime').value = evt.startTime || '';
+  document.getElementById('calEvtEndTime').value = evt.endTime || '';
+  document.getElementById('calEvtDesc').value = evt.description || '';
+  document.getElementById('calEvtStatus').value = evt.status || 'scheduled';
+  document.getElementById('calEventModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+/* Dispatchers called from the detail modal */
+function editCalEventFromDetail() {
+  if (!viewingCalEvent) return;
+  const id = viewingCalEvent._id;
+  closeCalDetail();
+  if (viewingCalEvent._source === 'vps') openEditVPSEvent(id);
+  else openEditSRPEvent(id);
+}
+
+function deleteCalEventFromDetail() {
+  if (!viewingCalEvent) return;
+  if (viewingCalEvent._source === 'vps') deleteVPSEvent();
+  else deleteSRPEvent();
+}
+
+/* ── SRP Event CRUD ── */
+let editingSRPEventId = null;
+
+function openNewSRPEvent() {
+  editingSRPEventId = null;
+  document.getElementById('srpEventModalTitle').textContent = 'Add New Event';
+  document.getElementById('srpEvtName').value = '';
+  document.getElementById('srpEvtType').value = '';
+  document.getElementById('srpEvtSimulators').value = '';
+  document.getElementById('srpEvtDate').value = '';
+  document.getElementById('srpEvtEndDate').value = '';
+  document.getElementById('srpEvtStartTime').value = '';
+  document.getElementById('srpEvtEndTime').value = '';
+  document.getElementById('srpEvtLoadInDate').value = '';
+  document.getElementById('srpEvtLoadInTime').value = '';
+  document.getElementById('srpEvtLoadOutDate').value = '';
+  document.getElementById('srpEvtLoadOutTime').value = '';
+  document.getElementById('srpEvtDesc').value = '';
+  document.getElementById('srpEvtStatus').value = 'scheduled';
+  document.getElementById('srpEventModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function openNewSRPEventOnDate(dateStr) {
+  openNewSRPEvent();
+  document.getElementById('srpEvtDate').value = dateStr;
+}
+
+function openEditSRPEvent(evtId) {
+  const evt = srpEvents.find(e => e._id === evtId);
+  if (!evt) return;
+  editingSRPEventId = evtId;
+  document.getElementById('srpEventModalTitle').textContent = 'Edit Event';
+  document.getElementById('srpEvtName').value = evt.name || evt.title || '';
+  document.getElementById('srpEvtType').value = evt.type || '';
+  document.getElementById('srpEvtSimulators').value = evt.simulators || '';
+  document.getElementById('srpEvtDate').value = evt.date || '';
+  document.getElementById('srpEvtEndDate').value = evt.endDate || '';
+  document.getElementById('srpEvtStartTime').value = evt.startTime || '';
+  document.getElementById('srpEvtEndTime').value = evt.endTime || '';
+  document.getElementById('srpEvtLoadInDate').value = evt.loadInDate || '';
+  document.getElementById('srpEvtLoadInTime').value = evt.loadInTime || '';
+  document.getElementById('srpEvtLoadOutDate').value = evt.loadOutDate || '';
+  document.getElementById('srpEvtLoadOutTime').value = evt.loadOutTime || '';
+  document.getElementById('srpEvtDesc').value = evt.description || '';
+  document.getElementById('srpEvtStatus').value = evt.status || 'scheduled';
+  document.getElementById('srpEventModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSRPEventModal() {
+  document.getElementById('srpEventModal').classList.remove('open');
+  document.body.style.overflow = '';
+  editingSRPEventId = null;
+}
+
+function saveSRPEvent() {
+  const name = document.getElementById('srpEvtName').value.trim();
+  const date = document.getElementById('srpEvtDate').value;
+  if (!name) { alert('Please enter an event name.'); return; }
+  if (!date) { alert('Please select a date.'); return; }
+
+  const eventData = {
+    name,
+    type: document.getElementById('srpEvtType').value.trim(),
+    simulators: document.getElementById('srpEvtSimulators').value || '',
+    date,
+    endDate: document.getElementById('srpEvtEndDate').value || date,
+    startTime: document.getElementById('srpEvtStartTime').value,
+    endTime: document.getElementById('srpEvtEndTime').value,
+    loadInDate: document.getElementById('srpEvtLoadInDate').value,
+    loadInTime: document.getElementById('srpEvtLoadInTime').value,
+    loadOutDate: document.getElementById('srpEvtLoadOutDate').value,
+    loadOutTime: document.getElementById('srpEvtLoadOutTime').value,
+    description: document.getElementById('srpEvtDesc').value.trim(),
+    status: document.getElementById('srpEvtStatus').value
+  };
+
+  if (editingSRPEventId) {
+    rtdb.ref('events/' + editingSRPEventId).set(eventData)
+      .then(() => { closeSRPEventModal(); closeCalDetail(); })
+      .catch(err => { console.error(err); alert('Failed to save event.'); });
+  } else {
+    rtdb.ref('events').push(eventData)
+      .then(() => { closeSRPEventModal(); })
+      .catch(err => { console.error(err); alert('Failed to save event.'); });
+  }
+}
+
+function deleteSRPEvent() {
+  if (!viewingCalEvent || viewingCalEvent._source !== 'srp') return;
+  if (!confirm('Delete this event? This cannot be undone.')) return;
+  rtdb.ref('events/' + viewingCalEvent._id).remove()
     .then(() => { closeCalDetail(); })
     .catch(err => { console.error(err); alert('Failed to delete event.'); });
 }
