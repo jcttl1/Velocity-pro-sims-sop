@@ -383,13 +383,40 @@
       content: ''; flex: 1; height: 1px; background: var(--border);
     }
 
-    .dash-task-delete {
-      opacity: 0; background: transparent; border: none; color: var(--text-muted);
-      cursor: pointer; padding: 2px 4px; font-size: 0.7rem; transition: all var(--transition);
+    .dash-task-actions {
+      display: flex; align-items: center; gap: 2px;
       margin-left: auto; flex-shrink: 0;
     }
+    .dash-task-edit, .dash-task-delete {
+      opacity: 0; background: transparent; border: none; color: var(--text-muted);
+      cursor: pointer; padding: 2px 4px; font-size: 0.7rem; transition: all var(--transition);
+      flex-shrink: 0;
+    }
+    .dash-task-item:hover .dash-task-edit,
     .dash-task-item:hover .dash-task-delete { opacity: 1; }
+    .dash-task-edit:hover { color: var(--green); }
     .dash-task-delete:hover { color: var(--danger); }
+
+    .dash-task-item.editing { background: var(--bg-card-hover); cursor: default; }
+    .dash-task-item.editing .dash-task-check,
+    .dash-task-item.editing .dash-task-actions { display: none; }
+    .dash-task-edit-input {
+      flex: 1; background: var(--bg-input); border: 1px solid var(--green);
+      border-radius: var(--radius-sm); color: var(--text-primary);
+      font-size: 0.88rem; font-family: 'Inter', sans-serif;
+      padding: 4px 8px; outline: none; line-height: 1.4;
+    }
+    .dash-task-edit-actions {
+      display: flex; gap: 4px; flex-shrink: 0;
+    }
+    .dash-task-edit-actions button {
+      background: transparent; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      cursor: pointer; padding: 3px 8px; font-size: 0.72rem; transition: all var(--transition);
+    }
+    .dash-task-edit-save { color: var(--green); }
+    .dash-task-edit-save:hover { background: var(--green-dim); border-color: var(--green); }
+    .dash-task-edit-cancel { color: var(--text-muted); }
+    .dash-task-edit-cancel:hover { background: var(--bg-card-hover); }
 
     /* ── Category View ── */
     .category-view { display: none; }
@@ -3684,6 +3711,56 @@ function removeDashTask(eventKey, taskIndex) {
   renderDashboardPreserving();
 }
 
+function editDashTask(eventKey, taskIndex) {
+  const tasks = loadDashTasks();
+  if (!tasks[eventKey] || !tasks[eventKey][taskIndex]) return;
+  const currentText = tasks[eventKey][taskIndex].text;
+
+  /* Find all task items within the matching event section */
+  const sections = document.querySelectorAll('.dash-date-header');
+  let targetItem = null;
+  sections.forEach(sec => {
+    if (sec.getAttribute('data-dash-key') === eventKey) {
+      const body = sec.nextElementSibling;
+      if (body) {
+        const items = body.querySelectorAll('.dash-task-item');
+        if (items[taskIndex]) targetItem = items[taskIndex];
+      }
+    }
+  });
+  if (!targetItem) return;
+
+  /* Switch to edit mode */
+  targetItem.classList.add('editing');
+  targetItem.setAttribute('onclick', '');
+  targetItem.innerHTML = `
+    <input class="dash-task-edit-input" type="text" value="${currentText.replace(/"/g, '&quot;')}"
+      onkeydown="if(event.key==='Enter'){event.stopPropagation();saveDashTaskEdit('${eventKey}',${taskIndex},this);}
+                  if(event.key==='Escape'){event.stopPropagation();cancelDashTaskEdit();}">
+    <div class="dash-task-edit-actions">
+      <button class="dash-task-edit-save" onclick="event.stopPropagation();saveDashTaskEdit('${eventKey}',${taskIndex},this.parentElement.previousElementSibling)">Save</button>
+      <button class="dash-task-edit-cancel" onclick="event.stopPropagation();cancelDashTaskEdit()">Cancel</button>
+    </div>
+  `;
+  const editInput = targetItem.querySelector('.dash-task-edit-input');
+  editInput.focus();
+  editInput.setSelectionRange(editInput.value.length, editInput.value.length);
+}
+
+function saveDashTaskEdit(eventKey, taskIndex, inputEl) {
+  const newText = inputEl.value.trim();
+  if (!newText) return;
+  const tasks = loadDashTasks();
+  if (!tasks[eventKey] || !tasks[eventKey][taskIndex]) return;
+  tasks[eventKey][taskIndex].text = newText;
+  saveDashTasks(tasks);
+  renderDashboardPreserving();
+}
+
+function cancelDashTaskEdit() {
+  renderDashboardPreserving();
+}
+
 function toggleDashSection(el) {
   const body = el.nextElementSibling;
   const isOpen = el.classList.contains('expanded');
@@ -3888,7 +3965,10 @@ function renderDashboard() {
         <div class="dash-task-item ${t.done ? 'completed' : ''}" onclick="toggleDashTask('${key}', ${i})">
           <div class="dash-task-check"><i class="fas fa-check"></i></div>
           <span class="dash-task-text">${t.text}</span>
-          <button class="dash-task-delete" onclick="event.stopPropagation();removeDashTask('${key}', ${i})" title="Remove task"><i class="fas fa-xmark"></i></button>
+          <div class="dash-task-actions">
+            <button class="dash-task-edit" onclick="event.stopPropagation();editDashTask('${key}', ${i})" title="Edit task"><i class="fas fa-pen"></i></button>
+            <button class="dash-task-delete" onclick="event.stopPropagation();removeDashTask('${key}', ${i})" title="Remove task"><i class="fas fa-xmark"></i></button>
+          </div>
         </div>
       `).join('');
 
