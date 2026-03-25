@@ -1811,6 +1811,24 @@
     }
 
     /* ── CRM Styles ── */
+    .crm-grouped-list { display: flex; flex-direction: column; gap: 28px; }
+    .crm-letter-group { }
+    .crm-letter-header {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding: 0 2px;
+    }
+    .crm-letter-badge {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--green), var(--green-light));
+      color: #000; font-family: 'Rajdhani', sans-serif; font-weight: 700;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .crm-letter-count {
+      font-size: 0.78rem; color: var(--text-muted); font-weight: 500; white-space: nowrap;
+    }
+    .crm-letter-divider {
+      flex: 1; height: 1px; background: var(--border); opacity: 0.5;
+    }
     .crm-toolbar {
       display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
     }
@@ -5876,9 +5894,9 @@ function startCRMListener() {
   db.collection('crmCustomers').onSnapshot(snapshot => {
     crmCustomers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     crmCustomers.sort((a, b) => {
-      const dateA = a.createdAt ? (a.createdAt.toDate ? a.createdAt.toDate() : new Date(a.createdAt)) : new Date(0);
-      const dateB = b.createdAt ? (b.createdAt.toDate ? b.createdAt.toDate() : new Date(b.createdAt)) : new Date(0);
-      return dateB - dateA;
+      const nameA = ((a.lastName || a.firstName || a.companyName || 'ZZZ')).toLowerCase();
+      const nameB = ((b.lastName || b.firstName || b.companyName || 'ZZZ')).toLowerCase();
+      return nameA.localeCompare(nameB);
     });
     buildSidebar();
     if (currentCategory === 'crm') renderCRMCategory();
@@ -5996,9 +6014,31 @@ function renderCRMCategory() {
         </button>
       </div>
     </div>
-    <div class="crm-customer-grid">
-      ${filtered.length ? filtered.map(c => renderCRMCard(c)).join('') : `
-        <div class="crm-empty" style="grid-column:1/-1;">
+    <div class="crm-grouped-list">
+      ${filtered.length ? (() => {
+        const groups = {};
+        filtered.forEach(c => {
+          const sortKey = (c.lastName || c.firstName || c.companyName || '?').trim();
+          const letter = sortKey[0] ? sortKey[0].toUpperCase() : '#';
+          const groupKey = /[A-Z]/.test(letter) ? letter : '#';
+          if (!groups[groupKey]) groups[groupKey] = [];
+          groups[groupKey].push(c);
+        });
+        const sortedKeys = Object.keys(groups).sort((a, b) => a === '#' ? 1 : b === '#' ? -1 : a.localeCompare(b));
+        return sortedKeys.map(letter => `
+          <div class="crm-letter-group">
+            <div class="crm-letter-header">
+              <span class="crm-letter-badge">${letter}</span>
+              <span class="crm-letter-count">${groups[letter].length} customer${groups[letter].length !== 1 ? 's' : ''}</span>
+              <div class="crm-letter-divider"></div>
+            </div>
+            <div class="crm-customer-grid">
+              ${groups[letter].map(c => renderCRMCard(c)).join('')}
+            </div>
+          </div>
+        `).join('');
+      })() : `
+        <div class="crm-empty">
           <i class="fas fa-users-slash"></i>
           <p>${crmSearchQuery || crmFilterType ? 'No customers match your search or filters.' : 'No customers yet.'}</p>
           <div class="sub">${crmSearchQuery || crmFilterType ? 'Try adjusting your search or filters.' : 'Click "Add Customer" or "Import" to get started.'}</div>
