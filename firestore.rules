@@ -34,5 +34,17 @@ service cloud.firestore {
         allow read, write: if true;
       }
     }
+    match /eventQuotes/{quoteId} {
+      allow read, write: if true;
+      match /activity/{activityId} {
+        allow read, write: if true;
+      }
+      match /messages/{messageId} {
+        allow read, write: if true;
+      }
+      match /emails/{emailId} {
+        allow read, write: if true;
+      }
+    }
   }
 }

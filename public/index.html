@@ -2678,12 +2678,36 @@
   .pq-totals-row.grand { font-size: 1.25rem; font-weight: 800; color: #1a1a2e; padding-top: 14px; margin-top: 8px; border-top: 2px solid #e2e8f0; }
   .pq-tax-note { font-size: 0.8rem; color: #94a3b8; margin-top: 10px; text-align: right; font-style: italic; }
 
+  /* Quote line-item description */
+  .qli-desc-row { margin-left: 38px; padding: 2px 12px 4px; }
+  .qli-desc-row textarea { width: 100%; padding: 6px 10px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.85rem; font-family: 'Inter', sans-serif; resize: vertical; min-height: 32px; max-height: 120px; line-height: 1.4; }
+  .qli-desc-row textarea::placeholder { color: var(--text-muted); font-style: italic; }
+
+  /* Quote line-item product image */
+  .quote-line-item-wrap { display: flex; flex-direction: column; gap: 0; }
+  .quote-line-img-row { margin-left: 38px; padding: 6px 12px 10px; display: flex; align-items: center; gap: 10px; }
+  .qli-img-thumb { width: 64px; height: 64px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border); background: var(--bg-input); cursor: pointer; transition: transform 0.15s; }
+  .qli-img-thumb:hover { transform: scale(1.08); }
+  .qli-img-upload-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; background: var(--bg-input); border: 1px dashed var(--border); border-radius: 8px; color: var(--text-muted); font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .qli-img-upload-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(59,130,246,0.06); }
+  .qli-img-upload-btn i { font-size: 0.9rem; }
+  .qli-img-remove { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 0.8rem; padding: 4px 6px; opacity: 0.7; transition: opacity 0.2s; }
+  .qli-img-remove:hover { opacity: 1; }
+  .qli-img-uploading { font-size: 0.8rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 6px; }
+  .qli-img-uploading i { animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Public quote product image */
+  .pq-item-img { width: 56px; height: 56px; border-radius: 8px; object-fit: cover; border: 1px solid #e2e8f0; flex-shrink: 0; }
+  .pq-item-row-with-img { align-items: flex-start; }
+  .pq-item-img-full { display: block; max-width: 280px; border-radius: 10px; margin: 8px 0 8px 36px; border: 1px solid #e2e8f0; }
+
   @media (max-width: 600px) { .quote-line-item { grid-template-columns: 28px 1fr; } .quote-line-item .item-fields, .quote-line-item .item-price { grid-column: 1 / -1; margin-left: 38px; } }
 
   .quote-actions-bar { display: flex; gap: 10px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); justify-content: flex-end; }
   .quote-actions-bar button { padding: 10px 22px; border-radius: var(--radius-sm); font-size: 0.95rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
-  .quote-btn-save { background: var(--accent); color: #fff; }
-  .quote-btn-save:hover { background: #4f8cff; }
+  .quote-btn-save { background: #5CBF2A; color: #fff; }
+  .quote-btn-save:hover { background: #4ea623; }
   .quote-btn-cancel { background: var(--bg-secondary); color: var(--text-secondary); border: 1px solid var(--border) !important; }
   .quote-btn-cancel:hover { background: var(--bg-input); }
   .quote-btn-delete { background: var(--danger); color: #fff; }
@@ -2774,8 +2798,11 @@
   .pq-item-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.95rem; flex-wrap: nowrap; }
   .pq-item-check { color: #10b981; font-size: 0.85rem; width: 20px; }
   .pq-item-check.empty { color: #cbd5e1; }
-  .pq-item-label { font-weight: 600; color: #334155; flex: 1; }
-  .pq-item-value { color: #64748b; }
+  .pq-item-label { font-weight: 600; color: #334155; white-space: nowrap; }
+  .pq-item-value { color: #1a1a2e; font-weight: 500; flex: 1; }
+  .pq-item-value:empty { display: none; }
+  .pq-item-separator { color: #cbd5e1; margin: 0 2px; }
+  .pq-item-desc { margin-left: 36px; padding: 2px 0 8px; font-size: 0.88rem; color: #475569; line-height: 1.45; white-space: pre-wrap; }
   .pq-item-sub { margin-left: 30px; font-size: 0.88rem; color: #64748b; padding: 4px 0; }
   .pq-actions { display: flex; gap: 12px; justify-content: center; margin: 28px 0 8px; flex-wrap: wrap; }
   .pq-btn { padding: 14px 36px; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; border: none; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
@@ -2839,6 +2866,40 @@
 
   @media (max-width: 600px) { .pq-qa-input-row { flex-direction: column; } .pq-qa-input-row button { justify-content: center; padding: 12px; } }
 
+  /* ── Event Quotes Module ── */
+  .eq-event-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .eq-event-details-grid .form-group { margin-bottom: 0; }
+  .eq-event-details-grid .form-group label { font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; display: block; color: var(--text-secondary); }
+  .eq-event-details-grid .form-group input,
+  .eq-event-details-grid .form-group select,
+  .eq-event-details-grid .form-group textarea { width: 100%; padding: 9px 12px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.95rem; font-family: 'Inter', sans-serif; }
+  .eq-event-details-grid .form-group.full-width { grid-column: 1 / -1; }
+  .eq-mileage-calc { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; margin-top: 6px; }
+  .eq-mileage-calc .eq-calc-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+  .eq-mileage-calc .eq-calc-row label { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); min-width: 110px; }
+  .eq-mileage-calc .eq-calc-row input { flex: 1; padding: 8px 12px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.95rem; }
+  .eq-mileage-calc .eq-calc-btn { padding: 8px 16px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .eq-mileage-calc .eq-calc-btn:hover { opacity: 0.9; }
+  .eq-mileage-breakdown { background: rgba(92,191,42,0.08); border: 1px solid rgba(92,191,42,0.2); border-radius: var(--radius-sm); padding: 10px 14px; margin-top: 8px; font-size: 0.9rem; color: var(--text-primary); }
+  .eq-mileage-breakdown .eq-math-line { display: flex; justify-content: space-between; padding: 3px 0; font-size: 0.88rem; }
+  .eq-mileage-breakdown .eq-math-total { font-weight: 800; font-size: 1rem; padding-top: 8px; margin-top: 6px; border-top: 1px solid rgba(92,191,42,0.3); }
+  .eq-yesno-group { display: flex; gap: 8px; align-items: center; }
+  .eq-yesno-btn { display: flex; align-items: center; gap: 4px; padding: 6px 14px; border-radius: 6px; border: 2px solid var(--border); background: var(--bg-input); color: var(--text-secondary); font-weight: 600; font-size: 0.88rem; cursor: pointer; transition: all 0.2s; }
+  .eq-yesno-btn.active-yes { border-color: #10b981; background: rgba(16,185,129,0.12); color: #10b981; }
+  .eq-yesno-btn.active-no { border-color: #ef4444; background: rgba(239,68,68,0.12); color: #ef4444; }
+  .eq-addon-row { display: grid; grid-template-columns: 1fr auto 140px; align-items: center; gap: 12px; padding: 12px 14px; background: var(--bg-secondary); border-radius: var(--radius-sm); border: 1px solid transparent; transition: border-color 0.2s; margin-bottom: 6px; }
+  .eq-addon-row:hover { border-color: var(--border); }
+  .eq-addon-label { font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; }
+  .eq-addon-label i { color: var(--accent); width: 18px; text-align: center; }
+  .eq-addon-price { position: relative; }
+  .eq-addon-price input { width: 100%; padding: 6px 10px 6px 22px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.88rem; text-align: right; }
+  .eq-addon-price::before { content: '$'; position: absolute; left: 8px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.85rem; font-weight: 600; pointer-events: none; z-index: 1; }
+  .eq-addon-desc { grid-column: 1 / -1; }
+  .eq-addon-desc textarea { width: 100%; padding: 6px 10px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.85rem; font-family: 'Inter', sans-serif; resize: vertical; min-height: 32px; max-height: 100px; }
+  .eq-color-dropdown { margin-top: 6px; }
+  .eq-color-dropdown select { padding: 8px 12px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.9rem; min-width: 200px; }
+  @media (max-width: 600px) { .eq-event-details-grid { grid-template-columns: 1fr; } .eq-addon-row { grid-template-columns: 1fr; } }
+
   </style>
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -2862,10 +2923,10 @@
     const storage = firebase.storage();
 
     /* ── EmailJS Configuration ── */
-    const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';     // Replace with your EmailJS public key
-    const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';     // Replace with your EmailJS service ID
-    const EMAILJS_QUOTE_TEMPLATE = 'YOUR_TEMPLATE_ID'; // Template for sending quotes
-    const EMAILJS_NOTIFY_TEMPLATE = 'YOUR_NOTIFY_TEMPLATE_ID'; // Template for question notifications
+    const EMAILJS_PUBLIC_KEY = 'ea3jgX2jgaRfO2JyK';
+    const EMAILJS_SERVICE_ID = 'service_1yu9qyf';
+    const EMAILJS_QUOTE_TEMPLATE = 'template_y7u7r8j';
+    const EMAILJS_NOTIFY_TEMPLATE = 'template_zsgl186';
     if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
       emailjs.init(EMAILJS_PUBLIC_KEY);
     }
@@ -3040,11 +3101,62 @@
   </div>
 </div>
 
+<!-- ═══ Send Event Quote Modal ═══ -->
+<div class="send-quote-overlay" id="sendEventQuoteOverlay" onclick="if(event.target===this)closeSendEventQuoteModal()">
+  <div class="send-quote-modal">
+    <div class="sqm-header">
+      <h3><i class="fas fa-paper-plane" style="color:#EC4899;"></i> Send Event Quote</h3>
+      <button class="close-btn" onclick="closeSendEventQuoteModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="sqm-body">
+      <div class="sqm-field">
+        <label>To</label>
+        <input type="email" id="sendEventQuoteEmail" placeholder="client@example.com">
+      </div>
+      <div class="sqm-field">
+        <label>Subject</label>
+        <input type="text" id="sendEventQuoteSubject" value="Your Event Quote from Velocity Pro Sims">
+      </div>
+      <div class="sqm-field">
+        <label>Message</label>
+        <textarea id="sendEventQuoteBody"></textarea>
+      </div>
+      <hr class="sqm-divider">
+      <div class="sqm-field">
+        <label>Quote Link (auto-included in email)</label>
+      </div>
+      <div class="sqm-link-row">
+        <input type="text" id="sendEventQuoteLinkDisplay" readonly>
+        <button onclick="copyEventQuoteLink()"><i class="fas fa-copy"></i> Copy</button>
+      </div>
+    </div>
+    <div class="sqm-footer">
+      <div class="sqm-status" id="sendEventQuoteStatus"></div>
+      <button class="btn-cancel" onclick="closeSendEventQuoteModal()">Cancel</button>
+      <button class="btn-send" id="sendEventQuoteBtn" onclick="executeSendEventQuote()"><i class="fas fa-paper-plane"></i> Send Email</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Event Quoting PIN Overlay ═══ -->
+<div class="contacts-pin-overlay" id="eventQuotingPinOverlay">
+  <div class="contacts-pin-modal">
+    <h3><i class="fas fa-lock" style="margin-right:8px;"></i>Event Quotes</h3>
+    <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:16px;">Enter PIN to access event quotes</p>
+    <input type="password" id="eventQuotingPinInput" maxlength="10" placeholder="Enter PIN" style="width:100%;padding:12px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:1.1rem;text-align:center;letter-spacing:4px;" onkeydown="if(event.key==='Enter')submitEventQuotingPin();">
+    <p style="color:var(--danger);font-size:0.85rem;min-height:20px;margin-top:8px;" id="eventQuotingPinError"></p>
+    <div style="display:flex;gap:10px;margin-top:8px;">
+      <button onclick="closeEventQuotingPin()" style="flex:1;padding:10px;background:var(--bg-secondary);color:var(--text-secondary);border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;font-weight:600;">Cancel</button>
+      <button onclick="submitEventQuotingPin()" style="flex:1;padding:10px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius-sm);cursor:pointer;font-weight:600;">Unlock</button>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ Quoting PIN Overlay ═══ -->
 <div class="contacts-pin-overlay" id="quotingPinOverlay">
   <div class="contacts-pin-modal">
-    <h3><i class="fas fa-lock" style="margin-right:8px;"></i>Quoting Access</h3>
-    <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:12px;">Enter PIN to access the quoting module</p>
+    <h3><i class="fas fa-lock" style="margin-right:8px;"></i>Simulator Quotes</h3>
+    <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:12px;">Enter PIN to access Simulator Quotes</p>
     <input type="password" id="quotingPinInput" class="contacts-pin-input" placeholder="Enter PIN" autocomplete="off" maxlength="6" onkeydown="if(event.key==='Enter')submitQuotingPin()">
     <div class="contacts-pin-error" id="quotingPinError"></div>
     <div class="contacts-pin-buttons">
@@ -3688,11 +3800,12 @@ const categories = [
   { id: 'events', name: 'Events', icon: 'fa-trophy', color: '#EC4899' },
   { id: 'facility', name: 'Facility Management', icon: 'fa-building', color: '#F59E0B' },
   { id: 'howto', name: 'How To', icon: 'fa-book-open', color: '#F97316' },
-  { id: 'quoting', name: 'Quoting', icon: 'fa-file-invoice-dollar', color: '#F59E0B' },
+  { id: 'quoting', name: 'Simulator Quotes', icon: 'fa-file-invoice-dollar', color: '#F59E0B' },
   { id: 'websites', name: 'Key Websites', icon: 'fa-link', color: '#6366F1' },
   { id: 'assets', name: 'Marketing Assets', icon: 'fa-palette', color: '#E879F9' },
   { id: 'techresources', name: 'Tech Resources', icon: 'fa-microchip', color: '#38BDF8' },
   { id: 'vendors', name: 'Vendor Contacts', icon: 'fa-handshake', color: '#F472B6' },
+  { id: 'event-quotes', name: 'Event Quotes', icon: 'fa-ticket', color: '#EC4899' },
 ];
 
 // ── Default SOPs ──
@@ -4432,9 +4545,13 @@ function init() {
   /* ── Public quote view mode detection ── */
   const urlParams = new URLSearchParams(window.location.search);
   const publicQuoteId = urlParams.get('quote');
+  const publicEventQuoteId = urlParams.get('eventquote');
   const publicToken = urlParams.get('token');
   if (publicQuoteId && publicToken) {
     return initPublicQuoteView(publicQuoteId, publicToken);
+  }
+  if (publicEventQuoteId && publicToken) {
+    return initPublicEventQuoteView(publicEventQuoteId, publicToken);
   }
 
   if (sessionStorage.getItem(AUTH_KEY) === 'true') {
@@ -5686,6 +5803,7 @@ function renderCategory(catId) {
   if (catId === 'vendors') return renderVendorsCategory();
   if (catId === 'techresources') return renderTechResources();
   if (catId === 'quoting') return renderQuotingCategory();
+  if (catId === 'event-quotes') return renderEventQuotesCategory();
 
   const cat = categories.find(c => c.id === catId);
   const sops = sopData.filter(s => s.category === catId);
@@ -8190,13 +8308,32 @@ function renderQuoteBuilder() {
     }
 
     const priceVal = item.price != null ? item.price : '';
+    const descVal = (item.description || '').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    const imgUrl = item.imageUrl || '';
+
+    const descRow = `<div class="qli-desc-row">
+      <textarea id="qli_desc_${li.key}" placeholder="Product details, model, specs..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';">${descVal}</textarea>
+    </div>`;
+
+    const imgRow = `<div class="quote-line-img-row" id="qli_img_row_${li.key}">
+      ${imgUrl ? `<img class="qli-img-thumb" src="${imgUrl}" onclick="window.open('${imgUrl}','_blank')" title="Click to view full size">` : ''}
+      <label class="qli-img-upload-btn" id="qli_img_btn_${li.key}">
+        <i class="fas ${imgUrl ? 'fa-sync-alt' : 'fa-camera'}"></i> ${imgUrl ? 'Replace' : 'Add Image'}
+        <input type="file" accept="image/*" style="display:none;" onchange="uploadQuoteItemImage('${li.key}', this)">
+      </label>
+      ${imgUrl ? `<button class="qli-img-remove" onclick="removeQuoteItemImage('${li.key}')" title="Remove image"><i class="fas fa-trash-alt"></i></button>` : ''}
+    </div>`;
 
     return `
-      <div class="quote-line-item">
-        <div class="item-check ${checked}" onclick="event.stopPropagation();this.classList.toggle('checked');" id="qli_chk_${li.key}"><i class="fas fa-check"></i></div>
-        <span class="item-label">${li.label}</span>
-        <div class="item-fields">${fieldsHTML}</div>
-        <div class="item-price"><input type="number" id="qli_price_${li.key}" placeholder="0.00" step="0.01" min="0" value="${priceVal}" oninput="recalcQuoteTotal()"></div>
+      <div class="quote-line-item-wrap">
+        <div class="quote-line-item">
+          <div class="item-check ${checked}" onclick="event.stopPropagation();this.classList.toggle('checked');" id="qli_chk_${li.key}"><i class="fas fa-check"></i></div>
+          <span class="item-label">${li.label}</span>
+          <div class="item-fields">${fieldsHTML}</div>
+          <div class="item-price"><input type="number" id="qli_price_${li.key}" placeholder="0.00" step="0.01" min="0" value="${priceVal}" oninput="recalcQuoteTotal()"></div>
+        </div>
+        ${descRow}
+        ${imgRow}
       </div>${subHTML}`;
   }
 
@@ -8258,9 +8395,9 @@ function renderQuoteBuilder() {
 
       <div class="quote-actions-bar">
         ${!isNew ? `<button class="quote-btn-delete" onclick="deleteQuote('${editingQuoteId}')"><i class="fas fa-trash"></i> Delete</button>` : ''}
-        ${!isNew && (!q.status || q.status === 'draft') ? `<button style="background:#3b82f6;color:#fff;" onclick="saveQuote({stayOnPage:true}).then(()=>openSendQuoteModal('${editingQuoteId}'))"><i class="fas fa-paper-plane"></i> Send Quote</button>` : ''}
-        ${!isNew && (q.status === 'sent' || q.status === 'viewed') ? `<button style="background:#3b82f6;color:#fff;" onclick="resendQuote('${editingQuoteId}')"><i class="fas fa-paper-plane"></i> Resend</button>` : ''}
-        ${!isNew && q.status && q.status !== 'draft' && q.status !== 'withdrawn' ? `<button style="background:#f59e0b;color:#fff;" onclick="withdrawQuote('${editingQuoteId}')"><i class="fas fa-ban"></i> Withdraw</button>` : ''}
+        ${isNew || (!q.status || q.status === 'draft') ? `<button style="background:#3b82f6;color:#fff;padding:10px 22px;border-radius:var(--radius-sm);font-size:0.95rem;font-weight:600;cursor:pointer;border:none;display:flex;align-items:center;gap:6px;" onclick="saveAndSendQuote()"><i class="fas fa-paper-plane"></i> Save &amp; Send Quote</button>` : ''}
+        ${!isNew && (q.status === 'sent' || q.status === 'viewed') ? `<button style="background:#3b82f6;color:#fff;padding:10px 22px;border-radius:var(--radius-sm);font-size:0.95rem;font-weight:600;cursor:pointer;border:none;display:flex;align-items:center;gap:6px;" onclick="resendQuote('${editingQuoteId}')"><i class="fas fa-paper-plane"></i> Resend</button>` : ''}
+        ${!isNew && q.status && q.status !== 'draft' && q.status !== 'withdrawn' ? `<button style="background:#f59e0b;color:#fff;padding:10px 22px;border-radius:var(--radius-sm);font-size:0.95rem;font-weight:600;cursor:pointer;border:none;display:flex;align-items:center;gap:6px;" onclick="withdrawQuote('${editingQuoteId}')"><i class="fas fa-ban"></i> Withdraw</button>` : ''}
         <button class="quote-btn-cancel" onclick="editingQuoteId=null;renderQuotingCategory();">Cancel</button>
         <button class="quote-btn-save" onclick="saveQuote()"><i class="fas fa-save"></i> ${isNew ? 'Create Quote' : 'Save Changes'}</button>
       </div>
@@ -8325,6 +8462,134 @@ function recalcQuoteTotal() {
   if (grandEl) grandEl.textContent = fmt(subtotal + buildTotal);
 }
 
+/* ── Quote line-item product images ── */
+async function uploadQuoteItemImage(key, inputEl) {
+  const file = inputEl.files && inputEl.files[0];
+  if (!file) return;
+  if (!file.type.startsWith('image/')) { alert('Please select an image file.'); return; }
+  if (file.size > 5 * 1024 * 1024) { alert('Image must be under 5 MB.'); return; }
+
+  const row = document.getElementById('qli_img_row_' + key);
+  if (!row) return;
+
+  /* Show uploading state */
+  row.innerHTML = '<span class="qli-img-uploading"><i class="fas fa-spinner"></i> Uploading...</span>';
+
+  try {
+    const quoteId = editingQuoteId && editingQuoteId !== 'new' ? editingQuoteId : 'unsaved';
+    const ext = file.name.split('.').pop() || 'jpg';
+    const path = 'quotes/' + quoteId + '/items/' + key + '_' + Date.now() + '.' + ext;
+    const ref = storage.ref(path);
+    const snapshot = await ref.put(file);
+    const url = await snapshot.ref.getDownloadURL();
+
+    /* Store in a temp map so saveQuote can pick it up */
+    if (!window._quoteItemImages) window._quoteItemImages = {};
+    window._quoteItemImages[key] = url;
+
+    /* Update the row UI in-place */
+    row.innerHTML = `
+      <img class="qli-img-thumb" src="${url}" onclick="window.open('${url}','_blank')" title="Click to view full size">
+      <label class="qli-img-upload-btn">
+        <i class="fas fa-sync-alt"></i> Replace
+        <input type="file" accept="image/*" style="display:none;" onchange="uploadQuoteItemImage('${key}', this)">
+      </label>
+      <button class="qli-img-remove" onclick="removeQuoteItemImage('${key}')" title="Remove image"><i class="fas fa-trash-alt"></i></button>`;
+  } catch (err) {
+    console.error('Image upload failed:', err);
+    row.innerHTML = `
+      <label class="qli-img-upload-btn" style="border-color:var(--danger);color:var(--danger);">
+        <i class="fas fa-exclamation-triangle"></i> Failed — Retry
+        <input type="file" accept="image/*" style="display:none;" onchange="uploadQuoteItemImage('${key}', this)">
+      </label>`;
+  }
+}
+
+function removeQuoteItemImage(key) {
+  if (!window._quoteItemImages) window._quoteItemImages = {};
+  window._quoteItemImages[key] = null; /* null signals deletion */
+
+  const row = document.getElementById('qli_img_row_' + key);
+  if (row) {
+    row.innerHTML = `
+      <label class="qli-img-upload-btn">
+        <i class="fas fa-camera"></i> Add Image
+        <input type="file" accept="image/*" style="display:none;" onchange="uploadQuoteItemImage('${key}', this)">
+      </label>`;
+  }
+}
+
+/* ── Auto-add client to CRM from quotes ── */
+async function ensureCRMCustomer(clientInfo, customerType) {
+  /*
+   * clientInfo: { firstName, lastName, companyName, email, phone, address }
+   * customerType: 'sim-purchase' | 'event'
+   * Returns the CRM customer ID (existing or new)
+   */
+  const email = (clientInfo.email || '').trim().toLowerCase();
+  const firstName = (clientInfo.firstName || '').trim();
+  const lastName = (clientInfo.lastName || '').trim();
+  const companyName = (clientInfo.companyName || '').trim();
+
+  if (!firstName && !lastName && !companyName) return null; /* nothing to add */
+
+  try {
+    /* Check for existing customer by email first (most reliable match) */
+    if (email) {
+      const emailSnap = await db.collection('crmCustomers').where('email', '==', email).limit(1).get();
+      if (!emailSnap.empty) {
+        console.log('CRM: Customer already exists with email', email);
+        return emailSnap.docs[0].id;
+      }
+      /* Also check lowercase match for case-insensitive */
+      const emailSnap2 = await db.collection('crmCustomers').where('email', '==', clientInfo.email.trim()).limit(1).get();
+      if (!emailSnap2.empty) {
+        console.log('CRM: Customer already exists with email (case match)', clientInfo.email);
+        return emailSnap2.docs[0].id;
+      }
+    }
+
+    /* Fallback: check by exact name + company match */
+    if (firstName && lastName) {
+      const nameSnap = await db.collection('crmCustomers')
+        .where('firstName', '==', firstName)
+        .where('lastName', '==', lastName)
+        .limit(1).get();
+      if (!nameSnap.empty) {
+        console.log('CRM: Customer already exists with name', firstName, lastName);
+        return nameSnap.docs[0].id;
+      }
+    }
+
+    /* No existing customer found — create new CRM entry */
+    const crmData = {
+      customerType: customerType || 'unassigned',
+      firstName: firstName,
+      lastName: lastName,
+      companyName: companyName,
+      email: clientInfo.email || '',
+      phone: clientInfo.phone || '',
+      address: clientInfo.address || '',
+      notes: 'Auto-added from ' + (customerType === 'event' ? 'event' : 'simulator') + ' quote.',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      files: [],
+    };
+
+    /* Add event-specific config if event customer */
+    if (customerType === 'event' && clientInfo.eventConfig) {
+      crmData.eventConfig = clientInfo.eventConfig;
+    }
+
+    const docRef = await db.collection('crmCustomers').add(crmData);
+    console.log('CRM: New customer created:', docRef.id, firstName, lastName);
+    return docRef.id;
+  } catch (err) {
+    console.error('CRM auto-add error:', err);
+    return null; /* Don't block quote save if CRM add fails */
+  }
+}
+
 /* ── Save quote ── */
 function saveQuote(opts) {
   const stayOnPage = opts && opts.stayOnPage;
@@ -8360,7 +8625,20 @@ function saveQuote(opts) {
     }
     const priceEl = document.getElementById('qli_price_' + li.key);
     const price = priceEl && priceEl.value ? parseFloat(priceEl.value) : null;
-    const entry = { included, value, price };
+    const descEl = document.getElementById('qli_desc_' + li.key);
+    const description = descEl ? descEl.value.trim() : '';
+    const entry = { included, value, price, description };
+
+    /* Image URL — check temp map first, then fall back to existing data */
+    const imgOverride = window._quoteItemImages && window._quoteItemImages.hasOwnProperty(li.key);
+    if (imgOverride) {
+      entry.imageUrl = window._quoteItemImages[li.key] || null; /* null = removed */
+    } else {
+      /* Preserve existing image if not changed */
+      const existingItem = (editingQuoteId === 'new' ? {} : (quotesData.find(qd => qd._id === editingQuoteId) || {}).items || {})[li.key];
+      if (existingItem && existingItem.imageUrl) entry.imageUrl = existingItem.imageUrl;
+    }
+
     if (li.sub) {
       const subEl = document.getElementById('qli_sub_' + li.sub.key);
       entry.subValues = { [li.sub.key]: subEl ? subEl.classList.contains('checked') : false };
@@ -8376,15 +8654,27 @@ function saveQuote(opts) {
     price: buildPriceEl && buildPriceEl.value ? parseFloat(buildPriceEl.value) : null
   };
 
+  /* Auto-add client to CRM */
+  ensureCRMCustomer({
+    firstName: payload.firstName,
+    lastName: payload.lastName,
+    companyName: payload.companyName,
+    email: payload.email,
+    phone: payload.phone,
+    address: payload.address,
+  }, 'sim-purchase');
+
   if (editingQuoteId === 'new') {
     payload.createdAt = new Date().toISOString();
     return db.collection('quotes').add(payload).then(docRef => {
+      window._quoteItemImages = {};
       if (stayOnPage) { editingQuoteId = docRef.id; return docRef.id; }
       editingQuoteId = null;
       renderQuotingCategory();
     }).catch(err => { console.error('Error creating quote:', err); alert('Failed to save quote.'); });
   } else {
     return db.collection('quotes').doc(editingQuoteId).update(payload).then(() => {
+      window._quoteItemImages = {};
       if (stayOnPage) return editingQuoteId;
       editingQuoteId = null;
       renderQuotingCategory();
@@ -8420,6 +8710,18 @@ function addQuoteActivity(quoteId, entry) {
 
 /* ── Send Quote ── */
 let sendingQuoteId = null;
+
+async function saveAndSendQuote() {
+  try {
+    const savedId = await saveQuote({ stayOnPage: true });
+    if (!savedId) return;
+    /* Short delay to let the Firestore listener update quotesData */
+    await new Promise(r => setTimeout(r, 600));
+    openSendQuoteModal(savedId);
+  } catch (err) {
+    if (err !== 'validation') console.error('Save & Send failed:', err);
+  }
+}
 
 function openSendQuoteModal(quoteId) {
   const q = quotesData.find(x => x._id === quoteId);
@@ -8801,52 +9103,34 @@ function renderPublicQuote(container, q) {
   let groupsHTML = '';
   let pqSubtotal = 0;
   quoteItemGroups.forEach(g => {
-    const groupItems = g.items.map(li => {
+    const includedItems = g.items.filter(li => (items[li.key] || {}).included);
+    if (includedItems.length === 0) return;
+
+    const groupItems = includedItems.map(li => {
       const item = items[li.key] || {};
-      const included = item.included;
-      const checkIcon = included ? '<i class="fas fa-check-circle"></i>' : '<i class="far fa-circle"></i>';
-      const checkClass = included ? '' : ' empty';
       let valueStr = '';
       if (li.type === 'dropdown' || li.type === 'text') valueStr = item.value || '';
       else if (li.type === 'yesno') valueStr = item.value === 'yes' ? 'Yes' : item.value === 'no' ? 'No' : '';
 
-      const priceStr = included && item.price ? fmtPrice(item.price) : '';
-      if (included && item.price) pqSubtotal += item.price;
+      const priceStr = item.price ? fmtPrice(item.price) : '';
+      if (item.price) pqSubtotal += item.price;
 
       let subStr = '';
       if (li.sub && item.subValues?.[li.sub.key]) {
         subStr = `<div class="pq-item-sub"><i class="fas fa-check" style="color:#10b981;margin-right:6px;"></i>${li.sub.label}</div>`;
       }
-      return `<div class="pq-item-row">
-        <span class="pq-item-check${checkClass}">${checkIcon}</span>
+      const imgHtml = item.imageUrl ? `<img class="pq-item-img-full" src="${item.imageUrl}" alt="${li.label}">` : '';
+      const descHtml = item.description ? `<div class="pq-item-desc">${item.description.replace(/</g,'&lt;').replace(/\n/g,'<br>')}</div>` : '';
+      return `<div class="pq-item-row${item.imageUrl ? ' pq-item-row-with-img' : ''}">
+        <span class="pq-item-check"><i class="fas fa-check-circle"></i></span>
         <span class="pq-item-label">${li.label}</span>
-        <span class="pq-item-value">${valueStr}</span>
+        ${valueStr ? `<span class="pq-item-separator">—</span><span class="pq-item-value">${valueStr}</span>` : ''}
         ${priceStr ? `<span class="pq-price-col">${priceStr}</span>` : ''}
-      </div>${subStr}`;
+      </div>${descHtml}${imgHtml}${subStr}`;
     }).join('');
 
-    const anyIncluded = g.items.some(li => (items[li.key] || {}).included);
-    if (anyIncluded) {
-      groupsHTML += `<div class="pq-section-title"><i class="fas ${g.icon}"></i> ${g.group}</div>${groupItems}`;
-    }
+    groupsHTML += `<div class="pq-section-title"><i class="fas ${g.icon}"></i> ${g.group}</div>${groupItems}`;
   });
-
-  /* If no groups had included items, show all */
-  if (!groupsHTML) {
-    quoteItemGroups.forEach(g => {
-      const groupItems = g.items.map(li => {
-        const item = items[li.key] || {};
-        const checkIcon = item.included ? '<i class="fas fa-check-circle"></i>' : '<i class="far fa-circle"></i>';
-        const checkClass = item.included ? '' : ' empty';
-        let valueStr = '';
-        if (li.type === 'dropdown' || li.type === 'text') valueStr = item.value || '';
-        else if (li.type === 'yesno') valueStr = item.value === 'yes' ? 'Yes' : item.value === 'no' ? 'No' : '';
-        const priceStr = item.included && item.price ? fmtPrice(item.price) : '';
-        return `<div class="pq-item-row"><span class="pq-item-check${checkClass}">${checkIcon}</span><span class="pq-item-label">${li.label}</span><span class="pq-item-value">${valueStr}</span>${priceStr ? `<span class="pq-price-col">${priceStr}</span>` : ''}</div>`;
-      }).join('');
-      groupsHTML += `<div class="pq-section-title"><i class="fas ${g.icon}"></i> ${g.group}</div>${groupItems}`;
-    });
-  }
 
   /* Build service & totals */
   const buildSvc = q.buildService || {};
@@ -8952,6 +9236,1130 @@ function publicDeclineQuote(quoteId) {
   const actionsEl = document.getElementById('pqActions');
   if (actionsEl) actionsEl.innerHTML = '<div class="pq-status-banner declined" style="margin:0;"><i class="fas fa-times-circle"></i> Quote declined. Thank you for your feedback.</div>';
   document.getElementById('pqDeclineForm').style.display = 'none';
+}
+
+// ══════════════════════════════════════════════
+// ── Event Quoting Module ──
+// ══════════════════════════════════════════════
+const EVENT_QUOTING_PIN = '1012';
+let eventQuotingUnlocked = false;
+let eventQuotesData = [];
+let editingEventQuoteId = null;
+let eventQuotesListenerStarted = false;
+
+/* ── Event Quote Add-On Definitions ── */
+const eventQuoteAddons = [
+  { key: 'branding', label: 'Branding Required', icon: 'fa-paint-brush', type: 'yesno' },
+  { key: 'timingScoring', label: 'Timing & Scoring Required', icon: 'fa-stopwatch', type: 'yesno' },
+  { key: 'customKeyCards', label: 'Custom Key Cards Required', icon: 'fa-id-card', type: 'yesno' },
+  { key: 'needsPedestal', label: 'Needs Pedestal', icon: 'fa-monument', type: 'yesno' },
+  { key: 'customPedestalColor', label: 'Custom Pedestal Color?', icon: 'fa-palette', type: 'yesno', conditional: true, conditionKey: 'needsPedestal', colorDropdown: true },
+  { key: 'accommodations', label: 'Accommodations Required', icon: 'fa-hotel', type: 'yesno' },
+];
+
+const pedestalColors = ['Black', 'White', 'Red', 'Blue', 'Green', 'Silver', 'Gold'];
+
+/* ── Firestore listener ── */
+function startEventQuotesListener() {
+  if (eventQuotesListenerStarted) return;
+  eventQuotesListenerStarted = true;
+  db.collection('eventQuotes').orderBy('createdAt', 'desc').onSnapshot(snap => {
+    eventQuotesData = snap.docs.map(doc => ({ _id: doc.id, ...doc.data() }));
+    buildSidebar();
+    if (currentCategory === 'event-quotes' && eventQuotingUnlocked) renderEventQuotesCategory();
+  }, err => {
+    console.error('Event Quotes listener error:', err);
+  });
+}
+
+/* ── PIN gate ── */
+function openEventQuotingPin() {
+  document.getElementById('eventQuotingPinOverlay').classList.add('open');
+  document.getElementById('eventQuotingPinInput').value = '';
+  document.getElementById('eventQuotingPinError').textContent = '';
+  setTimeout(() => document.getElementById('eventQuotingPinInput').focus(), 150);
+}
+function closeEventQuotingPin() {
+  document.getElementById('eventQuotingPinOverlay').classList.remove('open');
+  document.getElementById('eventQuotingPinInput').value = '';
+  showCategory('dashboard');
+}
+function submitEventQuotingPin() {
+  const pin = document.getElementById('eventQuotingPinInput').value;
+  if (pin === EVENT_QUOTING_PIN) {
+    eventQuotingUnlocked = true;
+    document.getElementById('eventQuotingPinOverlay').classList.remove('open');
+    startEventQuotesListener();
+    renderEventQuotesCategory();
+  } else {
+    document.getElementById('eventQuotingPinError').textContent = 'Incorrect PIN. Try again.';
+    document.getElementById('eventQuotingPinInput').value = '';
+    document.getElementById('eventQuotingPinInput').focus();
+  }
+}
+
+/* ── Main render (list view) ── */
+function renderEventQuotesCategory() {
+  if (!eventQuotingUnlocked) { openEventQuotingPin(); return; }
+  cleanupMessageListener();
+  startEventQuotesListener();
+
+  const cat = categories.find(c => c.id === 'event-quotes');
+  const main = document.getElementById('mainContent');
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  if (editingEventQuoteId !== null) { renderEventQuoteBuilder(); return; }
+
+  const cards = eventQuotesData.map(q => {
+    const name = q.clientName || q.clientCompany || q.eventName || 'Unnamed Event';
+    const initials = (q.clientName || q.eventName || '??').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+    const d = q.createdAt ? new Date(q.createdAt) : null;
+    const dateStr = d ? monthNames[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear() : '';
+    const status = q.status || 'draft';
+    const statusLabel = { draft: 'Draft', sent: 'Sent', viewed: 'Viewed', accepted: 'Accepted', declined: 'Declined', withdrawn: 'Withdrawn' }[status] || status;
+
+    /* Calculate total */
+    let cardTotal = 0;
+    if (q.mileagePrice) cardTotal += q.mileagePrice;
+    eventQuoteAddons.forEach(a => { if (q.addons && q.addons[a.key]?.included && q.addons[a.key]?.price) cardTotal += q.addons[a.key].price; });
+    if (q.simsPrice) cardTotal += q.simsPrice;
+    if (q.staffPrice) cardTotal += q.staffPrice;
+    const cardTotalStr = cardTotal > 0 ? cardTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
+
+    /* Event date chip */
+    const evDate = q.eventDate ? new Date(q.eventDate + 'T00:00:00') : null;
+    const evDateStr = evDate ? monthNames[evDate.getMonth()] + ' ' + evDate.getDate() + ', ' + evDate.getFullYear() : '';
+
+    /* Addon chips */
+    const addonChips = eventQuoteAddons.filter(a => q.addons && q.addons[a.key]?.included && q.addons[a.key]?.value === 'yes')
+      .slice(0, 4).map(a => `<span class="quote-card-chip included">${a.label}</span>`).join('');
+    const simChip = q.numSims ? `<span class="quote-card-chip included">${q.numSims} Sim${q.numSims > 1 ? 's' : ''}</span>` : '';
+
+    return `<div class="quote-card" onclick="openEventQuoteForEdit('${q._id}')">
+      <div class="quote-card-top">
+        <div class="quote-card-avatar" style="background:#EC4899;">${initials}</div>
+        <div>
+          <div class="quote-card-name">${name}</div>
+          ${q.eventName && q.clientName ? `<div class="quote-card-company">${q.eventName}</div>` : ''}
+          ${evDateStr ? `<div style="font-size:0.82rem;color:var(--text-muted);"><i class="fas fa-calendar-day" style="margin-right:4px;"></i>${evDateStr}</div>` : ''}
+        </div>
+        <div style="margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+          <span class="quote-status-badge ${status}">${statusLabel}</span>
+          ${cardTotalStr ? `<span style="font-size:0.95rem;font-weight:800;color:var(--text-primary);">${cardTotalStr}</span>` : ''}
+          <span style="font-size:0.8rem;color:var(--text-muted);">${dateStr}</span>
+        </div>
+      </div>
+      <div class="quote-card-items">${simChip}${addonChips}</div>
+    </div>`;
+  }).join('');
+
+  main.innerHTML = `
+    <div class="category-header">
+      <div class="category-header-left">
+        <div class="category-icon-lg" style="background:${cat.color}15; color:${cat.color}">
+          <i class="fas ${cat.icon}"></i>
+        </div>
+        <div>
+          <h2>Event Quotes</h2>
+          <span class="subtitle">${eventQuotesData.length} quote${eventQuotesData.length !== 1 ? 's' : ''}</span>
+        </div>
+      </div>
+      <div class="crm-actions-row">
+        <button class="crm-btn-primary" onclick="openNewEventQuote()" style="background:#EC4899;"><i class="fas fa-plus"></i> New Event Quote</button>
+      </div>
+    </div>
+    ${eventQuotesData.length ? `<div class="quote-list-grid">${cards}</div>` : `
+      <div class="quote-empty">
+        <i class="fas fa-ticket"></i>
+        <p>No event quotes yet</p>
+        <div class="sub">Click "New Event Quote" to build your first event quote.</div>
+      </div>
+    `}
+  `;
+}
+
+/* ── Open new / edit ── */
+function openNewEventQuote() {
+  editingEventQuoteId = 'new';
+  renderEventQuoteBuilder();
+}
+function openEventQuoteForEdit(id) {
+  editingEventQuoteId = id;
+  renderEventQuoteBuilder();
+}
+
+/* ── Event Quote Builder ── */
+function renderEventQuoteBuilder() {
+  const main = document.getElementById('mainContent');
+  const cat = categories.find(c => c.id === 'event-quotes');
+  const isNew = editingEventQuoteId === 'new';
+  const q = isNew ? {} : eventQuotesData.find(eq => eq._id === editingEventQuoteId) || {};
+  const addons = q.addons || {};
+
+  /* ── Client Information Fields ── */
+  const clientFields = [
+    { key: 'clientName', label: 'Client Name', ph: 'John Doe' },
+    { key: 'clientCompany', label: 'Company', ph: 'Company name' },
+    { key: 'clientEmail', label: 'Email', ph: 'john@example.com' },
+    { key: 'clientPhone', label: 'Phone', ph: '(555) 123-4567' },
+    { key: 'clientAddress', label: 'Address', ph: 'Street, City, State ZIP' },
+    { key: 'clientCity', label: 'City', ph: 'City' },
+    { key: 'clientState', label: 'State', ph: 'FL' },
+    { key: 'clientZip', label: 'ZIP Code', ph: '32114' },
+  ];
+  const clientHTML = clientFields.map(f =>
+    `<div class="form-group"><label>${f.label}</label><input type="text" id="eq_${f.key}" placeholder="${f.ph}" value="${(q[f.key] || '').replace(/"/g, '&quot;')}"></div>`
+  ).join('');
+
+  /* ── Number options for dropdowns ── */
+  const simOptions = Array.from({length: 10}, (_, i) => i + 1);
+  const staffOptions = Array.from({length: 10}, (_, i) => i + 1);
+
+  /* ── Yes/No toggle helper ── */
+  function yesNoHTML(key, currentVal) {
+    return `<div class="eq-yesno-group">
+      <div class="eq-yesno-btn ${currentVal === 'yes' ? 'active-yes' : ''}" id="eq_yes_${key}" onclick="eqToggleYesNo('${key}','yes')"><i class="fas fa-check"></i> Yes</div>
+      <div class="eq-yesno-btn ${currentVal === 'no' ? 'active-no' : ''}" id="eq_no_${key}" onclick="eqToggleYesNo('${key}','no')"><i class="fas fa-times"></i> No</div>
+    </div>`;
+  }
+
+  /* ── Add-On Rows ── */
+  const addonsHTML = eventQuoteAddons.map(addon => {
+    const ad = addons[addon.key] || {};
+    const val = ad.value || '';
+    const price = ad.price != null ? ad.price : '';
+    const desc = (ad.description || '').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+
+    /* Conditional visibility for custom pedestal color */
+    const isConditional = addon.conditional;
+    const parentVal = isConditional ? (addons[addon.conditionKey] || {}).value : null;
+    const showRow = !isConditional || parentVal === 'yes';
+
+    let extraHTML = '';
+    if (addon.colorDropdown && val === 'yes') {
+      const selectedColor = ad.colorChoice || '';
+      extraHTML = `<div class="eq-color-dropdown" id="eq_color_wrap_${addon.key}">
+        <label style="font-size:0.82rem;font-weight:600;color:var(--text-secondary);margin-right:8px;">Color:</label>
+        <select id="eq_color_${addon.key}">
+          <option value="">-- Select Color --</option>
+          ${pedestalColors.map(c => `<option value="${c}" ${selectedColor === c ? 'selected' : ''}>${c}</option>`).join('')}
+        </select>
+      </div>`;
+    }
+
+    return `<div class="eq-addon-row" id="eq_addon_row_${addon.key}" style="${showRow ? '' : 'display:none;'}">
+      <div class="eq-addon-label"><i class="fas ${addon.icon}"></i> ${addon.label}</div>
+      ${yesNoHTML(addon.key, val)}
+      <div class="eq-addon-price"><input type="number" id="eq_price_${addon.key}" placeholder="0.00" step="0.01" min="0" value="${price}" oninput="recalcEventQuoteTotal()"></div>
+      <div class="eq-addon-desc"><textarea id="eq_desc_${addon.key}" placeholder="Description / notes..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';">${desc}</textarea></div>
+      ${extraHTML}
+    </div>`;
+  }).join('');
+
+  /* ── Mileage Section ── */
+  const mileageAddr = (q.mileageAddress || '').replace(/"/g, '&quot;');
+  const mileageMiles = q.mileageMiles || '';
+  const mileagePrice = q.mileagePrice != null ? q.mileagePrice : '';
+  const mileageDesc = (q.mileageDescription || '').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+
+  /* Notes */
+  const notesVal = (q.notes || '').replace(/"/g, '&quot;');
+
+  main.innerHTML = `
+    <div class="category-header">
+      <div class="category-header-left">
+        <div class="category-icon-lg" style="background:${cat.color}15; color:${cat.color}">
+          <i class="fas ${cat.icon}"></i>
+        </div>
+        <div>
+          <h2>${isNew ? 'New Event Quote' : 'Edit Event Quote'}</h2>
+          <span class="subtitle">Event pricing configuration</span>
+        </div>
+      </div>
+      <button class="crm-btn-secondary" onclick="editingEventQuoteId=null;renderEventQuotesCategory();"><i class="fas fa-arrow-left"></i> Back to Event Quotes</button>
+    </div>
+    <div class="quote-builder">
+
+      <!-- Client Information -->
+      <div class="quote-section-label"><i class="fas fa-user-tie" style="margin-right:4px;"></i> Client Information</div>
+      <div class="quote-contact-grid">${clientHTML}</div>
+
+      <!-- Event Details -->
+      <div class="quote-section-label"><i class="fas fa-calendar-star" style="margin-right:4px;"></i> Event Details</div>
+      <div class="eq-event-details-grid">
+        <div class="form-group full-width">
+          <label>Event Name</label>
+          <input type="text" id="eq_eventName" placeholder="e.g. Corporate Team Building Day" value="${(q.eventName || '').replace(/"/g, '&quot;')}">
+        </div>
+        <div class="form-group">
+          <label>Event Date</label>
+          <input type="date" id="eq_eventDate" value="${q.eventDate || ''}">
+        </div>
+        <div class="form-group">
+          <label>Operating Times (if available)</label>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <input type="time" id="eq_opTimeStart" value="${q.opTimeStart || ''}" style="flex:1;">
+            <span style="color:var(--text-muted);font-weight:600;">to</span>
+            <input type="time" id="eq_opTimeEnd" value="${q.opTimeEnd || ''}" style="flex:1;">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Load-In Date (if available)</label>
+          <input type="date" id="eq_loadInDate" value="${q.loadInDate || ''}">
+        </div>
+        <div class="form-group">
+          <label>Load-Out Date (if available)</label>
+          <input type="date" id="eq_loadOutDate" value="${q.loadOutDate || ''}">
+        </div>
+        <div class="form-group">
+          <label>Number of Simulators</label>
+          <select id="eq_numSims" onchange="recalcEventQuoteTotal()">
+            <option value="">-- Select --</option>
+            ${simOptions.map(n => `<option value="${n}" ${q.numSims == n ? 'selected' : ''}>${n}</option>`).join('')}
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Sim Price</label>
+          <div style="position:relative;">
+            <input type="number" id="eq_simsPrice" placeholder="0.00" step="0.01" min="0" value="${q.simsPrice != null ? q.simsPrice : ''}" style="padding-left:22px;" oninput="recalcEventQuoteTotal()">
+            <span style="position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-weight:600;font-size:0.85rem;pointer-events:none;">$</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Sim Description</label>
+          <input type="text" id="eq_simsDescription" placeholder="Details about sim setup..." value="${(q.simsDescription || '').replace(/"/g, '&quot;')}">
+        </div>
+        <div class="form-group full-width">
+          <label>Event Description</label>
+          <textarea id="eq_eventDescription" placeholder="Describe the event, goals, and any special requirements..." style="min-height:80px;resize:vertical;">${(q.eventDescription || '').replace(/</g, '&lt;')}</textarea>
+        </div>
+      </div>
+
+      <!-- Staffing -->
+      <div class="quote-section-label"><i class="fas fa-users" style="margin-right:4px;"></i> Staffing</div>
+      <div class="eq-event-details-grid">
+        <div class="form-group">
+          <label>Number of Staff Members Needed</label>
+          <select id="eq_numStaff" onchange="recalcEventQuoteTotal()">
+            <option value="">-- Select --</option>
+            ${staffOptions.map(n => `<option value="${n}" ${q.numStaff == n ? 'selected' : ''}>${n}</option>`).join('')}
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Staff Price</label>
+          <div style="position:relative;">
+            <input type="number" id="eq_staffPrice" placeholder="0.00" step="0.01" min="0" value="${q.staffPrice != null ? q.staffPrice : ''}" style="padding-left:22px;" oninput="recalcEventQuoteTotal()">
+            <span style="position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-weight:600;font-size:0.85rem;pointer-events:none;">$</span>
+          </div>
+        </div>
+        <div class="form-group full-width">
+          <label>Staff Description</label>
+          <input type="text" id="eq_staffDescription" placeholder="Staff roles, responsibilities, uniform requirements..." value="${(q.staffDescription || '').replace(/"/g, '&quot;')}">
+        </div>
+      </div>
+
+      <!-- Travel & Mileage -->
+      <div class="quote-section-label"><i class="fas fa-route" style="margin-right:4px;"></i> Travel & Mileage</div>
+      <div class="eq-mileage-calc">
+        <div class="eq-calc-row">
+          <label>Event Address:</label>
+          <input type="text" id="eq_mileageAddress" placeholder="Enter full event address" value="${mileageAddr}" style="flex:2;">
+          <button class="eq-calc-btn" onclick="calcEventMileage()"><i class="fas fa-calculator"></i> Calculate</button>
+        </div>
+        <div class="eq-calc-row">
+          <label>Miles (one-way):</label>
+          <input type="number" id="eq_mileageMiles" placeholder="0" min="0" step="0.1" value="${mileageMiles}" oninput="updateMileageBreakdown()">
+        </div>
+        <div id="eq_mileageBreakdown" class="eq-mileage-breakdown" style="${mileageMiles ? '' : 'display:none;'}">
+          <!-- Filled by JS -->
+        </div>
+        <div style="margin-top:10px;">
+          <label style="font-size:0.85rem;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">Mileage Price Override</label>
+          <div style="position:relative;max-width:200px;">
+            <input type="number" id="eq_mileagePrice" placeholder="Auto-calculated" step="0.01" min="0" value="${mileagePrice}" style="padding-left:22px;width:100%;padding:8px 10px 8px 22px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.95rem;" oninput="recalcEventQuoteTotal()">
+            <span style="position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-weight:600;font-size:0.85rem;pointer-events:none;">$</span>
+          </div>
+        </div>
+        <div style="margin-top:8px;">
+          <label style="font-size:0.85rem;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">Mileage Description</label>
+          <textarea id="eq_mileageDescription" placeholder="Travel details, route notes..." rows="1" style="width:100%;padding:6px 10px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.85rem;font-family:'Inter',sans-serif;resize:vertical;min-height:32px;" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';">${mileageDesc}</textarea>
+        </div>
+        <div style="font-size:0.78rem;color:var(--text-muted);margin-top:6px;font-style:italic;">
+          <i class="fas fa-info-circle"></i> Origin: Daytona Beach, FL &bull; Rate: $2.00/mile &bull; Calculated as round trip
+        </div>
+      </div>
+
+      <!-- Add-On Services -->
+      <div class="quote-section-label"><i class="fas fa-puzzle-piece" style="margin-right:4px;"></i> Add-On Services</div>
+      ${addonsHTML}
+
+      <!-- Totals -->
+      <div class="quote-totals-bar" id="eventQuoteTotalsBar">
+        <div class="quote-totals-row subtotal"><span class="totals-label">Simulators</span><span class="totals-value" id="eqSimsTotal">$0.00</span></div>
+        <div class="quote-totals-row subtotal"><span class="totals-label">Staffing</span><span class="totals-value" id="eqStaffTotal">$0.00</span></div>
+        <div class="quote-totals-row subtotal"><span class="totals-label">Mileage / Travel</span><span class="totals-value" id="eqMileageTotal">$0.00</span></div>
+        <div class="quote-totals-row subtotal"><span class="totals-label">Add-On Services</span><span class="totals-value" id="eqAddonsTotal">$0.00</span></div>
+        <div class="quote-totals-row grand-total"><span class="totals-label">Total</span><span class="totals-value" id="eqGrandTotal">$0.00</span></div>
+        <div class="quote-tax-note">* Sales tax not included</div>
+      </div>
+
+      <!-- Notes -->
+      <div class="quote-section-label">Notes</div>
+      <textarea id="eq_notes" style="width:100%;min-height:80px;padding:10px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.95rem;font-family:'Inter',sans-serif;resize:vertical;" placeholder="Additional notes, special requests, etc...">${notesVal}</textarea>
+
+      <!-- Actions -->
+      <div class="quote-actions-bar">
+        ${!isNew ? `<button class="quote-btn-delete" onclick="deleteEventQuote('${editingEventQuoteId}')"><i class="fas fa-trash"></i> Delete</button>` : ''}
+        ${isNew || (!q.status || q.status === 'draft') ? `<button style="background:#EC4899;color:#fff;padding:10px 22px;border-radius:var(--radius-sm);font-size:0.95rem;font-weight:600;cursor:pointer;border:none;display:flex;align-items:center;gap:6px;" onclick="saveAndSendEventQuote()"><i class="fas fa-paper-plane"></i> Save &amp; Send Quote</button>` : ''}
+        ${!isNew && (q.status === 'sent' || q.status === 'viewed') ? `<button style="background:#EC4899;color:#fff;padding:10px 22px;border-radius:var(--radius-sm);font-size:0.95rem;font-weight:600;cursor:pointer;border:none;display:flex;align-items:center;gap:6px;" onclick="resendEventQuote('${editingEventQuoteId}')"><i class="fas fa-paper-plane"></i> Resend</button>` : ''}
+        ${!isNew && q.status && q.status !== 'draft' && q.status !== 'withdrawn' ? `<button style="background:#f59e0b;color:#fff;padding:10px 22px;border-radius:var(--radius-sm);font-size:0.95rem;font-weight:600;cursor:pointer;border:none;display:flex;align-items:center;gap:6px;" onclick="withdrawEventQuote('${editingEventQuoteId}')"><i class="fas fa-ban"></i> Withdraw</button>` : ''}
+        <button class="quote-btn-cancel" onclick="editingEventQuoteId=null;renderEventQuotesCategory();">Cancel</button>
+        <button class="quote-btn-save" onclick="saveEventQuote()"><i class="fas fa-save"></i> ${isNew ? 'Create Quote' : 'Save Changes'}</button>
+      </div>
+
+      ${!isNew ? `<div class="quote-section-label" style="margin-top:24px;"><i class="fas fa-clock-rotate-left" style="margin-right:4px;"></i> Activity &amp; Status${q.status ? ' &mdash; <span class="quote-status-badge ' + (q.status || 'draft') + '">' + (q.status || 'draft') + '</span>' : ''}</div>
+      <div class="quote-timeline" id="eventQuoteTimeline"><div style="color:var(--text-muted);font-size:0.88rem;">Loading activity...</div></div>` : ''}
+
+      ${!isNew ? `<div class="quote-section-label" style="margin-top:24px;"><i class="fas fa-comments" style="margin-right:4px;"></i> Customer Q&amp;A <span id="eqQaUnreadCount"></span></div>
+      <div class="qa-admin-panel">
+        <div class="qa-admin-thread" id="eqQaAdminThread"><div class="qa-admin-empty">Loading messages...</div></div>
+        <div class="qa-reply-row">
+          <textarea id="eqQaAdminReplyInput" placeholder="Type a reply to the customer..." rows="2"></textarea>
+          <button id="eqQaAdminSendBtn" onclick="sendEventQuoteAdminReply('${editingEventQuoteId}')"><i class="fas fa-reply"></i> Reply</button>
+        </div>
+      </div>` : ''}
+    </div>
+  `;
+
+  /* Load activity & messages for existing quotes */
+  if (!isNew) {
+    loadEventQuoteActivity(editingEventQuoteId).then(activities => {
+      const el = document.getElementById('eventQuoteTimeline');
+      if (el) el.innerHTML = renderActivityTimeline(activities);
+    });
+    setupEventQuoteMessageListener(editingEventQuoteId);
+  }
+
+  /* Calculate initial totals & mileage breakdown */
+  recalcEventQuoteTotal();
+  if (mileageMiles) updateMileageBreakdown();
+}
+
+/* ── Yes/No toggle for add-ons ── */
+function eqToggleYesNo(key, which) {
+  const yesEl = document.getElementById('eq_yes_' + key);
+  const noEl = document.getElementById('eq_no_' + key);
+  if (!yesEl || !noEl) return;
+
+  if (which === 'yes') {
+    const wasActive = yesEl.classList.contains('active-yes');
+    yesEl.classList.toggle('active-yes');
+    noEl.classList.remove('active-no');
+    if (wasActive) yesEl.classList.remove('active-yes');
+  } else {
+    const wasActive = noEl.classList.contains('active-no');
+    noEl.classList.toggle('active-no');
+    yesEl.classList.remove('active-yes');
+    if (wasActive) noEl.classList.remove('active-no');
+  }
+
+  /* Handle conditional rows (pedestal color depends on needsPedestal) */
+  const addon = eventQuoteAddons.find(a => a.key === key);
+  if (addon) {
+    /* Show/hide conditional children */
+    eventQuoteAddons.filter(a => a.conditional && a.conditionKey === key).forEach(child => {
+      const row = document.getElementById('eq_addon_row_' + child.key);
+      const parentYes = yesEl.classList.contains('active-yes');
+      if (row) row.style.display = parentYes ? '' : 'none';
+    });
+
+    /* Show/hide color dropdown if this addon has colorDropdown */
+    if (addon.colorDropdown) {
+      const wrap = document.getElementById('eq_color_wrap_' + key);
+      if (wrap) {
+        wrap.style.display = yesEl.classList.contains('active-yes') ? '' : 'none';
+      }
+      /* Re-render to show/hide color dropdown */
+    }
+  }
+
+  recalcEventQuoteTotal();
+}
+
+/* ── Mileage calculation ── */
+async function calcEventMileage() {
+  const address = document.getElementById('eq_mileageAddress').value.trim();
+  if (!address) { alert('Please enter an event address.'); return; }
+
+  const btn = document.querySelector('.eq-calc-btn');
+  if (btn) { btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calculating...'; btn.disabled = true; }
+
+  try {
+    /* Use Google Maps Distance Matrix API if available */
+    if (typeof google !== 'undefined' && google.maps && google.maps.DistanceMatrixService) {
+      const service = new google.maps.DistanceMatrixService();
+      service.getDistanceMatrix({
+        origins: ['Daytona Beach, FL'],
+        destinations: [address],
+        travelMode: 'DRIVING',
+        unitSystem: google.maps.UnitSystem.IMPERIAL,
+      }, (response, status) => {
+        if (status === 'OK' && response.rows[0].elements[0].status === 'OK') {
+          const distText = response.rows[0].elements[0].distance.text;
+          const distMiles = parseFloat(distText.replace(/,/g, ''));
+          document.getElementById('eq_mileageMiles').value = Math.round(distMiles * 10) / 10;
+          updateMileageBreakdown();
+        } else {
+          alert('Could not calculate distance. Please enter miles manually.');
+        }
+        if (btn) { btn.innerHTML = '<i class="fas fa-calculator"></i> Calculate'; btn.disabled = false; }
+      });
+    } else {
+      /* Fallback: prompt user for manual entry with helpful message */
+      alert('Google Maps API not loaded. Please enter miles manually, or use Google Maps to find the driving distance from Daytona Beach, FL to: ' + address);
+      if (btn) { btn.innerHTML = '<i class="fas fa-calculator"></i> Calculate'; btn.disabled = false; }
+    }
+  } catch (err) {
+    console.error('Mileage calc error:', err);
+    alert('Error calculating distance. Please enter miles manually.');
+    if (btn) { btn.innerHTML = '<i class="fas fa-calculator"></i> Calculate'; btn.disabled = false; }
+  }
+}
+
+function updateMileageBreakdown() {
+  const milesEl = document.getElementById('eq_mileageMiles');
+  const breakdownEl = document.getElementById('eq_mileageBreakdown');
+  const priceEl = document.getElementById('eq_mileagePrice');
+  if (!milesEl || !breakdownEl) return;
+
+  const oneWayMiles = parseFloat(milesEl.value) || 0;
+  if (oneWayMiles <= 0) { breakdownEl.style.display = 'none'; return; }
+
+  const roundTripMiles = oneWayMiles * 2;
+  const ratePerMile = 2.00;
+  const totalCost = roundTripMiles * ratePerMile;
+
+  breakdownEl.style.display = '';
+  breakdownEl.innerHTML = `
+    <div class="eq-math-line"><span>One-way distance:</span><span>${oneWayMiles.toLocaleString()} miles</span></div>
+    <div class="eq-math-line"><span>Round trip (x2):</span><span>${roundTripMiles.toLocaleString()} miles</span></div>
+    <div class="eq-math-line"><span>Rate per mile:</span><span>$${ratePerMile.toFixed(2)}</span></div>
+    <div class="eq-math-line eq-math-total"><span>Mileage Total:</span><span>${totalCost.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</span></div>
+  `;
+
+  /* Auto-fill price if not manually overridden */
+  if (priceEl && (!priceEl.value || priceEl.dataset.autoFilled === 'true')) {
+    priceEl.value = totalCost.toFixed(2);
+    priceEl.dataset.autoFilled = 'true';
+  }
+  recalcEventQuoteTotal();
+}
+
+/* ── Recalculate event quote total ── */
+function recalcEventQuoteTotal() {
+  const fmt = n => n.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+
+  /* Sims */
+  const simsPrice = parseFloat((document.getElementById('eq_simsPrice') || {}).value) || 0;
+  const simsEl = document.getElementById('eqSimsTotal');
+  if (simsEl) simsEl.textContent = fmt(simsPrice);
+
+  /* Staff */
+  const staffPrice = parseFloat((document.getElementById('eq_staffPrice') || {}).value) || 0;
+  const staffEl = document.getElementById('eqStaffTotal');
+  if (staffEl) staffEl.textContent = fmt(staffPrice);
+
+  /* Mileage */
+  const mileagePrice = parseFloat((document.getElementById('eq_mileagePrice') || {}).value) || 0;
+  const mileageEl = document.getElementById('eqMileageTotal');
+  if (mileageEl) mileageEl.textContent = fmt(mileagePrice);
+
+  /* Add-ons */
+  let addonsTotal = 0;
+  eventQuoteAddons.forEach(addon => {
+    const yesEl = document.getElementById('eq_yes_' + addon.key);
+    const priceEl = document.getElementById('eq_price_' + addon.key);
+    if (yesEl && yesEl.classList.contains('active-yes') && priceEl && priceEl.value) {
+      addonsTotal += parseFloat(priceEl.value) || 0;
+    }
+  });
+  const addonsEl = document.getElementById('eqAddonsTotal');
+  if (addonsEl) addonsEl.textContent = fmt(addonsTotal);
+
+  /* Grand total */
+  const grand = simsPrice + staffPrice + mileagePrice + addonsTotal;
+  const grandEl = document.getElementById('eqGrandTotal');
+  if (grandEl) grandEl.textContent = fmt(grand);
+}
+
+/* ── Save event quote ── */
+function saveEventQuote(opts) {
+  const stayOnPage = opts && opts.stayOnPage;
+  const val = id => { const e = document.getElementById(id); return e ? e.value.trim() : ''; };
+
+  const payload = {
+    clientName: val('eq_clientName'),
+    clientCompany: val('eq_clientCompany'),
+    clientEmail: val('eq_clientEmail'),
+    clientPhone: val('eq_clientPhone'),
+    clientAddress: val('eq_clientAddress'),
+    clientCity: val('eq_clientCity'),
+    clientState: val('eq_clientState'),
+    clientZip: val('eq_clientZip'),
+    eventName: val('eq_eventName'),
+    eventDate: val('eq_eventDate'),
+    opTimeStart: val('eq_opTimeStart'),
+    opTimeEnd: val('eq_opTimeEnd'),
+    loadInDate: val('eq_loadInDate'),
+    loadOutDate: val('eq_loadOutDate'),
+    numSims: val('eq_numSims') ? parseInt(val('eq_numSims')) : null,
+    simsPrice: val('eq_simsPrice') ? parseFloat(val('eq_simsPrice')) : null,
+    simsDescription: val('eq_simsDescription'),
+    eventDescription: val('eq_eventDescription'),
+    numStaff: val('eq_numStaff') ? parseInt(val('eq_numStaff')) : null,
+    staffPrice: val('eq_staffPrice') ? parseFloat(val('eq_staffPrice')) : null,
+    staffDescription: val('eq_staffDescription'),
+    mileageAddress: val('eq_mileageAddress'),
+    mileageMiles: val('eq_mileageMiles') ? parseFloat(val('eq_mileageMiles')) : null,
+    mileagePrice: val('eq_mileagePrice') ? parseFloat(val('eq_mileagePrice')) : null,
+    mileageDescription: val('eq_mileageDescription'),
+    notes: val('eq_notes'),
+    addons: {},
+    updatedAt: new Date().toISOString(),
+  };
+
+  if (!payload.eventName && !payload.clientName && !payload.clientCompany) {
+    alert('Please enter at least an event name, client name, or company.');
+    return Promise.reject('validation');
+  }
+
+  /* Collect add-on data */
+  eventQuoteAddons.forEach(addon => {
+    const yesEl = document.getElementById('eq_yes_' + addon.key);
+    const noEl = document.getElementById('eq_no_' + addon.key);
+    let addonVal = '';
+    if (yesEl && yesEl.classList.contains('active-yes')) addonVal = 'yes';
+    else if (noEl && noEl.classList.contains('active-no')) addonVal = 'no';
+
+    const priceEl = document.getElementById('eq_price_' + addon.key);
+    const price = priceEl && priceEl.value ? parseFloat(priceEl.value) : null;
+    const descEl = document.getElementById('eq_desc_' + addon.key);
+    const description = descEl ? descEl.value.trim() : '';
+
+    const entry = { included: addonVal === 'yes', value: addonVal, price, description };
+
+    if (addon.colorDropdown) {
+      const colorEl = document.getElementById('eq_color_' + addon.key);
+      entry.colorChoice = colorEl ? colorEl.value : '';
+    }
+
+    payload.addons[addon.key] = entry;
+  });
+
+  /* Auto-add client to CRM */
+  ensureCRMCustomer({
+    firstName: (payload.clientName || '').split(' ')[0] || '',
+    lastName: (payload.clientName || '').split(' ').slice(1).join(' ') || '',
+    companyName: payload.clientCompany,
+    email: payload.clientEmail,
+    phone: payload.clientPhone,
+    address: [payload.clientAddress, payload.clientCity, payload.clientState, payload.clientZip].filter(Boolean).join(', '),
+    eventConfig: {
+      eventType: payload.eventName || '',
+      eventSize: payload.numSims ? payload.numSims + ' sim(s)' : '',
+      venue: payload.mileageAddress || '',
+      budget: '',
+      requirements: payload.eventDescription || '',
+    },
+  }, 'event');
+
+  if (editingEventQuoteId === 'new') {
+    payload.createdAt = new Date().toISOString();
+    payload.status = 'draft';
+    return db.collection('eventQuotes').add(payload).then(docRef => {
+      if (stayOnPage) { editingEventQuoteId = docRef.id; return docRef.id; }
+      editingEventQuoteId = null;
+      renderEventQuotesCategory();
+    }).catch(err => { console.error('Error creating event quote:', err); alert('Failed to save event quote.'); });
+  } else {
+    return db.collection('eventQuotes').doc(editingEventQuoteId).update(payload).then(() => {
+      if (stayOnPage) return editingEventQuoteId;
+      editingEventQuoteId = null;
+      renderEventQuotesCategory();
+    }).catch(err => { console.error('Error updating event quote:', err); alert('Failed to save event quote.'); });
+  }
+}
+
+/* ── Delete event quote ── */
+function deleteEventQuote(id) {
+  if (!confirm('Are you sure you want to delete this event quote?')) return;
+  db.collection('eventQuotes').doc(id).delete().then(() => {
+    editingEventQuoteId = null;
+    renderEventQuotesCategory();
+  }).catch(err => { console.error('Error deleting event quote:', err); alert('Failed to delete.'); });
+}
+
+/* ═══ Event Quote Sending, Status, Timeline ═══ */
+
+function getEventQuotePublicURL(quoteId, token) {
+  return window.location.origin + window.location.pathname + '?eventquote=' + quoteId + '&token=' + token;
+}
+
+function addEventQuoteActivity(quoteId, entry) {
+  entry.timestamp = new Date().toISOString();
+  return db.collection('eventQuotes').doc(quoteId).collection('activity').add(entry);
+}
+
+let sendingEventQuoteId = null;
+
+async function saveAndSendEventQuote() {
+  try {
+    const savedId = await saveEventQuote({ stayOnPage: true });
+    if (!savedId) return;
+    await new Promise(r => setTimeout(r, 600));
+    openSendEventQuoteModal(savedId);
+  } catch (err) {
+    if (err !== 'validation') console.error('Save & Send event quote failed:', err);
+  }
+}
+
+function openSendEventQuoteModal(quoteId) {
+  const q = eventQuotesData.find(x => x._id === quoteId);
+  if (!q) return;
+  sendingEventQuoteId = quoteId;
+
+  let token = q.publicToken;
+  if (!token) {
+    token = generatePublicToken();
+    db.collection('eventQuotes').doc(quoteId).update({ publicToken: token });
+    q.publicToken = token;
+  }
+
+  const url = getEventQuotePublicURL(quoteId, token);
+  const name = q.clientName || 'there';
+
+  document.getElementById('sendEventQuoteEmail').value = q.clientEmail || '';
+  document.getElementById('sendEventQuoteLinkDisplay').value = url;
+  document.getElementById('sendEventQuoteSubject').value = 'Your Event Quote from Velocity Pro Sims';
+  document.getElementById('sendEventQuoteBody').value =
+    `Hi ${name},\n\nThank you for your interest in Velocity Pro Sims for your upcoming event${q.eventName ? ' — ' + q.eventName : ''}!\n\nWe've put together a quote for you. Click the link below to review your event pricing:\n\n${url}\n\nFrom there you can accept or decline the quote directly. If you have any questions, don't hesitate to reach out.\n\nBest regards,\nVelocity Pro Sims\nwww.velocityprosims.com`;
+  document.getElementById('sendEventQuoteStatus').innerHTML = '';
+  document.getElementById('sendEventQuoteBtn').disabled = false;
+  document.getElementById('sendEventQuoteOverlay').classList.add('open');
+}
+
+function closeSendEventQuoteModal() {
+  document.getElementById('sendEventQuoteOverlay').classList.remove('open');
+  sendingEventQuoteId = null;
+}
+
+function copyEventQuoteLink() {
+  const input = document.getElementById('sendEventQuoteLinkDisplay');
+  navigator.clipboard.writeText(input.value).then(() => {
+    const btn = input.nextElementSibling;
+    btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+    setTimeout(() => { btn.innerHTML = '<i class="fas fa-copy"></i> Copy'; }, 2000);
+  });
+}
+
+async function executeSendEventQuote() {
+  if (!sendingEventQuoteId) return;
+  const q = eventQuotesData.find(x => x._id === sendingEventQuoteId);
+  if (!q) return;
+
+  const email = document.getElementById('sendEventQuoteEmail').value.trim();
+  const subject = document.getElementById('sendEventQuoteSubject').value.trim();
+  const message = document.getElementById('sendEventQuoteBody').value.trim();
+  const statusEl = document.getElementById('sendEventQuoteStatus');
+  const sendBtn = document.getElementById('sendEventQuoteBtn');
+
+  if (!email) { alert('Please enter a recipient email address.'); return; }
+
+  sendBtn.disabled = true;
+  sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+  statusEl.className = 'sqm-status sending';
+  statusEl.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Sending email...';
+
+  const updates = { status: 'sent', sentAt: new Date().toISOString() };
+  if (!q.publicToken) updates.publicToken = generatePublicToken();
+  await db.collection('eventQuotes').doc(sendingEventQuoteId).update(updates);
+  addEventQuoteActivity(sendingEventQuoteId, { type: 'sent', email });
+  q.status = 'sent';
+  q.sentAt = updates.sentAt;
+
+  const emailjsConfigured = typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY';
+  let emailSent = false;
+
+  if (emailjsConfigured) {
+    try {
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_QUOTE_TEMPLATE, {
+        to_email: email,
+        subject: subject,
+        message: message,
+        from_name: 'Velocity Pro Sims',
+        reply_to: 'sales@velocityprosims.com',
+      });
+      emailSent = true;
+    } catch (err) {
+      console.error('EmailJS error (event quote):', err);
+    }
+  }
+
+  if (emailSent) {
+    statusEl.className = 'sqm-status success';
+    statusEl.innerHTML = '<i class="fas fa-check-circle"></i> Email sent successfully!';
+    sendBtn.innerHTML = '<i class="fas fa-check"></i> Sent!';
+    setTimeout(() => {
+      closeSendEventQuoteModal();
+      if (editingEventQuoteId) renderEventQuoteBuilder();
+      else renderEventQuotesCategory();
+    }, 2000);
+  } else {
+    await db.collection('eventQuotes').doc(sendingEventQuoteId).collection('emails').add({
+      to: email, subject, body: message,
+      timestamp: new Date().toISOString(),
+      status: emailjsConfigured ? 'emailjs_failed' : 'pending_setup'
+    });
+    statusEl.className = 'sqm-status success';
+    statusEl.innerHTML = '<i class="fas fa-check-circle"></i> Quote marked as sent! Link is ready to share.';
+    sendBtn.innerHTML = '<i class="fas fa-check"></i> Done';
+    if (!emailjsConfigured) {
+      statusEl.innerHTML += '<br><span style="font-size:0.78rem;color:var(--text-muted);">Set up EmailJS for automatic email delivery.</span>';
+    }
+    setTimeout(() => {
+      closeSendEventQuoteModal();
+      if (editingEventQuoteId) renderEventQuoteBuilder();
+      else renderEventQuotesCategory();
+    }, 2500);
+  }
+}
+
+/* ── Withdraw / Resend Event Quote ── */
+function withdrawEventQuote(quoteId) {
+  if (!confirm('Withdraw this event quote? The customer will no longer be able to accept it.')) return;
+  db.collection('eventQuotes').doc(quoteId).update({ status: 'withdrawn', withdrawnAt: new Date().toISOString() });
+  addEventQuoteActivity(quoteId, { type: 'withdrawn' });
+  setTimeout(() => renderEventQuoteBuilder(), 500);
+}
+
+function resendEventQuote(quoteId) {
+  openSendEventQuoteModal(quoteId);
+}
+
+/* ── Load Event Quote Activity Timeline ── */
+async function loadEventQuoteActivity(quoteId) {
+  try {
+    const snap = await db.collection('eventQuotes').doc(quoteId).collection('activity').orderBy('timestamp', 'asc').get();
+    return snap.docs.map(d => d.data());
+  } catch (err) {
+    console.error('Error loading event quote activity:', err);
+    return [];
+  }
+}
+
+/* ═══ Event Quote Q&A Messaging ═══ */
+
+let activeEventQuoteMessageListener = null;
+
+function setupEventQuoteMessageListener(quoteId) {
+  if (activeEventQuoteMessageListener) { activeEventQuoteMessageListener(); activeEventQuoteMessageListener = null; }
+  activeEventQuoteMessageListener = db.collection('eventQuotes').doc(quoteId).collection('messages').orderBy('timestamp', 'asc')
+    .onSnapshot(snap => {
+      const msgs = snap.docs.map(d => ({ _id: d.id, ...d.data() }));
+      renderEventQuoteAdminMessages(msgs);
+    }, err => console.error('Event quote message listener error:', err));
+}
+
+function renderEventQuoteAdminMessages(msgs) {
+  const thread = document.getElementById('eqQaAdminThread');
+  if (!thread) return;
+  if (!msgs.length) {
+    thread.innerHTML = '<div class="qa-admin-empty"><i class="fas fa-comments" style="font-size:1.2rem;opacity:0.3;display:block;margin-bottom:6px;"></i>No messages yet</div>';
+    return;
+  }
+  thread.innerHTML = msgs.map(m => {
+    const unreadBadge = (m.sender === 'customer' && !m.read) ? '<span class="pq-msg-new-badge">NEW</span>' : '';
+    return `<div class="qa-msg ${m.sender}">
+      <div class="qa-msg-sender">${m.sender === 'admin' ? '<i class="fas fa-headset"></i> Velocity Pro Sims' : '<i class="fas fa-user"></i> ' + (m.senderName || 'Customer')} ${unreadBadge}</div>
+      <div class="qa-msg-body">${m.text.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>')}</div>
+      <div class="qa-msg-time">${formatMsgTime(m.timestamp)}</div>
+    </div>`;
+  }).join('');
+  thread.scrollTop = thread.scrollHeight;
+}
+
+async function sendEventQuoteAdminReply(quoteId) {
+  const textarea = document.getElementById('eqQaAdminReplyInput');
+  if (!textarea) return;
+  const text = textarea.value.trim();
+  if (!text) return;
+
+  const btn = document.getElementById('eqQaAdminSendBtn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; }
+
+  const msg = { sender: 'admin', senderName: 'Velocity Pro Sims', text, timestamp: new Date().toISOString(), read: false };
+  try {
+    await db.collection('eventQuotes').doc(quoteId).collection('messages').add(msg);
+    addEventQuoteActivity(quoteId, { type: 'reply', text: text.substring(0, 80) });
+    textarea.value = '';
+    const snap = await db.collection('eventQuotes').doc(quoteId).collection('messages').where('sender', '==', 'customer').where('read', '==', false).get();
+    const batch = db.batch();
+    snap.docs.forEach(d => batch.update(d.ref, { read: true }));
+    if (!snap.empty) await batch.commit();
+  } catch (err) {
+    console.error('Error sending event quote reply:', err);
+    alert('Failed to send reply.');
+  }
+  if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-reply"></i> Reply'; }
+}
+
+/* ═══ Public Event Quote View (Customer-Facing) ═══ */
+
+function initPublicEventQuoteView(quoteId, token) {
+  document.getElementById('loginScreen').style.display = 'none';
+  const appEl = document.getElementById('app');
+  if (appEl) appEl.style.display = 'none';
+
+  const pqDiv = document.createElement('div');
+  pqDiv.id = 'publicEventQuoteView';
+  pqDiv.className = 'pq-page';
+  pqDiv.innerHTML = '<div class="pq-loading"><i class="fas fa-spinner fa-spin"></i><p>Loading your event quote...</p></div>';
+  document.body.appendChild(pqDiv);
+
+  db.collection('eventQuotes').doc(quoteId).get().then(doc => {
+    if (!doc.exists) { pqDiv.innerHTML = '<div class="pq-loading"><i class="fas fa-file-circle-xmark"></i><p>Quote not found</p></div>'; return; }
+    const q = { _id: doc.id, ...doc.data() };
+    if (q.publicToken !== token) { pqDiv.innerHTML = '<div class="pq-loading"><i class="fas fa-lock"></i><p>Invalid link</p></div>'; return; }
+
+    if (q.status === 'sent' || q.status === 'viewed') {
+      db.collection('eventQuotes').doc(quoteId).update({ status: 'viewed', lastViewedAt: new Date().toISOString() });
+      addEventQuoteActivity(quoteId, { type: 'viewed' });
+    }
+
+    renderPublicEventQuote(pqDiv, q);
+  }).catch(err => {
+    console.error(err);
+    pqDiv.innerHTML = '<div class="pq-loading"><i class="fas fa-triangle-exclamation"></i><p>Error loading quote</p></div>';
+  });
+}
+
+function renderPublicEventQuote(container, q) {
+  const name = q.clientName || q.clientCompany || 'Customer';
+  const sentDate = q.sentAt ? new Date(q.sentAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
+  const isActionable = q.status === 'sent' || q.status === 'viewed';
+  const fmtPrice = n => n != null && n > 0 ? n.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
+
+  let statusBanner = '';
+  if (q.status === 'accepted') statusBanner = '<div class="pq-status-banner accepted"><i class="fas fa-check-circle"></i> This quote has been accepted</div>';
+  else if (q.status === 'declined') statusBanner = '<div class="pq-status-banner declined"><i class="fas fa-times-circle"></i> This quote has been declined</div>';
+  else if (q.status === 'withdrawn') statusBanner = '<div class="pq-status-banner withdrawn"><i class="fas fa-ban"></i> This quote has been withdrawn</div>';
+
+  /* Event date formatting */
+  const evDate = q.eventDate ? new Date(q.eventDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) : '';
+  const opTimes = (q.opTimeStart && q.opTimeEnd) ? q.opTimeStart + ' - ' + q.opTimeEnd : '';
+  const loadIn = q.loadInDate ? new Date(q.loadInDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
+  const loadOut = q.loadOutDate ? new Date(q.loadOutDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
+
+  /* Build line items */
+  let itemsHTML = '';
+  let pqTotal = 0;
+
+  /* Sims */
+  if (q.numSims) {
+    const sp = q.simsPrice || 0;
+    pqTotal += sp;
+    itemsHTML += `<div class="pq-section-title"><i class="fas fa-desktop"></i> Simulators</div>
+      <div class="pq-item-row"><span class="pq-item-check"><i class="fas fa-check-circle"></i></span>
+        <span class="pq-item-label">${q.numSims} Simulator${q.numSims > 1 ? 's' : ''}</span>
+        ${q.simsDescription ? `<span class="pq-item-separator">—</span><span class="pq-item-value">${q.simsDescription}</span>` : ''}
+        ${sp ? `<span class="pq-price-col">${fmtPrice(sp)}</span>` : ''}
+      </div>`;
+  }
+
+  /* Staff */
+  if (q.numStaff) {
+    const stP = q.staffPrice || 0;
+    pqTotal += stP;
+    itemsHTML += `<div class="pq-section-title"><i class="fas fa-users"></i> Staffing</div>
+      <div class="pq-item-row"><span class="pq-item-check"><i class="fas fa-check-circle"></i></span>
+        <span class="pq-item-label">${q.numStaff} Staff Member${q.numStaff > 1 ? 's' : ''}</span>
+        ${q.staffDescription ? `<span class="pq-item-separator">—</span><span class="pq-item-value">${q.staffDescription}</span>` : ''}
+        ${stP ? `<span class="pq-price-col">${fmtPrice(stP)}</span>` : ''}
+      </div>`;
+  }
+
+  /* Mileage */
+  if (q.mileageMiles || q.mileagePrice) {
+    const mP = q.mileagePrice || 0;
+    pqTotal += mP;
+    itemsHTML += `<div class="pq-section-title"><i class="fas fa-route"></i> Travel & Mileage</div>
+      <div class="pq-item-row"><span class="pq-item-check"><i class="fas fa-check-circle"></i></span>
+        <span class="pq-item-label">Mileage${q.mileageAddress ? ' — ' + q.mileageAddress : ''}</span>
+        ${q.mileageMiles ? `<span class="pq-item-separator">—</span><span class="pq-item-value">${(q.mileageMiles * 2).toLocaleString()} miles round trip @ $2.00/mi</span>` : ''}
+        ${mP ? `<span class="pq-price-col">${fmtPrice(mP)}</span>` : ''}
+      </div>
+      ${q.mileageDescription ? `<div class="pq-item-desc">${q.mileageDescription.replace(/</g,'&lt;').replace(/\n/g,'<br>')}</div>` : ''}`;
+  }
+
+  /* Add-ons */
+  const addons = q.addons || {};
+  const activeAddons = eventQuoteAddons.filter(a => addons[a.key]?.included && addons[a.key]?.value === 'yes');
+  if (activeAddons.length) {
+    itemsHTML += `<div class="pq-section-title"><i class="fas fa-puzzle-piece"></i> Add-On Services</div>`;
+    activeAddons.forEach(a => {
+      const ad = addons[a.key] || {};
+      const adP = ad.price || 0;
+      pqTotal += adP;
+      let extraInfo = '';
+      if (a.colorDropdown && ad.colorChoice) extraInfo = ' — Color: ' + ad.colorChoice;
+      itemsHTML += `<div class="pq-item-row"><span class="pq-item-check"><i class="fas fa-check-circle"></i></span>
+        <span class="pq-item-label">${a.label}${extraInfo}</span>
+        ${adP ? `<span class="pq-price-col">${fmtPrice(adP)}</span>` : ''}
+      </div>
+      ${ad.description ? `<div class="pq-item-desc">${ad.description.replace(/</g,'&lt;').replace(/\n/g,'<br>')}</div>` : ''}`;
+    });
+  }
+
+  const totalsHTML = pqTotal > 0 ? `
+    <div class="pq-totals-card">
+      ${q.simsPrice ? `<div class="pq-totals-row"><span>Simulators</span><span style="font-weight:700;">${fmtPrice(q.simsPrice)}</span></div>` : ''}
+      ${q.staffPrice ? `<div class="pq-totals-row"><span>Staffing</span><span style="font-weight:700;">${fmtPrice(q.staffPrice)}</span></div>` : ''}
+      ${q.mileagePrice ? `<div class="pq-totals-row"><span>Travel & Mileage</span><span style="font-weight:700;">${fmtPrice(q.mileagePrice)}</span></div>` : ''}
+      ${activeAddons.length ? `<div class="pq-totals-row"><span>Add-On Services</span><span style="font-weight:700;">${fmtPrice(activeAddons.reduce((s, a) => s + (addons[a.key]?.price || 0), 0))}</span></div>` : ''}
+      <div class="pq-totals-row grand"><span>Total</span><span>${fmtPrice(pqTotal)}</span></div>
+      <div class="pq-tax-note">* Sales tax not included</div>
+    </div>` : '';
+
+  const actions = isActionable ? `
+    <div class="pq-actions" id="pqEventActions">
+      <button class="pq-btn pq-btn-accept" onclick="publicAcceptEventQuote('${q._id}')"><i class="fas fa-check"></i> Accept Quote</button>
+      <button class="pq-btn pq-btn-decline" onclick="publicShowEventDecline()"><i class="fas fa-times"></i> Decline</button>
+      <a class="pq-btn pq-btn-contact" href="mailto:sales@velocityprosims.com?subject=Question about my event quote"><i class="fas fa-envelope"></i> Contact Us</a>
+    </div>
+    <div id="pqEventDeclineForm" style="display:none;" class="pq-decline-form">
+      <p style="font-weight:600;margin-bottom:6px;">We're sorry to see you go. Could you share why?</p>
+      <textarea id="pqEventDeclineFeedback" placeholder="Your feedback helps us improve..."></textarea>
+      <button onclick="publicDeclineEventQuote('${q._id}')">Submit &amp; Decline</button>
+    </div>
+  ` : '';
+
+  container.innerHTML = `
+    <div class="pq-header">
+      <div class="pq-header-inner">
+        <img src="${window.location.origin}/logo.png" alt="Velocity Pro Sims" onerror="this.style.display='none'">
+        <div class="pq-header-contact">Questions? <a href="mailto:sales@velocityprosims.com">sales@velocityprosims.com</a></div>
+      </div>
+    </div>
+    <div class="pq-body">
+      ${statusBanner}
+      <div class="pq-card">
+        <div class="pq-title">Your Event Quote</div>
+        <div class="pq-subtitle">Prepared for ${name}${sentDate ? ' &mdash; ' + sentDate : ''}</div>
+        <div class="pq-detail-grid">
+          ${q.clientName ? `<div class="pq-detail-item"><div class="pq-label">Client</div><div class="pq-value">${q.clientName}</div></div>` : ''}
+          ${q.clientCompany ? `<div class="pq-detail-item"><div class="pq-label">Company</div><div class="pq-value">${q.clientCompany}</div></div>` : ''}
+          ${q.clientEmail ? `<div class="pq-detail-item"><div class="pq-label">Email</div><div class="pq-value">${q.clientEmail}</div></div>` : ''}
+          ${q.clientPhone ? `<div class="pq-detail-item"><div class="pq-label">Phone</div><div class="pq-value">${q.clientPhone}</div></div>` : ''}
+          ${q.eventName ? `<div class="pq-detail-item"><div class="pq-label">Event</div><div class="pq-value">${q.eventName}</div></div>` : ''}
+          ${evDate ? `<div class="pq-detail-item"><div class="pq-label">Event Date</div><div class="pq-value">${evDate}</div></div>` : ''}
+          ${opTimes ? `<div class="pq-detail-item"><div class="pq-label">Operating Times</div><div class="pq-value">${opTimes}</div></div>` : ''}
+          ${loadIn ? `<div class="pq-detail-item"><div class="pq-label">Load-In</div><div class="pq-value">${loadIn}</div></div>` : ''}
+          ${loadOut ? `<div class="pq-detail-item"><div class="pq-label">Load-Out</div><div class="pq-value">${loadOut}</div></div>` : ''}
+        </div>
+        ${q.eventDescription ? `<div class="pq-section-title"><i class="fas fa-align-left"></i> Event Description</div><p style="font-size:0.95rem;color:#475569;line-height:1.6;">${q.eventDescription.replace(/</g,'&lt;').replace(/\n/g,'<br>')}</p>` : ''}
+        ${itemsHTML}
+        ${q.notes ? `<div class="pq-section-title"><i class="fas fa-sticky-note"></i> Notes</div><p style="font-size:0.95rem;color:#475569;line-height:1.6;">${q.notes.replace(/</g,'&lt;').replace(/\n/g,'<br>')}</p>` : ''}
+      </div>
+      ${totalsHTML}
+      ${actions}
+      <div class="pq-qa-card">
+        <div class="pq-qa-title"><i class="fas fa-comments"></i> Questions &amp; Messages</div>
+        <div class="pq-qa-thread" id="pqEventMessageThread">
+          <div class="pq-qa-empty"><i class="fas fa-comments" style="font-size:1.5rem;opacity:0.3;display:block;margin-bottom:8px;"></i>No messages yet. Ask a question about your quote!</div>
+        </div>
+        <div class="pq-qa-input-row">
+          <textarea id="pqEventMessageInput" placeholder="Type your question here..." rows="2"></textarea>
+          <button id="pqEventSendMsgBtn" onclick="sendPublicEventMessage('${q._id}', '${name.replace(/'/g, "\\'")}')"><i class="fas fa-paper-plane"></i> Send</button>
+        </div>
+      </div>
+      <div class="pq-footer">
+        <p>Velocity Pro Sims &mdash; <a href="https://www.velocityprosims.com" target="_blank">velocityprosims.com</a></p>
+      </div>
+    </div>
+  `;
+
+  /* Start real-time message listener */
+  db.collection('eventQuotes').doc(q._id).collection('messages').orderBy('timestamp', 'asc')
+    .onSnapshot(snap => {
+      const msgs = snap.docs.map(d => ({ _id: d.id, ...d.data() }));
+      const thread = document.getElementById('pqEventMessageThread');
+      if (!thread) return;
+      if (!msgs.length) {
+        thread.innerHTML = '<div class="pq-qa-empty"><i class="fas fa-comments" style="font-size:1.5rem;opacity:0.3;display:block;margin-bottom:8px;"></i>No messages yet. Ask a question about your quote!</div>';
+        return;
+      }
+      thread.innerHTML = msgs.map(m => `
+        <div class="pq-msg ${m.sender}">
+          <div class="pq-msg-sender">${m.sender === 'admin' ? '<i class="fas fa-headset"></i> Velocity Pro Sims' : '<i class="fas fa-user"></i> You'}</div>
+          <div>${m.text.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>')}</div>
+          <div class="pq-msg-meta">${formatMsgTime(m.timestamp)}</div>
+        </div>
+      `).join('');
+      thread.scrollTop = thread.scrollHeight;
+    });
+}
+
+/* Public event quote actions */
+function publicAcceptEventQuote(quoteId) {
+  if (!confirm('Accept this quote? This confirms your agreement to the event pricing above.')) return;
+  db.collection('eventQuotes').doc(quoteId).update({ status: 'accepted', respondedAt: new Date().toISOString() });
+  addEventQuoteActivity(quoteId, { type: 'accepted' });
+  const actionsEl = document.getElementById('pqEventActions');
+  if (actionsEl) actionsEl.innerHTML = '<div class="pq-status-banner accepted" style="margin:0;"><i class="fas fa-check-circle"></i> Quote accepted! We\'ll be in touch shortly.</div>';
+  const declineForm = document.getElementById('pqEventDeclineForm');
+  if (declineForm) declineForm.style.display = 'none';
+}
+
+function publicShowEventDecline() {
+  document.getElementById('pqEventDeclineForm').style.display = 'block';
+}
+
+function publicDeclineEventQuote(quoteId) {
+  const feedback = (document.getElementById('pqEventDeclineFeedback').value || '').trim();
+  if (!feedback) { alert('Please share your feedback before declining.'); return; }
+  db.collection('eventQuotes').doc(quoteId).update({ status: 'declined', respondedAt: new Date().toISOString(), declineFeedback: feedback });
+  addEventQuoteActivity(quoteId, { type: 'declined', feedback });
+  const actionsEl = document.getElementById('pqEventActions');
+  if (actionsEl) actionsEl.innerHTML = '<div class="pq-status-banner declined" style="margin:0;"><i class="fas fa-times-circle"></i> Quote declined. Thank you for your feedback.</div>';
+  document.getElementById('pqEventDeclineForm').style.display = 'none';
+}
+
+async function sendPublicEventMessage(quoteId, customerName) {
+  const textarea = document.getElementById('pqEventMessageInput');
+  if (!textarea) return;
+  const text = textarea.value.trim();
+  if (!text) return;
+
+  const btn = document.getElementById('pqEventSendMsgBtn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; }
+
+  const msg = { sender: 'customer', senderName: customerName || 'Customer', text, timestamp: new Date().toISOString(), read: false };
+  try {
+    await db.collection('eventQuotes').doc(quoteId).collection('messages').add(msg);
+    addEventQuoteActivity(quoteId, { type: 'question', text: text.substring(0, 80) });
+    textarea.value = '';
+    sendEmailNotification(EMAILJS_NOTIFY_TEMPLATE, {
+      to_email: 'sales@velocityprosims.com',
+      subject: 'New Question on Event Quote — ' + customerName,
+      message: 'A customer has posted a question on their event quote.\n\nFrom: ' + customerName + '\nMessage: ' + text + '\n\nView and reply in your portal.',
+      from_name: customerName,
+      reply_to: 'sales@velocityprosims.com',
+    });
+  } catch (err) {
+    console.error('Error sending event quote message:', err);
+    alert('Failed to send message. Please try again.');
+  }
+  if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send'; }
 }
 
 // ── Contacts ──
